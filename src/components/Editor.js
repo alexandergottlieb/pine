@@ -29,11 +29,14 @@ class Editor extends Component {
     let tree = new Tree(sentence);
     tree.positionNodes();
     console.log(tree);
+    const context = this.canvas.getContext('2d');
+    context.font = "16px system-ui";
+    tree.breadthFirst(node => {context.fillText(node.word, node.x * 128 + 128, node.y * 32 + 128)});
   }
 
   render() {
     return (
-      <canvas id="tree" ref={(canvas) => {this.canvas = canvas}}></canvas>
+      <canvas id="tree" ref={(canvas) => {this.canvas = canvas}} width="1920" height="1080"></canvas>
     );
   }
 }

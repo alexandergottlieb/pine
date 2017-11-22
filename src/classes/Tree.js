@@ -36,16 +36,45 @@ export default class Tree {
     }
 
     positionNodes() {
-        //y co-ord
-        this.breadthFirst(function(node, depth) {
-            node.y = node.depth;
-        });
-
-        //initial x co-ord
         this.postOrder(function(node) {
-            node.x = node.indexAmongSiblings();
+            //y co-ord
+            node.y = node.depth;
+
+            //initial x co-ord
+            if (node.children.length > 0) {
+                //centre above children
+                if (node.children.length === 1) {
+                    //parent directly above child
+                    node.x = node.children[0].x;
+                } else {
+                    //parent in midpoint between children
+                    let midpoint = node.children.reduce((x, child) => {return x + (child.x / node.children.length)}, 0);
+                    if (node.leftSibling() === null) { //is leftmost sibling
+                        node.x = midpoint;
+                    } else {
+                        //save mod value to translate children later
+                        node.x = node.leftSibling().x + 1;
+                        node.mod = node.x - midpoint;
+                    }
+                }
+            } else {
+                let leftSibling = node.leftSibling();
+                if (leftSibling === null) { //is leftmost node
+                    node.x = 0;
+                } else {
+                    //ensure current subtree does not overlap with left siblings
+                    // node.x = leftSibling.x + 1;
+                    let subtreeExhausted = false;
+                    while (!subtreeExhausted) {
+                        let currentRightContour = left.children[left.children.length-1];
+                        let currentLeftContour = right.children[0];
+                    }
+                }
+            }
         });
     }
+
+    contour(left, right, max, )
 
     postOrder(callback) {
         let unvisited = [];
