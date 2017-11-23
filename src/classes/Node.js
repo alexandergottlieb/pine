@@ -20,4 +20,21 @@ export default class Node {
         }
     }
 
+    rightSibling() {
+        if (this.parent !== 0) {
+            let index = this.parent.children.findIndex(child => {return child.index === this.index});
+            return this.parent.children[index+1] ? this.parent.children[index+1] : null;
+        } else {
+            return null;
+        }
+    }
+
+    isLeftmost() {
+        return this.leftSibling() === null;
+    }
+
+    isRightmost() {
+        return this.rightSibling() === null;
+    }
+
 }

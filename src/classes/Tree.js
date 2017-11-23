@@ -12,7 +12,7 @@ export default class Tree {
 
         function createNode(index, child) {
             //Check if node has been created already
-            if (self.nodes[index] != null) return self.nodes[index];
+            if (self.nodes[index]) return self.nodes[index];
 
             let word = sentence[index];
             let node = new Node();
@@ -36,20 +36,40 @@ export default class Tree {
     }
 
     positionNodes() {
-        this.postOrder(function(node) {
+        this.postOrder(node => {
             //y co-ord
             node.y = node.depth;
 
-            //initial x co-ord
+            //position children
             if (node.children.length > 0) {
                 //centre above children
                 if (node.children.length === 1) {
                     //parent directly above child
-                    node.x = node.children[0].x;
+                    if (node.isLeftmost()) {
+                        node.x = node.children[0].x;
+                    } else {
+                        node.x = node.leftSibling().x + 1;
+                        node.mod = node.x - node.children[0].x;
+                    }
                 } else {
+                    //ensure subtrees do not overlap
+                    //this is currently O(n^2) and can be improved if necessary
+                    node.children.forEach(child => {
+                        if (child.isLeftmost()) return;
+                        let prevRightContour = this.rightContour(child.leftSibling());
+                        let currentLeftContour = this.leftContour(child);
+                        let shift = 0;
+                        for (let depth in prevRightContour) {
+                            if (currentLeftContour[depth] <= prevRightContour[depth]) {
+                                shift = Math.max(...prevRightContour) - Math.min(...currentLeftContour) + 1;
+                            }
+                        }
+                        child.x += shift;
+                        child.mod += shift;
+                    });
                     //parent in midpoint between children
-                    let midpoint = node.children.reduce((x, child) => {return x + (child.x / node.children.length)}, 0);
-                    if (node.leftSibling() === null) { //is leftmost sibling
+                    let midpoint = (node.children[0].x + node.children[node.children.length-1].x) / node.children.length;
+                    if (node.isLeftmost()) {
                         node.x = midpoint;
                     } else {
                         //save mod value to translate children later
@@ -58,28 +78,49 @@ export default class Tree {
                     }
                 }
             } else {
+                //initial x co-ord
                 let leftSibling = node.leftSibling();
-                if (leftSibling === null) { //is leftmost node
-                    node.x = 0;
-                } else {
-                    //ensure current subtree does not overlap with left siblings
-                    // node.x = leftSibling.x + 1;
-                    let subtreeExhausted = false;
-                    while (!subtreeExhausted) {
-                        let currentRightContour = left.children[left.children.length-1];
-                        let currentLeftContour = right.children[0];
-                    }
-                }
+                node.x = leftSibling !== null ? leftSibling.x + 1 : 0;
             }
         });
+
+        //Generate final x values from accumulating ancestor's mods
+        function finalXValues(node, modSum) {
+            modSum = modSum || 0;
+            node.x += modSum;
+            modSum += node.mod;
+            node.children.forEach(child => {finalXValues(child, modSum)});
+        }
+
+        finalXValues(this.root);
     }
 
-    contour(left, right, max, )
+    leftContour(node, modSum, contour) {
+        contour = contour || {};
+        modSum = modSum || 0;
+        if (!contour[node.depth] || node.x < contour[node.depth]) {
+            contour[node.depth] = node.x + modSum;
+        }
+        modSum += node.mod;
+        node.children.forEach(child => {this.leftContour(child, modSum, contour)});
+        return contour;
+    }
 
-    postOrder(callback) {
-        let unvisited = [];
+    rightContour(node, modSum, contour) {
+        contour = contour || {};
+        modSum = modSum || 0;
+        if (!contour[node.depth] || node.x > contour[node.depth]) {
+            contour[node.depth] = node.x + modSum;
+        }
+        modSum += node.mod;
+        node.children.forEach(child => {this.rightContour(child, modSum, contour)});
+        return contour;
+    }
+
+    postOrder(callback, start) {
+        start = start || this.root;
+        let unvisited = [start];
         let order = [];
-        unvisited.push(this.root);
         let node;
         while (unvisited.length > 0) {
           node = unvisited.pop();
@@ -91,8 +132,9 @@ export default class Tree {
         }
     }
 
-    breadthFirst(callback) {
-        let unvisited =[this.root];
+    breadthFirst(callback, start) {
+        start = start || this.root;
+        let unvisited = [start];
         let node;
         while(unvisited.length > 0) {
             node = unvisited.shift();

@@ -24,6 +24,22 @@ class Editor extends Component {
       4: {
         "parent": 5,
         "word": "little"
+      },
+      6: {
+        "parent": 5,
+        "word": "on"
+      },
+      7: {
+        "parent": 8,
+        "word": "financial"
+      },
+      8: {
+        "parent": 6,
+        "word": "markets"
+      },
+      9: {
+        "parent": 5,
+        "word": "another"
       }
     };
     let tree = new Tree(sentence);
@@ -31,7 +47,7 @@ class Editor extends Component {
     console.log(tree);
     const context = this.canvas.getContext('2d');
     context.font = "16px system-ui";
-    tree.breadthFirst(node => {context.fillText(node.word, node.x * 128 + 128, node.y * 32 + 128)});
+    tree.breadthFirst(node => {context.fillText(node.word, node.x * 300 + 100, node.y * 50 + 100)});
   }
 
   render() {
