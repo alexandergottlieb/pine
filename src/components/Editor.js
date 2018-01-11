@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import Tree from '../classes/Tree.js';
+import Tree from '../classes/Tree';
+import Word from './Word';
 
 class Editor extends Component {
+
+  constructor() {
+    super()
+
+    this.state = {
+      words: []
+    }
+  }
 
   componentDidMount() {
     let sentence = {
@@ -36,23 +45,31 @@ class Editor extends Component {
       8: {
         "parent": 6,
         "word": "markets"
-      },
-      9: {
-        "parent": 5,
-        "word": "another"
       }
     };
+
+    //Scaling factors
+    const yUnit = 6;
+    let longestWord = 0;
+    for (let index in sentence) {
+      if (sentence[index].word.length > longestWord) longestWord = sentence[index].word.length;
+    }
+    const xUnit = longestWord * 2 + 8; //relative to the longest word
+
     let tree = new Tree(sentence);
     tree.positionNodes();
-    console.log(tree);
-    const context = this.canvas.getContext('2d');
-    context.font = "16px system-ui";
-    tree.breadthFirst(node => {context.fillText(node.word, node.x * 300 + 100, node.y * 50 + 100)});
+    let words = [];
+    tree.breadthFirst(node => { words.push(node) });
+    console.log(words);
+    words = words.map(word => { return <Word {...word} xUnit={xUnit} yUnit={yUnit} width={longestWord} key={word.index} /> });
+    this.setState({words})
   }
 
   render() {
     return (
-      <canvas id="tree" ref={(canvas) => {this.canvas = canvas}} width="1920" height="1080"></canvas>
+      <div id="editor">
+        <div id="tree">{this.state.words}</div>
+      </div>
     );
   }
 }
