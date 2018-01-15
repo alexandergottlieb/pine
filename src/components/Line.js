@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Word = props => {
+const Line = props => {
 
     const {word, x, y, xUnit, yUnit, width} = props;
 
@@ -9,20 +9,19 @@ const Word = props => {
 
     const style = {
         position: "absolute",
-        top: realY+'px',
-        left: realX+'px',
-        width: width+'px',
-        padding: '0.5em 0',
+        top: realY+'em',
+        left: realX+'em',
+        width: width+'em',
+        padding: '0.5em',
         textAlign: 'center',
-        background: '#f3f3f3',
-        color: '#333',
+        background: '#eee',
         borderRadius: '5px'
     }
 
     return (
-        <span className="tree__word" style={style}>{word}</span>
+        <line />
     )
 
 }
 
-export default Word;
+export default Line;

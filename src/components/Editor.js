@@ -1,77 +1,66 @@
-import React, { Component } from 'react';
-import Tree from '../classes/Tree';
-import Word from './Word';
+import React, { Component } from 'react'
+import Tree from '../classes/Tree'
+import Word from './Word'
 
 class Editor extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
-    this.state = {
-      words: []
-    }
-  }
-
-  componentDidMount() {
-    let sentence = {
-      3: {
-        "parent": 0, //root
-        "word": "had"
-      },
-      2: {
-        "parent": 3,
-        "word": "news"
-      },
-      1: {
-        "parent": 2,
-        "word": "economic"
-      },
-      5: {
-        "parent": 3,
-        "word": "effect"
-      },
-      4: {
-        "parent": 5,
-        "word": "little"
-      },
-      6: {
-        "parent": 5,
-        "word": "on"
-      },
-      7: {
-        "parent": 8,
-        "word": "financial"
-      },
-      8: {
-        "parent": 6,
-        "word": "markets"
-      }
-    };
+    let {sentence} = props
 
     //Scaling factors
-    const yUnit = 6;
-    let longestWord = 0;
+    const pixelUnit = 16
+    const yUnit = 6 * pixelUnit
+    let longestWord = 0
     for (let index in sentence) {
-      if (sentence[index].word.length > longestWord) longestWord = sentence[index].word.length;
+      if (sentence[index].word.length > longestWord) longestWord = sentence[index].word.length
     }
-    const xUnit = longestWord * 2 + 8; //relative to the longest word
+    const wordWidth = longestWord * pixelUnit
+    const xUnit = wordWidth * 3 //relative to the longest word, scaled to add padding
 
-    let tree = new Tree(sentence);
-    tree.positionNodes();
-    let words = [];
-    tree.breadthFirst(node => { words.push(node) });
-    console.log(words);
-    words = words.map(word => { return <Word {...word} xUnit={xUnit} yUnit={yUnit} width={longestWord} key={word.index} /> });
-    this.setState({words})
+    //Calculate node positions
+    let tree = new Tree(sentence)
+    tree.positionNodes()
+    let nodes = []
+    tree.breadthFirst(node => { nodes.push(node) })
+
+    //Generate words
+    let words = nodes
+    words = words.map(word => { return <Word {...word} xUnit={xUnit} yUnit={yUnit} width={wordWidth} key={word.index} /> })
+
+    //Generate lines
+    let lines = []
+    //Draw parent/head relation for each node
+    tree.breadthFirst(node => {
+      //Draw lines from parent to child
+      node.children.forEach(child => {
+        let coords = {};
+        //Line start co-ordinate
+        coords.x1 = node.x * xUnit + (wordWidth/2);
+        coords.y1 = node.y * yUnit + pixelUnit;
+        //Line end co-ordinate
+        coords.x2 = child.x * xUnit + (wordWidth/2);
+        coords.y2 = child.y * yUnit + pixelUnit;
+        console.log(coords);
+        const key = `${node.index}_${child.index}`
+        lines.push(<line {...coords} strokeWidth="2" stroke="#727272" key={key}/>)
+      })
+    })
+
+    this.state = {words, lines}
   }
 
   render() {
     return (
-      <div id="editor">
-        <div id="tree">{this.state.words}</div>
+      <div className="editor">
+        <div className="tree">
+          <svg className="tree__lines">{this.state.lines}</svg>
+          {this.state.words}
+        </div>
       </div>
-    );
+    )
   }
 }
 
-export default Editor;
+export default Editor
