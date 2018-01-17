@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
-import Editor from './components/Editor.js'
-import Sidebar from './components/Sidebar.js'
+import Editor from './components/Editor'
+import Home from './components/Home'
 
 class App extends Component {
   render() {
@@ -44,17 +44,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="app">
-          <Route path="/edit">
-            <div class="route--edit">
-              <Sidebar />
-              <Editor sentence={sentence} />
-            </div>
-          </Route>
-          <Route path="/">
-            <div class="route--home">
-
-            </div>
-          </Route>
+          <Route path="/" component={Home} />
+          <Route path="/edit" component={Editor} />
         </div>
       </BrowserRouter>
     );

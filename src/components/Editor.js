@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Tree from '../classes/Tree'
 import Word from './Word'
+import Sidebar from './Sidebar'
 
 class Editor extends Component {
 
@@ -53,10 +54,13 @@ class Editor extends Component {
 
   render() {
     return (
-      <div className="editor">
-        <div className="tree">
-          <svg className="tree__lines">{this.state.lines}</svg>
-          {this.state.words}
+      <div>
+        <Sidebar />
+        <div className="editor">
+          <div className="tree">
+            <svg className="tree__lines">{this.state.lines}</svg>
+            {this.state.words}
+          </div>
         </div>
       </div>
     )
