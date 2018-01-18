@@ -1,29 +1,25 @@
 import { database } from '../firebaseApp'
 
-export const fetchTreebank = id => {
-    //TODO - Firebase
-    return {
-        type: "FETCH_TREEBANK"
+export const fetchTreebanks = () => {
+    return dispatch => {
+        const ref = database.ref('/treebanks')
+        ref.once('value', snapshot => {
+            dispatch({
+                type: "FETCH_TREEBANKS_COMPLETE",
+                treebanks: snapshot.val()
+            })
+        })
     }
 }
 
 export const uploadTreebank = treebank => {
-    return {
-        type: "UPLOAD_TREEBANK",
-        payload: null //TODO
-    }
-}
-
-export const setTreebank = treebank => {
-    return {
-        type: "SET_TREEBANK",
-        treebank
-    }
-}
-
-export const setSentence = sentence => {
-    return {
-        type: "SET_SENTENCE",
-        sentence
+    return dispatch => {
+        dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
+        const ref = database.ref('/treebanks').push(treebank)
+        ref.set(treebank).then(() => {
+            dispatch({ type: "UPLOAD_TREEBANK_SUCCEEDED" })
+        }).catch(() => {
+            dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
+        })
     }
 }

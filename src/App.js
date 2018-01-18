@@ -8,13 +8,13 @@ import Home from './components/Home'
 import './App.css';
 
 const App = (props) => {
-  const {actions, treebank} = props
+  const {actions, treebanks, meta} = props
 
   return (
     <BrowserRouter>
       <div className="app">
-        <Route path="/" exact render={() => <Home setTreebank={actions.setTreebank} />} />
-        <Route path="/edit" render={() => <Editor treebank={treebank} sentence={sentence} />} />
+        <Route path="/" exact render={() => <Home actions={actions} treebanks={treebanks.all} />} />
+        <Route path="/edit/(:treebank)/(:sentence)" render={() => <Editor treebank={treebanks.current} sentence={meta.sentence} />} />
       </div>
     </BrowserRouter>
   )
@@ -22,8 +22,9 @@ const App = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-	use: state.user,
-	treebank: state.treebank
+	user: state.user,
+	treebanks: state.treebanks,
+  meta: state.meta
 });
 
 const mapDispatchToProps = (dispatch) => ({

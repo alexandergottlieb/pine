@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import Treebank from '../classes/Treebank'
-import { Link } from 'react-router-dom';
+import TreebankPreview from './TreebankPreview'
 
 class Home extends Component {
 
   constructor(props) {
     super(props)
-
     this.state = {}
+
+    this.props.actions.fetchTreebanks()
   }
 
   addFile(file) {
@@ -18,20 +19,28 @@ class Home extends Component {
     reader.onload = event => {
       let text = event.target.result
       treebank.parseFile(text)
-      this.props.setTreebank(treebank)
+      this.props.actions.uploadTreebank(treebank)
     }
 
     reader.readAsText(file)
   }
 
   render() {
+    const treebanksList = []
+    for (let id in this.props.treebanks) {
+      let treebank = this.props.treebanks[id]
+      treebanksList.push(<TreebankPreview id={id} treebank={treebank} key={id} />)
+    }
+
     return (
       <div className="home">
-        <h2>Private Treebanks</h2>
+        <h2>Treebanks</h2>
         <label>Add Treebank
           <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
-          <Link to="/edit">Edit</Link>
         </label>
+        <div>
+          {treebanksList}
+        </div>
       </div>
     )
   }

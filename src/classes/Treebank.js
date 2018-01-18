@@ -41,7 +41,7 @@ export default class Treebank {
         if (data[8] !== '_') word.dependencies = data[8]
         if (data[9] !== '_') word.misc = this.parseList(data[9])
         //Check word has required properties
-        if (!word.word) throw 'Invalid word'
+        if (!word.word) throw new Error('Invalid word')
         return word
     }
 

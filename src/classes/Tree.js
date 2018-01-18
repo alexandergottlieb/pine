@@ -16,7 +16,7 @@ export default class Tree {
             let node = new Node();
             node.index = Number(index);
             node.word = sentence.words[index]
-            if (node.word.parent == 0) { //is root
+            if (Number(node.word.parent) === 0) { //is root
                 node.parent = 0;
                 node.depth = 0;
                 self.root = node;

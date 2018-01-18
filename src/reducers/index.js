@@ -7,26 +7,23 @@ const user = (state = {}, action) => {
     }
 }
 
-const treebank = (state = null, action) => {
+const treebanks = (state = {all: {}, current: null}, action) => {
     switch (action.type) {
         case "SET_TREEBANK":
-            return action.treebank
-        default:
-            return state
-    }
-}
-
-const meta = (state = {}, action) => {
-    switch (action.type) {
-        case "SET_SENTENCE":
-            return action.sentence
+            return Object.assign({}, state, {
+                current: action.treebank
+            })
+        case "FETCH_TREEBANKS_COMPLETE":
+            return Object.assign({}, state, {
+                all: action.treebanks
+            })
         default:
             return state
     }
 }
 
 const reducers = combineReducers({
-    user, treebank, meta
+    user, treebanks
 });
 
 export default reducers;

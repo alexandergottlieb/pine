@@ -8,7 +8,7 @@ class Editor extends Component {
   constructor(props) {
     super(props)
 
-    let { treebank, sentence } = props
+    let { sentence } = props
 
     //Scaling factors
     const pixelUnit = 16
@@ -53,7 +53,7 @@ class Editor extends Component {
   render() {
     return (
       <div>
-        <Sidebar treebank={treebank} />
+        <Sidebar treebank={this.props.treebank} />
         <div className="editor">
           <div className="tree">
             <svg className="tree__lines">{this.state.lines}</svg>
