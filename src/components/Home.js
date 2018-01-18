@@ -18,7 +18,7 @@ class Home extends Component {
       let text = event.target.result
       treebank.parseFile(text)
       console.log(treebank)
-      //TODO - upload treebank
+      //TODO - upload
     }
 
     reader.readAsText(file)
