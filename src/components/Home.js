@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Treebank from '../classes/Treebank'
+import { Link } from 'react-router-dom';
 
 class Home extends Component {
 
@@ -17,8 +18,7 @@ class Home extends Component {
     reader.onload = event => {
       let text = event.target.result
       treebank.parseFile(text)
-      console.log(treebank)
-      //TODO - upload
+      this.props.setTreebank(treebank)
     }
 
     reader.readAsText(file)
@@ -30,6 +30,7 @@ class Home extends Component {
         <h2>Private Treebanks</h2>
         <label>Add Treebank
           <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
+          <Link to="/edit">Edit</Link>
         </label>
       </div>
     )

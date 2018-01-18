@@ -36,7 +36,7 @@ export default class Treebank {
         if (data[3] !== '_') word.uposTag = data[3]
         if (data[4] !== '_') word.xposTag = data[4]
         if (data[5] !== '_') word.features = this.parseList(data[5])
-        if (data[6] !== '_') word.head = data[6]
+        if (data[6] !== '_') word.parent = data[6]
         if (data[7] !== '_') word.relation = data[7]
         if (data[8] !== '_') word.dependencies = data[8]
         if (data[9] !== '_') word.misc = this.parseList(data[9])

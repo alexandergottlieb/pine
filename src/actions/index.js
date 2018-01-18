@@ -20,3 +20,10 @@ export const setTreebank = treebank => {
         treebank
     }
 }
+
+export const setSentence = sentence => {
+    return {
+        type: "SET_SENTENCE",
+        sentence
+    }
+}

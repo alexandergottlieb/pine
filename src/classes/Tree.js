@@ -5,25 +5,23 @@ export default class Tree {
     constructor(sentence) {
         this.nodes = [];
         let self = this;
-
-        for (let index in sentence) {
+        sentence.words.forEach( (word, index) => {
             createNode(index);
-        }
+        })
 
-        function createNode(index, child) {
+        function createNode(index) {
             //Check if node has been created already
             if (self.nodes[index]) return self.nodes[index];
 
-            let word = sentence[index];
             let node = new Node();
             node.index = Number(index);
-            node.word = word.word;
-            if (word.parent === 0) { //is root
+            node.word = sentence.words[index]
+            if (node.word.parent == 0) { //is root
                 node.parent = 0;
                 node.depth = 0;
                 self.root = node;
             } else { //has parent
-                node.parent = createNode(word.parent);
+                node.parent = createNode(node.word.parent);
                 //Add current node to parent as child
                 if (node.parent.children.filter(child => {return child.index === index}).length === 0) {
                     node.parent.children.push(node);

@@ -8,14 +8,14 @@ class Editor extends Component {
   constructor(props) {
     super(props)
 
-    let {sentence} = props
+    let { treebank, sentence } = props
 
     //Scaling factors
     const pixelUnit = 16
     const yUnit = 6 * pixelUnit
     let longestWord = 0
-    for (let index in sentence) {
-      if (sentence[index].word.length > longestWord) longestWord = sentence[index].word.length
+    for (let index in sentence.words) {
+      if (sentence.words[index].word.length > longestWord) longestWord = sentence.words[index].word.length
     }
     const wordWidth = longestWord * pixelUnit
     const xUnit = wordWidth * 3 //relative to the longest word, scaled to add padding
@@ -23,17 +23,15 @@ class Editor extends Component {
     //Calculate node positions
     let tree = new Tree(sentence)
     tree.positionNodes()
-    let nodes = []
-    tree.breadthFirst(node => { nodes.push(node) })
+    let nodes = tree.nodes
 
     //Generate words
-    let words = nodes
-    words = words.map(word => { return <Word {...word} xUnit={xUnit} yUnit={yUnit} width={wordWidth} key={word.index} /> })
+    let words = nodes.map(node => { return <Word {...node} xUnit={xUnit} yUnit={yUnit} width={wordWidth} key={node.index} /> })
 
     //Generate lines
     let lines = []
     //Draw parent/head relation for each node
-    tree.breadthFirst(node => {
+    nodes.forEach(node => {
       //Draw lines from parent to child
       node.children.forEach(child => {
         let coords = {};
@@ -55,7 +53,7 @@ class Editor extends Component {
   render() {
     return (
       <div>
-        <Sidebar />
+        <Sidebar treebank={treebank} />
         <div className="editor">
           <div className="tree">
             <svg className="tree__lines">{this.state.lines}</svg>

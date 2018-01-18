@@ -16,8 +16,17 @@ const treebank = (state = null, action) => {
     }
 }
 
+const meta = (state = {}, action) => {
+    switch (action.type) {
+        case "SET_SENTENCE":
+            return action.sentence
+        default:
+            return state
+    }
+}
+
 const reducers = combineReducers({
-    user, treebank
+    user, treebank, meta
 });
 
 export default reducers;
