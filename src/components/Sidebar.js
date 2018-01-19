@@ -1,27 +1,23 @@
 import React, { Component } from 'react'
 
-class Sidebar extends Component {
+const Sidebar = props => {
 
-  constructor(props) {
-    super(props)
+  let { sentences } = props
+  console.log(sentences)
+  sentences.map(sentence => <li>{sentence.sentence}</li>)
+  return (
+    <div className="sidebar">
 
-    this.state = {}
-  }
+      <h1>Treebank Name</h1>
+      <input className="search" type="text" />
+      <ul>
+          {sentences}
+      </ul>
+      <button type="button">Download</button>
+      <button type="button">New Sentence</button>
+    </div>
+  )
 
-  render() {
-    return (
-      <div className="sidebar">
-
-        <h1>Treebank Name</h1>
-        <input className="search" type="text" />
-        <div>
-
-        </div>
-        <button type="button">Download</button>
-        <button type="button">New Sentence</button>
-      </div>
-    )
-  }
 }
 
 export default Sidebar

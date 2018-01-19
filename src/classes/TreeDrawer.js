@@ -1,6 +1,6 @@
 import Node from './Node.js';
 
-export default class Tree {
+export default class TreeDrawer {
 
     constructor(sentence) {
         this.nodes = [];

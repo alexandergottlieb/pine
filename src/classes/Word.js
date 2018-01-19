@@ -1,7 +1,7 @@
 export default class Word {
 
     constructor() {
-        this.word = ''
+        this.inflection = ''
         this.lemma = ''
         this.uposTag = ''
         this.xposTag = ''

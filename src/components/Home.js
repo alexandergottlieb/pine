@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Treebank from '../classes/Treebank'
-import TreebankPreview from './TreebankPreview'
+import CONLLU from '../classes/CONLLU'
+import Treebank from './Treebank'
 
 class Home extends Component {
 
@@ -12,8 +12,9 @@ class Home extends Component {
   }
 
   addFile(file) {
-    let treebank = new Treebank()
-    treebank.name = file.name
+    if (!file) return
+    let treebank = new CONLLU()
+    treebank.name = file.name.slice(0,-7) //filename without .conllu extension
 
     let reader = new FileReader()
     reader.onload = event => {
@@ -29,7 +30,7 @@ class Home extends Component {
     const treebanksList = []
     for (let id in this.props.treebanks) {
       let treebank = this.props.treebanks[id]
-      treebanksList.push(<TreebankPreview id={id} treebank={treebank} key={id} />)
+      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} delete={this.props.actions.deleteTreebank} />)
     }
 
     return (

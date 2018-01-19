@@ -8,13 +8,13 @@ import Home from './components/Home'
 import './App.css';
 
 const App = (props) => {
-  const {actions, treebanks, meta} = props
+  const {actions, treebanks, sentences} = props
 
   return (
     <BrowserRouter>
       <div className="app">
-        <Route path="/" exact render={() => <Home actions={actions} treebanks={treebanks.all} />} />
-        <Route path="/edit/(:treebank)/(:sentence)" render={() => <Editor treebank={treebanks.current} sentence={meta.sentence} />} />
+        <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} />} />
+        <Route path="/edit/:treebank" render={(props) => <Editor {...props} actions={actions} sentences={sentences} />} />
       </div>
     </BrowserRouter>
   )

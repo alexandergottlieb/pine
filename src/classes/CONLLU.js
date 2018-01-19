@@ -1,7 +1,7 @@
 import Sentence from './Sentence'
 import Word from './Word'
 
-export default class Treebank {
+export default class CONLLU {
 
     constructor() {
         this.name = ''
@@ -14,6 +14,15 @@ export default class Treebank {
         let lines = text.split("\n")
         self.sentences = [new Sentence()]
         let current = 0
+
+        //Remove trailing empty lines
+        let trailingLine = lines[lines.length-1]
+        while (trailingLine.length === 0) {
+            lines.pop()
+            trailingLine = lines[lines.length-1]
+        }
+
+        //Parse sentences
         lines.forEach(line => {
             if (line.indexOf('#') === 0) { //Comment
                 self.sentences[current].comments.push(line)
@@ -26,12 +35,15 @@ export default class Treebank {
                 self.sentences[current].words[index] = word
             }
         })
+        self.sentences.forEach(sentence => {
+            sentence.stringSentenceTogether()
+        })
     }
 
     parseWord(line) {
         let word = new Word()
         let data = line.split("\t")
-        if (data[1] !== '_') word.word = data[1]
+        if (data[1] !== '_') word.inflection = data[1]
         if (data[2] !== '_') word.lemma = data[2]
         if (data[3] !== '_') word.uposTag = data[3]
         if (data[4] !== '_') word.xposTag = data[4]
@@ -41,7 +53,7 @@ export default class Treebank {
         if (data[8] !== '_') word.dependencies = data[8]
         if (data[9] !== '_') word.misc = this.parseList(data[9])
         //Check word has required properties
-        if (!word.word) throw new Error('Invalid word')
+        if (!word.inflection) throw new Error('Invalid word')
         return word
     }
 
