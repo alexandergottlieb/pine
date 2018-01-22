@@ -3,7 +3,7 @@ import { database } from '../firebaseApp'
 export const fetchTreebanks = () => {
     return dispatch => {
         const ref = database.ref('/treebanks')
-        ref.on('value', snapshot => {
+        ref.once('value', snapshot => {
             dispatch({
                 type: "FETCH_TREEBANKS_COMPLETE",
                 treebanks: snapshot.val()
@@ -38,20 +38,28 @@ export const uploadTreebank = treebank => {
 export const deleteTreebank = id => {
     return dispatch => {
         dispatch({ type: "DELETE_TREEBANK_STARTED" })
-        const ref = database.ref(`/treebanks/${id}`).remove().then(() => {
-            const ref = database.ref(`/sentences/${id}`).remove().then(() => {
+        database.ref(`/treebanks/${id}`).remove().then(() => {
+            database.ref(`/sentences/${id}`).remove().then(() => {
                 dispatch({ type: "DELETE_TREEBANK_SUCCEEDED", id })
             })
         })
     }
 }
 
-export const fetchSentences = id => {
+export const setCurrent = (treebankID, sentenceID) => {
     return dispatch => {
-        const ref = database.ref(`/sentences/${id}`)
-        ref.on('value', snapshot => {
+        dispatch({
+            type: "SET_CURRENT_TREEBANK",
+            id: treebankID
+        })
+        dispatch({
+            type: "SET_CURRENT_SENTENCE",
+            id: sentenceID
+        })
+        const ref = database.ref(`/sentences/${treebankID}`).orderByKey()
+        ref.once('value', snapshot => {
             dispatch({
-                type: "FETCH_SENTENCES_COMPLETE",
+                type: "UPDATE_CURRENT_SENTENCES",
                 sentences: snapshot.val()
             })
         })

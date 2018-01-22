@@ -1,27 +1,35 @@
 import React, { Component } from 'react'
-import { withRouter, Route } from 'react-router-dom';
 import Sidebar from './Sidebar'
 import Tree from './Tree'
 
 const Editor = props => {
 
-  const { match, actions } = props
-  const sentences = props.sentences || []
+  const { match, actions, current } = props
+  const { sentences } = current
 
-  actions.fetchSentences(match.params.treebank)
+  //Maybe update current from URL
+  const treebankID = match.params.treebank || null
+  const sentenceID = match.params.sentence || null
+
+  if ( current.treebank !== treebankID
+    || current.sentence !== sentenceID
+  ) {
+    actions.setCurrent(treebankID, sentenceID)
+  }
+
+  let tree = null
+  if (current.sentence !== null) {
+    const sentence = sentences[current.sentence]
+    tree = <Tree actions={actions} sentence={sentence} />
+  }
 
   return (
     <div>
-      <Sidebar sentences={sentences} />
-      <Route path="/edit/:treebank/:sentence" render={
-        (props) => {
-          let sentence = sentences[props.match.params.sentence] || null
-          return <Tree {...props} actions={actions} sentence={sentence} />
-        }
-      } />
+      <Sidebar current={current} />
+      {tree}
     </div>
   )
 
 }
 
-export default withRouter(Editor)
+export default Editor

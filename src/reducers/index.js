@@ -20,16 +20,26 @@ const treebanks = (state = {}, action) => {
     }
 }
 
-const sentences = (state = [], action) => {
+const current = (state = {treebank: null, sentences: [], sentence: null}, action) => {
     switch (action.type) {
-        case "FETCH_SENTENCES_COMPLETE":
-            return Object.assign({}, action.sentences)
+        case "SET_CURRENT_TREEBANK":
+            return Object.assign({}, state, {
+               treebank: action.id
+            })
+        case "SET_CURRENT_SENTENCE":
+            return Object.assign({}, state, {
+               sentence: action.id
+            })
+        case "UPDATE_CURRENT_SENTENCES":
+            return Object.assign({}, state, {
+               sentences: action.sentences
+            })
         default:
             return state
     }
 }
 const reducers = combineReducers({
-    user, treebanks, sentences
+    user, treebanks, current
 });
 
 export default reducers;

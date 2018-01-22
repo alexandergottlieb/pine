@@ -8,24 +8,20 @@ import Home from './components/Home'
 import './App.css';
 
 const App = (props) => {
-  const {actions, treebanks, sentences} = props
-
+  const {actions, treebanks, current} = props
+  
   return (
     <BrowserRouter>
       <div className="app">
         <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} />} />
-        <Route path="/edit/:treebank" render={(props) => <Editor {...props} actions={actions} sentences={sentences} />} />
+        <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} />} />
       </div>
     </BrowserRouter>
   )
 
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-	treebanks: state.treebanks,
-  meta: state.meta
-});
+const mapStateToProps = (state) => ({...state});
 
 const mapDispatchToProps = (dispatch) => ({
 	//shorthand for actionCreator: (param) => { dispatch(actionCreator(param)) } for each creator

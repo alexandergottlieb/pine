@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 const Sidebar = props => {
 
-  let { sentences } = props
-  console.log(sentences)
-  sentences.map(sentence => <li>{sentence.sentence}</li>)
+  let { current } = props
+  let { sentences } = current
+
+  sentences = sentences.map( (sentence, id) => <li key={id}><Link to={`/edit/${current.treebank}/${id}`}>{sentence.sentence}</Link></li> )
+
   return (
     <div className="sidebar">
-
+      <p className="breadcrumbs"><Link to="/">Treebanks</Link> /</p>
       <h1>Treebank Name</h1>
-      <input className="search" type="text" />
       <ul>
           {sentences}
       </ul>

@@ -4,8 +4,8 @@ import Word from './Word'
 
 const Tree = props => {
 
-    const {sentence, actions} = props;
-    console.log(sentence)
+    const {sentence} = props;
+
     let words = []
     let lines = []
 
@@ -22,7 +22,7 @@ const Tree = props => {
         const xUnit = wordWidth * 3 //relative to the longest word, scaled to add padding
 
         //Calculate node positions
-        let tree = new Tree(sentence)
+        let tree = new TreeDrawer(sentence)
         tree.positionNodes()
         let nodes = tree.nodes
 
