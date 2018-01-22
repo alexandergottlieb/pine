@@ -57,16 +57,21 @@ export default class TreeDrawer {
                         let prevRightContour = this.rightContour(child.leftSibling());
                         let currentLeftContour = this.leftContour(child);
                         let shift = 0;
+                        console.log('inflection', child.word.inflection)
+                        console.log('prevRightContour', prevRightContour)
+                        console.log('currentLeftContour', currentLeftContour)
                         for (let depth in prevRightContour) {
                             if (currentLeftContour[depth] <= prevRightContour[depth]) {
                                 shift = Math.max(...prevRightContour) - Math.min(...currentLeftContour) + 1;
                             }
                         }
+                        console.log('shift', shift)
+                        console.log('---')
                         child.x += shift;
                         child.mod += shift;
                     });
                     //parent in midpoint between children
-                    let midpoint = (node.children[0].x + node.children[node.children.length-1].x) / node.children.length;
+                    const midpoint = node.children[0].x + ( (node.children[node.children.length-1].x - node.children[0].x) / 2);
                     if (node.isLeftmost()) {
                         node.x = midpoint;
                     } else {
