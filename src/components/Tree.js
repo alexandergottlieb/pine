@@ -19,7 +19,7 @@ const Tree = props => {
           if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
         }
         const wordWidth = longestWord * pixelUnit
-        const xUnit = wordWidth * 2 + (2 * pixelUnit) //relative to the longest word, scaled to add padding
+        const xUnit = wordWidth * 1.5 //relative to the longest word, scaled to add padding
 
         //Calculate node positions
         let tree = new TreeDrawer(sentence)

@@ -52,21 +52,22 @@ export default class TreeDrawer {
                 } else {
                     //ensure subtrees do not overlap
                     //this is currently O(n^2) and can be improved if necessary
+                    let rightContourAmongLeftSiblings = []
                     node.children.forEach(child => {
                         if (child.isLeftmost()) return;
-                        let prevRightContour = this.rightContour(child.leftSibling());
+                        //Update maximum contour among previous nodes
+                        const leftSiblingsRightContour = this.rightContour(child.leftSibling());
+                        leftSiblingsRightContour.forEach( (x, depth) => {
+                            const currentMaxX = rightContourAmongLeftSiblings[depth] || 0
+                            rightContourAmongLeftSiblings[depth] = Math.max(x, currentMaxX)
+                        })
+                        //Get left contour of current child
                         let currentLeftContour = this.leftContour(child);
-                        let shift = 0;
-                        console.log('inflection', child.word.inflection)
-                        console.log('prevRightContour', prevRightContour)
-                        console.log('currentLeftContour', currentLeftContour)
-                        for (let depth in prevRightContour) {
-                            if (currentLeftContour[depth] <= prevRightContour[depth]) {
-                                shift = Math.max(...prevRightContour) - Math.min(...currentLeftContour) + 1;
-                            }
-                        }
-                        console.log('shift', shift)
-                        console.log('---')
+                        //Shift is the minimum distance to prevent overlap + 1 to leave a gap
+                        const maxPrev = rightContourAmongLeftSiblings.reduce((best, current) => best = current > best ? current : best)
+                        const minCurrent = currentLeftContour.reduce((best, current) => best = current < best ? current : best)
+                        let shift = maxPrev - minCurrent + 1;
+                        //Move parent and children
                         child.x += shift;
                         child.mod += shift;
                     });
@@ -98,10 +99,10 @@ export default class TreeDrawer {
         finalXValues(this.root);
     }
 
-    leftContour(node, modSum, contour) {
-        contour = contour || {};
-        modSum = modSum || 0;
+    leftContour(node, modSum = 0, contour = []) {
+        //If current node is further left than the minimum for this level
         if (!contour[node.depth] || node.x < contour[node.depth]) {
+            //Minimum = current node
             contour[node.depth] = node.x + modSum;
         }
         modSum += node.mod;
@@ -109,11 +110,12 @@ export default class TreeDrawer {
         return contour;
     }
 
-    rightContour(node, modSum, contour) {
-        contour = contour || {};
-        modSum = modSum || 0;
-        if (!contour[node.depth] || node.x > contour[node.depth]) {
-            contour[node.depth] = node.x + modSum;
+    rightContour(node, modSum = 0, contour = []) {
+        let x = node.x + modSum
+        //If current node is further right than the maximum for this level
+        if (!contour[node.depth] || x > contour[node.depth]) {
+            //Maximum = current node
+            contour[node.depth] = x;
         }
         modSum += node.mod;
         node.children.forEach(child => {this.rightContour(child, modSum, contour)});

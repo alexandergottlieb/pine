@@ -20,7 +20,7 @@ const Word = props => {
     }
 
     return (
-        <span className="tree__word" style={style}>{word.inflection}</span>
+        <span className="tree__word" style={style}>{word.inflection} <small>{x}</small></span>
     )
 
 }
