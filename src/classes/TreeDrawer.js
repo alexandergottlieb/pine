@@ -63,10 +63,15 @@ export default class TreeDrawer {
                         })
                         //Get left contour of current child
                         let currentLeftContour = this.leftContour(child);
-                        //Shift is the minimum distance to prevent overlap + 1 to leave a gap
-                        const maxPrev = rightContourAmongLeftSiblings.reduce((best, current) => best = current > best ? current : best)
-                        const minCurrent = currentLeftContour.reduce((best, current) => best = current < best ? current : best)
-                        let shift = maxPrev - minCurrent + 1;
+                        //Shift is the minimum distance to prevent overlap
+                        let shift = -1
+                        console.log('word', child.word.inflection)
+                        console.log('left contour', currentLeftContour)
+                        currentLeftContour.forEach((minX, depth) => {
+                            const prevMaxX = rightContourAmongLeftSiblings[depth] || 0
+                            const shiftForThisDepth = prevMaxX - minX + 1
+                            if (shiftForThisDepth > shift) shift = shiftForThisDepth
+                        })
                         //Move parent and children
                         child.x += shift;
                         child.mod += shift;
@@ -100,10 +105,11 @@ export default class TreeDrawer {
     }
 
     leftContour(node, modSum = 0, contour = []) {
+        const x = node.x + modSum;
         //If current node is further left than the minimum for this level
-        if (!contour[node.depth] || node.x < contour[node.depth]) {
+        if (!contour[node.depth] || x < contour[node.depth]) {
             //Minimum = current node
-            contour[node.depth] = node.x + modSum;
+            contour[node.depth] = x;
         }
         modSum += node.mod;
         node.children.forEach(child => {this.leftContour(child, modSum, contour)});
@@ -111,7 +117,7 @@ export default class TreeDrawer {
     }
 
     rightContour(node, modSum = 0, contour = []) {
-        let x = node.x + modSum
+        const x = node.x + modSum;
         //If current node is further right than the maximum for this level
         if (!contour[node.depth] || x > contour[node.depth]) {
             //Maximum = current node
