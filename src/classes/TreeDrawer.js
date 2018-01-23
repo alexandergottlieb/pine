@@ -65,8 +65,6 @@ export default class TreeDrawer {
                         let currentLeftContour = this.leftContour(child);
                         //Shift is the minimum distance to prevent overlap
                         let shift = -1
-                        console.log('word', child.word.inflection)
-                        console.log('left contour', currentLeftContour)
                         currentLeftContour.forEach((minX, depth) => {
                             const prevMaxX = rightContourAmongLeftSiblings[depth] || 0
                             const shiftForThisDepth = prevMaxX - minX + 1

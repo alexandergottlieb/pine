@@ -9,7 +9,7 @@ import './App.css';
 
 const App = (props) => {
   const {actions, treebanks, current} = props
-  
+
   return (
     <BrowserRouter>
       <div className="app">
