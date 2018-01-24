@@ -18,7 +18,8 @@ const Word = props => {
     return (
         <p className={cls} style={style}>
             <span className="word__inflection">{word.inflection}</span>
-            <small className="word__pos-tag">{word.uposTag.toUpperCase()}</small>
+            <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
+            <span className="word__edit fa fa-pencil"></span>
         </p>
     )
 
