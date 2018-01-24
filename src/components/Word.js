@@ -8,19 +8,18 @@ const Word = props => {
     const realY = y * yUnit;
 
     const style = {
-        position: "absolute",
         top: realY+'px',
         left: realX+'px',
         width: width+'px',
-        padding: '0.5em 0',
-        textAlign: 'center',
-        background: '#f3f3f3',
-        color: '#333',
-        borderRadius: '5px'
     }
 
+    const cls = `word word--${word.uposTag.toLowerCase()}`
+
     return (
-        <span className="tree__word" style={style}>{word.inflection}</span>
+        <p className={cls} style={style}>
+            <span className="word__inflection">{word.inflection}</span>
+            <small className="word__pos-tag">{word.uposTag.toUpperCase()}</small>
+        </p>
     )
 
 }

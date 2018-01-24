@@ -1,7 +1,11 @@
+* {
+  box-sizing:border-box;
+}
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  /* system font stack */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /**** Typography ****/
@@ -19,7 +23,7 @@ a {
   height:100%;
   padding:1em;
   overflow-y:scroll;
-  background:#333333;
+  background-color:#203744;
   color:white;
 }
 .sentences {
@@ -41,11 +45,21 @@ a {
   width:75%;
   height:100%;
 }
+.editor__sentence {
+  position:relative;
+  z-index:1;
+  margin:0;
+  padding:1rem 2rem 1.25rem 2rem;
+  line-height:1rem;
+  white-space:nowrap;
+  overflow-x:scroll;
+  background-color:#E7ECEF;
+}
 .tree {
   position:absolute;
-  top:2em; right:2em; bottom:2em; left:2em;
+  top:4rem; right:0; bottom:0; left:0;
   z-index:0;
-  padding:2em;
+  padding:2rem;
   overflow:scroll;
 }
 .tree__lines {
@@ -53,6 +67,70 @@ a {
   height:100%;
   overflow:visible;
 }
-.tree__word {
-  margin:2em;
+
+/**** Words ****/
+.word {
+  position: absolute;
+  margin:2rem;
+  padding:0.5rem 0.25rem;
+  border-radius: 5px;
+  text-align:center;
+  background-color:#E7ECEF;
+  color:rgba(0,0,0,0.7);
 }
+.word--adj {
+  background-color:#F7CAA7;
+}
+.word--adp {
+  background-color:#ACECF7;
+}
+.word--punct {
+  background-color:#D2D7DA;
+}
+.word--adv {
+  background-color:
+}
+.word--aux {
+  background-color:
+}
+.word--sym {
+  background-color:
+}
+.word--intj {
+  background-color:
+}
+.word--cconj {
+  background-color:
+}
+.word--noun {
+  background-color:#F4989C;
+}
+.word--det {
+  background-color:#D6F6DD;
+}
+.word--propn {
+  background-color:#F9C6C9;
+}
+.word--num {
+  background-color:
+}
+.word--verb {
+  background-color:#DAC4F7;
+}
+.word--part {
+  background-color:
+}
+.word--pron {
+  background-color:
+}
+.word--sconj {
+  background-color:
+}
+  /* POS Tag */
+  .word__pos-tag {
+    position:absolute;
+    bottom:0.125rem;
+    right:0.25rem;
+    font-size:0.5rem;
+    opacity:0.4;
+  }

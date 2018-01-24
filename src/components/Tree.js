@@ -41,17 +41,15 @@ const Tree = props => {
             coords.x2 = child.x * xUnit + (wordWidth/2);
             coords.y2 = child.y * yUnit + pixelUnit;
             const key = `${node.index}_${child.index}`
-            lines.push(<line {...coords} strokeWidth="2" stroke="#727272" key={key}/>)
+            lines.push(<line {...coords} strokeWidth="2" stroke="#D2D7DA" key={key}/>)
           })
         })
     }
 
     return (
-        <div className="editor">
-            <div className="tree">
-                <svg className="tree__lines">{lines}</svg>
-                {words}
-            </div>
+        <div className="tree">
+            <svg className="tree__lines">{lines}</svg>
+            {words}
         </div>
     )
 

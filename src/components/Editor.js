@@ -18,15 +18,19 @@ const Editor = props => {
   }
 
   let tree = null
+  let sentence = null
   if (current.sentence !== null) {
-    const sentence = sentences[current.sentence]
+    sentence = sentences[current.sentence]
     tree = <Tree actions={actions} sentence={sentence} />
   }
 
   return (
     <div>
       <Sidebar current={current} />
-      {tree}
+      <div className="editor">
+        <p className="editor__sentence">{sentence ? sentence.sentence : ''}</p>
+        {tree}
+      </div>
     </div>
   )
 
