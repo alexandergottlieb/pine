@@ -2,10 +2,11 @@ import React from 'react';
 
 const Word = props => {
 
-    const {word, x, y, xUnit, yUnit, width} = props;
+    const { index, word, x, y, xUnit, yUnit, width, editable, actions} = props
+    const { setWord } = actions
 
-    const realX = x * xUnit;
-    const realY = y * yUnit;
+    const realX = x * xUnit
+    const realY = y * yUnit
 
     const style = {
         top: realY+'px',
@@ -13,14 +14,27 @@ const Word = props => {
         width: width+'px',
     }
 
-    const cls = `word word--${word.uposTag.toLowerCase()}`
+    const editableClass = editable ? ' word--edit' : ''
+
+    const cls = `word word--${word.uposTag.toLowerCase()}${editableClass}`
+
+    const handleClick = event => {
+        if (editable) { //Toggle
+            setWord()
+        } else {
+            setWord(index)
+        }
+    }
 
     return (
-        <p className={cls} style={style}>
-            <span className="word__inflection">{word.inflection}</span>
+        <div className={cls} style={style}>
+            <span className="word__inflection" contentEditable={editable ? "true" : "false"}>{word.inflection}</span>
             <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
-            <span className="word__edit fa fa-pencil"></span>
-        </p>
+            <span className="word__edit fa fa-pencil" onClick={handleClick}></span>
+            <div className="word__data">
+
+            </div>
+        </div>
     )
 
 }

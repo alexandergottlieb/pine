@@ -65,3 +65,10 @@ export const setCurrent = (treebankID, sentenceID) => {
         })
     }
 }
+
+export const setWord = (id = null) => {
+    return {
+        type: "SET_CURRENT_WORD",
+        id
+    }
+}

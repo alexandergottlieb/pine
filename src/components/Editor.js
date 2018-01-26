@@ -4,8 +4,7 @@ import Tree from './Tree'
 
 const Editor = props => {
 
-  const { match, actions, current } = props
-  const { sentences } = current
+  const { match, actions, current, sentences } = props
 
   //Maybe update current from URL
   const treebankID = match.params.treebank || null
@@ -21,12 +20,12 @@ const Editor = props => {
   let sentence = null
   if (current.sentence !== null) {
     sentence = sentences[current.sentence]
-    tree = <Tree actions={actions} sentence={sentence} />
+    tree = <Tree actions={actions} sentence={sentence} word={current.word} />
   }
 
   return (
     <div>
-      <Sidebar current={current} />
+      <Sidebar current={current} sentences={sentences} />
       <div className="editor">
         <p className="editor__sentence">{sentence ? sentence.sentence : ''}</p>
         {tree}

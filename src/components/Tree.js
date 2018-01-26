@@ -4,7 +4,7 @@ import Word from './Word'
 
 const Tree = props => {
 
-    const {sentence} = props;
+    const { sentence, word, actions } = props;
 
     let words = []
     let lines = []
@@ -19,7 +19,7 @@ const Tree = props => {
         for (let index in sentence.words) {
           if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
         }
-        const wordWidth = longestWord * rem
+        const wordWidth = Math.max(longestWord * rem, 10 * rem) //At least 10rem
         const xUnit = wordWidth * 1.33 //relative to the longest word, scaled to add padding
 
         //Calculate node positions
@@ -28,7 +28,10 @@ const Tree = props => {
         let nodes = tree.nodes
 
         //Generate words
-        words = nodes.map(node => { return <Word {...node} xUnit={xUnit} yUnit={yUnit} width={wordWidth} key={node.index} /> })
+        words = nodes.map(node => {
+            const editable = node.index == word ? true : false
+            return <Word {...node} xUnit={xUnit} yUnit={yUnit} width={wordWidth} actions={actions} key={node.index} editable={editable} />
+        })
 
         //Generate lines & relations
         nodes.forEach(node => {

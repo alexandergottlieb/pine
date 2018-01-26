@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Sidebar = props => {
 
-  let { current } = props
-  let { sentences } = current
+  let { current, sentences } = props
 
   sentences = sentences.map( (sentence, id) => {
     const cls = current.sentence !== null && Number(current.sentence) === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
