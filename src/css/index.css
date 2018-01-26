@@ -1,0 +1,87 @@
+* {
+  box-sizing:border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  /* system font stack */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/**** Typography ****/
+
+/**** Links */
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+.sidebar {
+  position:absolute;
+  top:0; left:0;
+  z-index:10;
+  width:25%;
+  height:100%;
+  padding:1em;
+  overflow-y:scroll;
+  background-color:#F2F6FF;
+  color:#24324F;
+  box-shadow:0px 2px 20px 0px rgba(0,0,0,0.16);
+}
+.sentences {
+  padding:0;
+}
+.sentences__sentence {
+  margin-bottom:0.5em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  opacity:0.6;
+}
+.sentences__sentence--active {
+  opacity:1;
+}
+.editor {
+  position:fixed;
+  left:25%;
+  width:75%;
+  height:100%;
+  background-color:white;
+  overflow:hidden;
+}
+.editor__sentence {
+  position:relative;
+  z-index:1;
+  margin:0;
+  padding:1rem 2rem 1.25rem 2rem;
+  line-height:1rem;
+  white-space:nowrap;
+  overflow-x:scroll;
+  background-color:#24324F;
+  color:#F2F6FF;
+  box-shadow:0px 2px 8px 0px rgba(0,0,0,0.16)
+}
+.tree {
+  position:absolute;
+  top:4rem; right:0; bottom:0; left:0;
+  z-index:0;
+  overflow:scroll;
+}
+.tree__lines,
+.tree__relations {
+  position:absolute;
+  top:2rem; right:2rem; bottom:2rem; left:2rem;
+  overflow:visible;
+}
+
+
+/**** Relations ****/
+.relation {
+  position:absolute;
+  padding:0.125rem;
+  font-size:0.75rem;
+  line-height:1em;
+  color:#78797B;
+  background-color:white;
+  transform:translate(-50%, -50%);
+}

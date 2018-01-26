@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import * as actionCreators from "./actions";
 import Editor from './components/Editor'
 import Home from './components/Home'
-import './App.css';
 
 const App = (props) => {
   const {actions, treebanks, sentences, current} = props

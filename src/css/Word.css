@@ -1,0 +1,90 @@
+.word {
+  position: absolute;
+  margin:2rem;
+  padding:0.825rem 0.25rem;
+  border-radius: 5px;
+  text-align:center;
+  color:white;
+  background-color:#E7ECEF;
+  box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
+  cursor:pointer;
+  transition:0.1s ease-out;
+}
+.word:not(.word--editable):hover {
+  transform:scale(1.05);
+}
+  /* POS Tag */
+  .word__inflection {
+    display:inline-block;
+    min-width:80%; min-height:1em;
+    font-weight:bold;
+    border-bottom:2px solid transparent;
+    opacity:0.9;
+  }
+  .word__inflection:focus {
+    outline:none;
+  }
+  .word--editable .word__inflection {
+    border-color:white;
+    cursor:text;
+  }
+  /* POS Tag */
+  .word__pos-tag {
+    position:absolute;
+    bottom:0.125rem;
+    right:0.25rem;
+    font-size:0.5rem;
+    opacity:0.4;
+  }
+  /* Edit Data */
+
+
+/* Colour Code */
+.word--adj {
+  background-color:#E7DB2A;
+}
+.word--adp {
+  background-color:#549688;
+}
+.word--cconj {
+  background-color:#D9EB5D;
+}
+.word--adv {
+  background-color:#D44320;
+}
+.word--aux {
+  background-color:#A8E1DD;
+}
+.word--sym {
+  background-color:#CF1E25;
+}
+.word--intj {
+  background-color:#F1F375;
+}
+.word--punct {
+  background-color:#7A161A;
+}
+.word--noun {
+  background-color:#6FC847;
+}
+.word--det {
+  background-color:#E692B6;
+}
+.word--propn {
+  background-color:#4B66BA;
+}
+.word--num {
+  background-color:#EBC38A;
+}
+.word--verb {
+  background-color:#DAC4F7;
+}
+.word--part {
+  background-color:#5243A3;
+}
+.word--pron {
+  background-color:#DD991E;
+}
+.word--sconj {
+  background-color:#96187F;
+}

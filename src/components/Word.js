@@ -1,4 +1,5 @@
 import React from 'react';
+import '../css/Word.css'
 
 const Word = props => {
 
@@ -14,23 +15,19 @@ const Word = props => {
         width: width+'px',
     }
 
-    const editableClass = editable ? ' word--edit' : ''
+    const editableClass = editable ? ' word--editable' : ''
 
     const cls = `word word--${word.uposTag.toLowerCase()}${editableClass}`
 
     const handleClick = event => {
-        if (editable) { //Toggle
-            setWord()
-        } else {
-            setWord(index)
-        }
+        if (!editable) setWord(index)
+        event.stopPropagation()
     }
 
     return (
-        <div className={cls} style={style}>
-            <span className="word__inflection" contentEditable={editable ? "true" : "false"}>{word.inflection}</span>
+        <div className={cls} style={style} onClick={handleClick}>
+            <span className="word__inflection" contentEditable={editable ? "true" : "false"} suppressContentEditableWarning>{word.inflection}</span>
             <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
-            <span className="word__edit fa fa-pencil" onClick={handleClick}></span>
             <div className="word__data">
 
             </div>

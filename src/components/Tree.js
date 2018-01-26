@@ -1,6 +1,7 @@
 import React from 'react';
 import TreeDrawer from '../classes/TreeDrawer'
 import Word from './Word'
+import Relation from './Relation'
 
 const Tree = props => {
 
@@ -47,17 +48,19 @@ const Tree = props => {
             const key = `${node.index}_${child.index}`
             lines.push(<line {...coords} strokeWidth="2" stroke="#78797B" key={key} />)
             //Relation at midpoint of line
-            const relationStyle = {
-                left: coords.x1 + ((coords.x2 - coords.x1) / 2) + 'px',
-                top: coords.y1 + ((coords.y2 - coords.y1) / 2) + 'px'
-            }
-            relations.push(<span className="relation" style={relationStyle} key={child.index}>{child.word.relation}</span>)
+            const x = coords.x1 + ((coords.x2 - coords.x1) / 2)
+            const y = coords.y1 + ((coords.y2 - coords.y1) / 2)
+            relations.push(<Relation x={x} y={y} word={child.word} actions={actions} key={child.index} />)
           })
         })
     }
 
+    const handleClick = event => {
+        actions.setWord() //Deselect active word
+    }
+
     return (
-        <div className="tree">
+        <div className="tree" onClick={handleClick}>
             <svg className="tree__lines">{lines}</svg>
             <div className="tree__relations">{relations}</div>
             {words}
