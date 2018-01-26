@@ -44,6 +44,7 @@ a {
   left:25%;
   width:75%;
   height:100%;
+  background-color:white;
 }
 .editor__sentence {
   position:relative;
@@ -72,12 +73,11 @@ a {
 .word {
   position: absolute;
   margin:2rem;
-  padding:0.75rem 0.25rem;
+  padding:0.825rem 0.25rem;
   border-radius: 5px;
   text-align:center;
+  color:white;
   background-color:#E7ECEF;
-  font-weight:bold;
-  color:rgba(255,255,255,0.9);
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
 }
 .word--adj {
@@ -129,6 +129,10 @@ a {
   background-color:#96187F;
 }
   /* POS Tag */
+  .word__inflection {
+    font-weight:bold;
+    opacity:0.9;
+  }
   .word__pos-tag {
     position:absolute;
     bottom:0.125rem;
