@@ -3,16 +3,16 @@ import '../css/Word.css'
 
 const Word = props => {
 
-    const { index, word, x, y, xUnit, yUnit, width, editable, actions} = props
+    const { index, word, x, y, scaling, editable, actions} = props
     const { setWord } = actions
 
-    const realX = x * xUnit
-    const realY = y * yUnit
+    const realX = x * scaling.units.x
+    const realY = y * scaling.units.y
 
     const style = {
         top: realY+'px',
         left: realX+'px',
-        width: width+'px',
+        width: scaling.wordWidth+'px',
     }
 
     const editableClass = editable ? ' word--editable' : ''

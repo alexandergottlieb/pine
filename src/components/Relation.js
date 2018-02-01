@@ -3,19 +3,21 @@ import '../css/Relation.css'
 
 const Relation = props => {
 
-    const { coords, word, actions} = props
+    const { coords, word, active, actions } = props
 
     const dX = coords.x2 - coords.x1
     const dY = coords.y2 - coords.y1
 
     const labelStyle = {
         left: coords.x1 + dX*0.66 + 'px',
-        top: coords.y1 + dY*0.66 + 'px'
+        top: coords.y1 + dY*0.66 + 'px',
+        opacity: active ? '0' : '1'
     }
 
     const grabStyle = {
         left: coords.x1 + dX*0.4 + 'px',
-        top: coords.y1 + dY*0.4 + 'px'
+        top: coords.y1 + dY*0.4 + 'px',
+        opacity: active ? '0' : '1'
     }
 
     const down = event => {

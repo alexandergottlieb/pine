@@ -3,85 +3,112 @@ import TreeDrawer from '../classes/TreeDrawer'
 import Word from './Word'
 import Relation from './Relation'
 import Line from './Line'
+import equal from 'equals'
 
 class Tree extends Component {
 
     constructor(props) {
         super(props)
 
+        const rem = parseFloat(window.getComputedStyle(document.body).getPropertyValue('font-size'))
+
         this.state = {
-            tree: null,
-            treeX: 0,
-            treeY: 0,
-            mouseX: 0,
-            mouseY: 0
+            sentence: props.sentence,
+            nodes: [],
+            scaling: {
+                rem,
+                units: {x: 0, y: 10*rem},
+                wordWidth: 0
+            },
+            origin: {x: 0, y: 0}
         }
+
+        this.layout(props)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        //Only re-generate tree layout if sentence has changed
+        if (!equal(nextProps.sentence, this.state.sentence)) {
+            this.layout(nextProps)
+        }
+        this.setState({
+            sentence: nextProps.sentence
+        })
+    }
+
+    //Calculate co-ordinates
+    layout(props) {
+        const { sentence, word, relation, actions } = props
+        const { rem } = this.state.scaling
+
+        if (!sentence) return
+
+        //Scale x unit to longest word
+        let longestWord = 0
+        for (let index in sentence.words) {
+          if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
+        }
+        const wordWidth = Math.max(longestWord * rem, 10 * rem) //At least 10rem
+        const xUnit = wordWidth * 1.33 //Extra padding
+
+        //Calculate node positions
+        let tree = new TreeDrawer(sentence)
+        tree.positionNodes()
+        const nodes = tree.nodes
+
+        this.setState(prevState => {
+            let newState = Object.assign({}, prevState)
+            newState.nodes = nodes
+            newState.scaling.units.x = xUnit
+            newState.scaling.wordWidth = wordWidth
+            console.log('newState', newState)
+            return newState
+        })
     }
 
     render() {
-        const self = this
-        const { sentence, word, relation, actions } = this.props
+        const { actions, word, relation } = this.props
+        const { nodes, scaling, origin } = this.state
 
-        let words = []
+        //Generate words
+        const words = nodes.map(node => {
+            const editable = node.index == word ? true : false
+            return <Word {...node} scaling={scaling} actions={actions} key={node.index} editable={editable} />
+        })
+
+        //Generate lines & relations
         let lines = []
         let relations = []
+        nodes.forEach(node => {
+            //Draw lines from parent to child
+            node.children.forEach(child => {
+                //Active if user is moving relation line of current child
+                const active = relation == child.index
 
-        //Drawing calculations
-        if (sentence) {
-            //Scaling factors
-            const rem = parseFloat(window.getComputedStyle(document.body).getPropertyValue('font-size'))
-            const yUnit = 10 * rem
-            let longestWord = 0
-            for (let index in sentence.words) {
-              if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
-            }
-            const wordWidth = Math.max(longestWord * rem, 10 * rem) //At least 10rem
-            const xUnit = wordWidth * 1.33 //relative to the longest word, scaled to add padding
-
-            //Calculate node positions
-            let tree = new TreeDrawer(sentence)
-            tree.positionNodes()
-            let nodes = tree.nodes
-
-            //Generate words
-            words = nodes.map(node => {
-                const editable = node.index == word ? true : false
-                return <Word {...node} xUnit={xUnit} yUnit={yUnit} width={wordWidth} actions={actions} key={node.index} editable={editable} />
-            })
-
-            //Generate lines & relations
-            nodes.forEach(node => {
-              //Draw lines from parent to child
-              node.children.forEach(child => {
+                //Line
                 let coords = {};
                 //Line start co-ordinate
-                coords.x1 = child.index != relation ? node.x * xUnit + (wordWidth/2) : self.state.mouseX
-                coords.y1 = child.index != relation ? node.y * yUnit + rem : self.state.mouseY
+                coords.x1 = node.x * scaling.units.x + (scaling.wordWidth/2)
+                coords.y1 = node.y * scaling.units.y + scaling.rem
                 //Line end co-ordinate
-                coords.x2 = child.x * xUnit + (wordWidth/2)
-                coords.y2 = child.y * yUnit + rem
+                coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
+                coords.y2 = child.y * scaling.units.y + scaling.rem
                 const key = `${node.index}_${child.index}`
-                lines.push(<Line {...coords} key={key} />)
+                lines.push(<Line {...coords} origin={origin} active={active} key={key} />)
+
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} actions={actions} key={child.index} />)
-              })
+                relations.push(<Relation coords={coords} word={child.word} actions={actions} active={active} key={child.index} />)
             })
-        }
+        })
 
+        //Deselect when user clicks outside subelements
         const handleClick = event => {
-            actions.setWord() //Deselect active word
-        }
-
-        const mouseMove = event => {
-            this.setState({
-                mouseX: event.pageX - this.treeX,
-                mouseY: event.clientY - this.treeY
-            })
+            actions.setWord()
         }
 
         return (
-            <div className="tree" ref={tree => this.tree = tree} onClick={handleClick} onMouseMove={mouseMove}>
-                <svg className="lines">{lines}</svg>
+            <div className="tree" onClick={handleClick}>
+                <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">{relations}</div>
                 {words}
             </div>
@@ -89,9 +116,13 @@ class Tree extends Component {
     }
 
     componentDidMount() {
-        const rect = this.tree.getBoundingClientRect()
-        this.treeX = rect.left
-        this.treeY = rect.top
+        const rect = document.getElementById('lines').getBoundingClientRect()
+        this.setState({
+            origin: {
+                x: rect.left,
+                y: rect.top
+            }
+        })
     }
 
 }
