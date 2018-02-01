@@ -29,7 +29,7 @@ const sentences = (state = [], action) => {
     }
 }
 
-const current = (state = {treebank: null, sentence: null, word: null}, action) => {
+const current = (state = {treebank: null, sentence: null, word: null, relation: null}, action) => {
     switch (action.type) {
         case "SET_CURRENT_TREEBANK":
             return Object.assign({}, state, {
@@ -42,6 +42,10 @@ const current = (state = {treebank: null, sentence: null, word: null}, action) =
         case "SET_CURRENT_WORD":
             return Object.assign({}, state, {
                word: action.id
+            })
+        case "SET_CURRENT_RELATION":
+            return Object.assign({}, state, {
+               relation: action.id
             })
         default:
             return state

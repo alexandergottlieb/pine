@@ -1,0 +1,26 @@
+.relation__label,
+.relation__grab {
+  position:absolute;
+  transform:translate(-50%, -50%);
+}
+.relation__label {
+  padding:0.125rem;
+  font-size:0.75rem;
+  line-height:1em;
+  color:#78797B;
+  background-color:white;
+}
+.relation__grab {
+  width:0.825rem;
+  height:0.825rem;
+  margin:0;
+  padding:0;
+  border:2px solid #78797B;
+  border-radius:50%;
+  background-color:white;
+  color:white;
+  cursor:pointer;
+}
+.relation__grab:hover {
+  background-color:#78797B;
+}

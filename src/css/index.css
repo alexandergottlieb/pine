@@ -67,21 +67,12 @@ a {
   z-index:0;
   overflow:scroll;
 }
-.tree__lines,
-.tree__relations {
+.lines,
+.relations {
   position:absolute;
   top:2rem; right:2rem; bottom:2rem; left:2rem;
   overflow:visible;
 }
-
-
-/**** Relations ****/
-.relation {
-  position:absolute;
-  padding:0.125rem;
-  font-size:0.75rem;
-  line-height:1em;
-  color:#78797B;
-  background-color:white;
-  transform:translate(-50%, -50%);
+.line {
+  transition:0.2s ease-out;
 }

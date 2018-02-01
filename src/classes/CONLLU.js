@@ -43,6 +43,7 @@ export default class CONLLU {
     parseWord(line) {
         let word = new Word()
         let data = line.split("\t")
+        if (data[0] !== '_') word.index = data[0]
         if (data[1] !== '_') word.inflection = data[1]
         if (data[2] !== '_') word.lemma = data[2]
         if (data[3] !== '_') word.uposTag = data[3]

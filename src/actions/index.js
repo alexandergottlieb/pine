@@ -72,3 +72,10 @@ export const setWord = (id = null) => {
         id
     }
 }
+
+export const setRelation = (id = null) => {
+    return {
+        type: "SET_CURRENT_RELATION",
+        id
+    }
+}
