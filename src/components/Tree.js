@@ -104,6 +104,7 @@ class Tree extends Component {
         //Deselect when user clicks outside subelements
         const handleClick = event => {
             actions.setWord()
+            actions.setRelation()
         }
 
         return (

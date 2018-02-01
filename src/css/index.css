@@ -73,6 +73,3 @@ a {
   top:2rem; right:2rem; bottom:2rem; left:2rem;
   overflow:visible;
 }
-.line {
-  transition:0.2s ease-out;
-}

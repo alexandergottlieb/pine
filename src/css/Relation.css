@@ -3,6 +3,10 @@
   position:absolute;
   transform:translate(-50%, -50%);
 }
+.relation--active .relation__grab,
+.relation--active .relation__label {
+    opacity:0;
+}
 .relation__label {
   padding:0.125rem;
   font-size:0.75rem;

@@ -10,28 +10,28 @@ const Relation = props => {
 
     const labelStyle = {
         left: coords.x1 + dX*0.66 + 'px',
-        top: coords.y1 + dY*0.66 + 'px',
-        opacity: active ? '0' : '1'
+        top: coords.y1 + dY*0.66 + 'px'
     }
 
     const grabStyle = {
         left: coords.x1 + dX*0.4 + 'px',
-        top: coords.y1 + dY*0.4 + 'px',
-        opacity: active ? '0' : '1'
+        top: coords.y1 + dY*0.4 + 'px'
     }
 
     const down = event => {
         actions.setRelation(word.index)
     }
 
-    const up = event => {
-        actions.setRelation()
+    const click = event => {
+        event.stopPropagation()
     }
 
+    const cls = `relation ${active ? 'relation--active' : ''}`
+
     return (
-        <div className="relation">
+        <div className={cls}>
             <span className="relation__label" style={labelStyle}>{word.relation}</span>
-            <button className="relation__grab" onMouseDown={down} onMouseUp={up} style={grabStyle}></button>
+            <button className="relation__grab" onClick={click} onMouseDown={down} style={grabStyle}></button>
         </div>
     )
 
