@@ -20,7 +20,14 @@ class Tree extends Component {
                 units: {x: 0, y: 10*rem},
                 wordWidth: 0
             },
-            origin: {x: 0, y: 0}
+            element: null
+        }
+
+        this.animation = {
+            element: null,
+            rectangle: null,
+            mouse: {x: 0, y: 0},
+            ids: []
         }
 
         this.layout(props)
@@ -31,9 +38,56 @@ class Tree extends Component {
         if (!equal(nextProps.sentence, this.state.sentence)) {
             this.layout(nextProps)
         }
+
+        if (nextProps.relation) {
+            this.animation.element.addEventListener('mousemove', this.updateMousePosition.bind(this))
+        } else {
+            this.animation.element.removeEventListener('mousemove', this.updateMousePosition.bind(this))
+            this.stopAnimation()
+        }
+
         this.setState({
             sentence: nextProps.sentence
         })
+    }
+
+    componentDidMount() {
+        this.updateDimensions()
+        window.addEventListener("resize", this.updateDimensions.bind(this))
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions.bind(this))
+        this.stopAnimation()
+    }
+
+    updateDimensions() {
+        this.animation.rectangle = this.animation.element.getBoundingClientRect()
+    }
+
+    updateMousePosition(event) {
+        this.animation.mouse.x = event.clientX - this.animation.rectangle.x
+        this.animation.mouse.y = event.clientY - this.animation.rectangle.y
+    }
+
+    followMouse(ref) {
+        console.log('followMouse', this)
+        const self = this
+
+        const animate = () => {
+            console.log('animate', ref)
+            ref.setAttribute('x1', self.animation.mouse.x)
+            ref.setAttribute('y1', self.animation.mouse.y)
+            window.requestAnimationFrame(animate)
+        }
+
+        const animationID = requestAnimationFrame(animate)
+        this.animation.ids.push(animationID)
+    }
+
+    stopAnimation() {
+        this.animation.ids.forEach(id => cancelAnimationFrame(id))
+        this.animation.ids = []
     }
 
     //Calculate co-ordinates
@@ -61,7 +115,6 @@ class Tree extends Component {
             newState.nodes = nodes
             newState.scaling.units.x = xUnit
             newState.scaling.wordWidth = wordWidth
-            console.log('newState', newState)
             return newState
         })
     }
@@ -82,9 +135,6 @@ class Tree extends Component {
         nodes.forEach(node => {
             //Draw lines from parent to child
             node.children.forEach(child => {
-                //Active if user is moving relation line of current child
-                const active = relation == child.index
-
                 //Line
                 let coords = {};
                 //Line start co-ordinate
@@ -93,37 +143,27 @@ class Tree extends Component {
                 //Line end co-ordinate
                 coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
                 coords.y2 = child.y * scaling.units.y + scaling.rem
-                const key = `${node.index}_${child.index}`
-                lines.push(<Line {...coords} origin={origin} active={active} key={key} />)
+                //Follow mouse if active relation
+                const active = Number(relation) === Number(child.index)
+                lines.push(<Line {...coords} active={active} followMouse={this.followMouse.bind(this)} key={child.index} />)
 
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} actions={actions} active={active} key={child.index} />)
+                relations.push(<Relation coords={coords} word={child.word} actions={actions} key={child.index} />)
             })
         })
 
         //Deselect when user clicks outside subelements
         const handleClick = event => {
             actions.setWord()
-            actions.setRelation()
         }
 
         return (
-            <div className="tree" onClick={handleClick}>
-                <svg id="lines" className="lines">{lines}</svg>
+            <div className="tree" ref={element => this.animation.element = element} onClick={handleClick}>
+                <svg className="lines">{lines}</svg>
                 <div className="relations">{relations}</div>
                 {words}
             </div>
         )
-    }
-
-    componentDidMount() {
-        const rect = document.getElementById('lines').getBoundingClientRect()
-        this.setState({
-            origin: {
-                x: rect.left,
-                y: rect.top
-            }
-        })
     }
 
 }
