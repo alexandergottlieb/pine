@@ -79,12 +79,9 @@ class Tree extends Component {
         const container = document.getElementById('tree')
         const rect = document.getElementById('lines').getBoundingClientRect()
         const line = this.children.lines[relation].element
-        console.log('line', line)
         this.captureMouse()
 
         const frame = () => {
-            console.log('scrollLeft', container.scrollLeft)
-            console.log('scrollTop', container.scrollTop)
             line.setAttribute('x1', this.mouse.x + container.scrollLeft - rect.x)
             line.setAttribute('y1', this.mouse.y + container.scrollTop - rect.y)
             this.animationID = window.requestAnimationFrame(frame.bind(this))
