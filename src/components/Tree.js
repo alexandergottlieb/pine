@@ -19,7 +19,14 @@ class Tree extends Component {
                 units: {x: 0, y: 10*rem},
                 wordWidth: 0
             },
-            origin: {x: 0, y: 0}
+            element: null
+        }
+
+        this.animation = {
+            element: null,
+            rectangle: null,
+            mouse: {x: 0, y: 0},
+            ids: []
         }
 
         this.children = {
@@ -41,6 +48,45 @@ class Tree extends Component {
 
     componentWillUnmount() {
         this.cancelAnimation()
+    }
+
+    componentDidMount() {
+        this.updateDimensions()
+        window.addEventListener("resize", this.updateDimensions.bind(this))
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions.bind(this))
+        this.stopAnimation()
+    }
+
+    updateDimensions() {
+        this.animation.rectangle = this.animation.element.getBoundingClientRect()
+    }
+
+    updateMousePosition(event) {
+        this.animation.mouse.x = event.clientX - this.animation.rectangle.x
+        this.animation.mouse.y = event.clientY - this.animation.rectangle.y
+    }
+
+    followMouse(ref) {
+        console.log('followMouse', this)
+        const self = this
+
+        const animate = () => {
+            console.log('animate', ref)
+            ref.setAttribute('x1', self.animation.mouse.x)
+            ref.setAttribute('y1', self.animation.mouse.y)
+            window.requestAnimationFrame(animate)
+        }
+
+        const animationID = requestAnimationFrame(animate)
+        this.animation.ids.push(animationID)
+    }
+
+    stopAnimation() {
+        this.animation.ids.forEach(id => cancelAnimationFrame(id))
+        this.animation.ids = []
     }
 
     //Calculate co-ordinates
@@ -139,9 +185,6 @@ class Tree extends Component {
         nodes.forEach(node => {
             //Draw lines from parent to child
             node.children.forEach(child => {
-                //Active if user is moving relation line of current child
-                const active = relation == child.index
-
                 //Line
                 let coords = {};
                 //Line start co-ordinate
