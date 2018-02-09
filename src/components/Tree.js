@@ -77,8 +77,12 @@ class Tree extends Component {
         const { relation } = this.props
 
         const container = document.getElementById('tree')
-        const rect = document.getElementById('lines').getBoundingClientRect()
+        const rect = container.getBoundingClientRect()
+        //Add padding
+        rect.x += 2 * this.state.scaling.rem
+        rect.y += 2 * this.state.scaling.rem
         const line = this.children.lines[relation].element
+
         this.captureMouse()
 
         const frame = () => {
@@ -117,10 +121,10 @@ class Tree extends Component {
     }
 
     //Deselect when user clicks outside subelements
-    handleClick() {
-        const { actions } = this.props
-        actions.setWord()
-        actions.setRelation()
+    click() {
+        const { actions, word, relation } = this.props
+        if (relation) actions.setRelation()
+        if (word) actions.setWord()
     }
 
     render() {
@@ -130,7 +134,7 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == word ? true : false
-            return <Word {...node} scaling={scaling} actions={actions} key={node.index} editable={editable} />
+            return <Word {...node} scaling={scaling} actions={actions} relation={relation} key={node.index} editable={editable} />
         })
 
         //Generate lines & relations
@@ -164,7 +168,7 @@ class Tree extends Component {
         }
 
         return (
-            <div id="tree" className="tree" onClick={this.handleClick.bind(this)}>
+            <div id="tree" className="tree" onClick={this.click.bind(this)}>
                 <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">{relations}</div>
                 {words}

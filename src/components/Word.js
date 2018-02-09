@@ -3,7 +3,7 @@ import '../css/Word.css'
 
 const Word = props => {
 
-    const { index, word, x, y, scaling, editable, actions} = props
+    const { index, word, x, y, scaling, relation, editable, actions} = props
     const { setWord } = actions
 
     const realX = x * scaling.units.x
@@ -19,13 +19,17 @@ const Word = props => {
 
     const cls = `word word--${word.uposTag.toLowerCase()}${editableClass}`
 
-    const handleClick = event => {
-        if (!editable) setWord(index)
+    const mouseUp = event => {
+        if (relation) {
+            //TODO - action to edit relation between words
+        } else {
+            if (!editable) setWord(index)
+        }
         event.stopPropagation()
     }
 
     return (
-        <div className={cls} style={style} onClick={handleClick}>
+        <div className={cls} style={style} onMouseUp={mouseUp}>
             <span className="word__inflection" contentEditable={editable ? "true" : "false"} suppressContentEditableWarning>{word.inflection}</span>
             <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
             <div className="word__data">
