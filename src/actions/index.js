@@ -85,3 +85,11 @@ export const clearRelations = () => {
         type: "CLEAR_CURRENT_RELATIONS"
     }
 }
+
+export const editWord = (sentence, word, data) => {
+    //TODO error check to ensure word's parent is not also a descendent
+    return {
+        type: "EDIT_WORD",
+        sentence, word, data
+    }
+}

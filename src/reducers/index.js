@@ -24,6 +24,10 @@ const sentences = (state = [], action) => {
     switch (action.type) {
         case "UPDATE_CURRENT_SENTENCES":
             return action.sentences.slice(0)
+        case "EDIT_WORD":
+            let newState = state.slice(0)
+            Object.assign(newState[action.sentence].words[action.word], action.data)
+            return newState
         default:
             return state
     }

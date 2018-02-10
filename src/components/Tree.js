@@ -3,7 +3,6 @@ import TreeDrawer from '../classes/TreeDrawer'
 import Word from './Word'
 import Relation from './Relation'
 import Line from './Line'
-import equal from 'equals'
 
 class Tree extends Component {
 
@@ -35,10 +34,7 @@ class Tree extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //Only re-generate tree layout if sentence has changed
-        if (!equal(nextProps.sentence, this.props.sentence)) {
-            this.layout(nextProps)
-        }
+        this.layout(nextProps)
     }
 
     componentDidMount() {
@@ -146,7 +142,7 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            return <Word {...node} scaling={scaling} actions={actions} relations={current.relations} key={node.index} editable={editable} />
+            return <Word {...node} scaling={scaling} actions={actions} current={current} key={node.index} editable={editable} />
         })
 
         //Generate lines & relations

@@ -8,7 +8,7 @@
   background-color:#E7ECEF;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
   cursor:pointer;
-  transition:transform 0.1s ease-out;
+  transition:0.3s ease-out;
 }
 .word:not(.word--editable):hover {
   transform:scale(1.05);
