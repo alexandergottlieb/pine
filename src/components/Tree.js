@@ -28,8 +28,6 @@ class Tree extends Component {
         }
 
         this.mouse = {x:0, y:0}
-
-        this.layout(props)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -39,8 +37,14 @@ class Tree extends Component {
         }
     }
 
+    componentDidMount() {
+        this.layout(this.props)
+        this.captureMouse()
+    }
+
     componentWillUnmount() {
         this.cancelAnimation()
+        this.releaseMouse()
     }
 
     //Calculate co-ordinates
@@ -83,8 +87,6 @@ class Tree extends Component {
         rect.y += 2 * this.state.scaling.rem
         const line = this.children.lines[relation].element
 
-        this.captureMouse()
-
         const frame = () => {
             line.setAttribute('x1', this.mouse.x + container.scrollLeft - rect.x)
             line.setAttribute('y1', this.mouse.y + container.scrollTop - rect.y)
@@ -96,7 +98,6 @@ class Tree extends Component {
 
     cancelAnimation() {
         cancelAnimationFrame(this.animationID)
-        this.releaseMouse()
     }
 
     captureMouse() {

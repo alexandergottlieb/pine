@@ -2,6 +2,7 @@
 .relation__grab {
   position:absolute;
   transform:translate(-50%, -50%);
+  transition:0.1s ease-out;
 }
 .relation--active .relation__grab,
 .relation--active .relation__label {
