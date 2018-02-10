@@ -20,7 +20,7 @@ class Relation extends Component {
         }
 
         const down = event => {
-            actions.setRelation(word.index)
+            actions.addRelation(word.index)
         }
 
         const click = event => {

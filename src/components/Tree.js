@@ -27,7 +27,11 @@ class Tree extends Component {
             relations: []
         }
 
+        this.animations = []
+
         this.mouse = {x:0, y:0}
+
+        this.element = null
     }
 
     componentWillReceiveProps(nextProps) {
@@ -49,7 +53,7 @@ class Tree extends Component {
 
     //Calculate co-ordinates
     layout(props) {
-        const { sentence, word, relation, actions } = props
+        const { actions, current, sentence } = props
         const { rem } = this.state.scaling
 
         if (!sentence) return
@@ -78,26 +82,33 @@ class Tree extends Component {
 
     //Active relation line should follow mouse
     animate() {
-        const { relation } = this.props
+        const self = this
+        const { relations } = this.props.current
 
-        const container = document.getElementById('tree')
+        const container = this.element
         const rect = container.getBoundingClientRect()
         //Add padding
         rect.x += 2 * this.state.scaling.rem
         rect.y += 2 * this.state.scaling.rem
-        const line = this.children.lines[relation].element
+        const lines = this.children.lines.filter((line, index) => relations.indexOf(index) !== -1)
 
-        const frame = () => {
-            line.setAttribute('x1', this.mouse.x + container.scrollLeft - rect.x)
-            line.setAttribute('y1', this.mouse.y + container.scrollTop - rect.y)
-            this.animationID = window.requestAnimationFrame(frame.bind(this))
-        }
-
-        this.animationID = requestAnimationFrame(frame.bind(this))
+        lines.forEach((line, index) => {
+            //Define animation
+            const frame = () => {
+                line.element.setAttribute('x1', self.mouse.x + container.scrollLeft - rect.x)
+                line.element.setAttribute('y1', self.mouse.y + container.scrollTop - rect.y)
+                self.animations[index] = window.requestAnimationFrame(frame)
+            }
+            //Clear any existing animation
+            window.cancelAnimationFrame(self.animations[index])
+            //Start animation
+            self.animations[index] = window.requestAnimationFrame(frame)
+        })
     }
 
     cancelAnimation() {
-        cancelAnimationFrame(this.animationID)
+        this.animations.forEach(id => window.cancelAnimationFrame(id))
+        this.animations = []
     }
 
     captureMouse() {
@@ -123,19 +134,19 @@ class Tree extends Component {
 
     //Deselect when user clicks outside subelements
     click() {
-        const { actions, word, relation } = this.props
-        if (relation) actions.setRelation()
-        if (word) actions.setWord()
+        const { actions, current } = this.props
+        if (current.relations) actions.clearRelations()
+        if (current.word) actions.setWord()
     }
 
     render() {
-        const { actions, word, relation } = this.props
+        const { actions, current } = this.props
         const { nodes, scaling, origin } = this.state
 
         //Generate words
         const words = nodes.map(node => {
-            const editable = node.index == word ? true : false
-            return <Word {...node} scaling={scaling} actions={actions} relation={relation} key={node.index} editable={editable} />
+            const editable = node.index == current.word ? true : false
+            return <Word {...node} scaling={scaling} actions={actions} relations={current.relations} key={node.index} editable={editable} />
         })
 
         //Generate lines & relations
@@ -145,7 +156,7 @@ class Tree extends Component {
             //Draw lines from parent to child
             node.children.forEach(child => {
                 //Active if user is moving relation line of current child
-                const active = relation == child.index
+                const active = current.relations.indexOf(child.index) !== -1
 
                 //Line
                 let coords = {};
@@ -162,14 +173,14 @@ class Tree extends Component {
             })
         })
 
-        if (relation) {
+        if (current.relations && current.relations.length > 0) {
             this.animate()
         } else {
             this.cancelAnimation()
         }
 
         return (
-            <div id="tree" className="tree" onClick={this.click.bind(this)}>
+            <div className="tree" onClick={this.click.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">{relations}</div>
                 {words}

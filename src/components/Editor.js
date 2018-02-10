@@ -20,7 +20,7 @@ const Editor = props => {
   let sentence = null
   if (current.sentence !== null) {
     sentence = sentences[current.sentence]
-    tree = <Tree actions={actions} sentence={sentence} word={current.word} relation={current.relation} />
+    tree = <Tree actions={actions} sentence={sentence} current={current} />
   }
 
   return (
