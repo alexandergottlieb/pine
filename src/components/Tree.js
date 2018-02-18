@@ -142,7 +142,7 @@ class Tree extends Component {
         editedSentence.words[wordID] = Object.assign({}, sentence.words[wordID], data)
         try {
             editedSentence.validate()
-            actions.editWord(current.sentence, wordID, data)
+            actions.editWord(current.treebank, current.sentence, wordID, data)
         } catch (errorMessage) {
             if (typeof errorMessage === "string") {
                 actions.addError(errorMessage)

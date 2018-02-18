@@ -100,9 +100,14 @@ export const clearRelations = () => {
     }
 }
 
-export const editWord = (sentenceID, wordID, data) => {
-    return {
-        type: "EDIT_WORD",
-        sentenceID, wordID, data
+export const editWord = (treebank, sentence, word, data) => {
+    return dispatch => {
+        const ref = database.ref(`/sentences/${treebank}/${sentence}/words/${word}`)
+        ref.update(data).then(() => {
+            dispatch({
+                type: "EDIT_WORD",
+                sentence, word, data
+            })
+        })
     }
 }

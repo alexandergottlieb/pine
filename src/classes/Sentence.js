@@ -33,7 +33,6 @@ export default class Sentence {
         let visited = []
         let current = null
         while (unvisited.length > 0) {
-            console.log('current', current)
             current = unvisited.pop()
             visited.push(current)
             current.children.forEach(childIndex => unvisited.push(words[childIndex]))
