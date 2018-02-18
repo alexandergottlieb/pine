@@ -41,6 +41,26 @@ a {
 .sentences__sentence--active {
   opacity:1;
 }
+
+.messages {
+  position:fixed;
+  bottom:2rem;
+  width:100%;
+  padding:0;
+  margin:0;
+  text-align:center;
+  pointer-events:none;
+}
+.message {
+  display:block;
+  width:33%;
+  margin:auto;
+  padding:0.75rem 1.5rem;
+  background:rgba(0,0,0,0.6);
+  color:white;
+  border-radius:6px;
+}
+
 .editor {
   position:fixed;
   left:25%;

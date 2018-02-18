@@ -1,5 +1,19 @@
 import { database } from '../firebaseApp'
 
+export const addError = message => {
+    return dispatch => {
+        //Automatically remove message later
+        setTimeout(() => dispatch({
+            type: "REMOVE_MESSAGE"
+        }), 3000)
+        dispatch({
+            type: "ADD_MESSAGE",
+            message,
+            status: "ERROR"
+        })
+    }
+}
+
 export const fetchTreebanks = () => {
     return dispatch => {
         const ref = database.ref('/treebanks')
@@ -86,10 +100,9 @@ export const clearRelations = () => {
     }
 }
 
-export const editWord = (sentence, word, data) => {
-    //TODO error check to ensure word's parent is not also a descendent
+export const editWord = (sentenceID, wordID, data) => {
     return {
         type: "EDIT_WORD",
-        sentence, word, data
+        sentenceID, wordID, data
     }
 }

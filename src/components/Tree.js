@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TreeDrawer from '../classes/TreeDrawer'
+import Sentence from '../classes/Sentence'
 import Word from './Word'
 import Relation from './Relation'
 import Line from './Line'
@@ -129,10 +130,26 @@ class Tree extends Component {
     }
 
     //Deselect when user clicks outside subelements
-    click() {
+    deselect() {
         const { actions, current } = this.props
         if (current.relations) actions.clearRelations()
         if (current.word) actions.setWord()
+    }
+
+    editWord(wordID, data) {
+        const { sentence, current, actions } = this.props
+        let editedSentence = new Sentence(sentence)
+        editedSentence.words[wordID] = Object.assign({}, sentence.words[wordID], data)
+        try {
+            editedSentence.validate()
+            actions.editWord(current.sentence, wordID, data)
+        } catch (errorMessage) {
+            if (typeof errorMessage === "string") {
+                actions.addError(errorMessage)
+            } else { //Unexpected error
+                throw errorMessage
+            }
+        }
     }
 
     render() {
@@ -142,7 +159,7 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            return <Word {...node} scaling={scaling} actions={actions} current={current} key={node.index} editable={editable} />
+            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={node.index} />
         })
 
         //Generate lines & relations
@@ -176,7 +193,7 @@ class Tree extends Component {
         }
 
         return (
-            <div className="tree" onClick={this.click.bind(this)} ref={element => this.element = element}>
+            <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">{relations}</div>
                 {words}

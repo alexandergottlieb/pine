@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 import Tree from './Tree'
+import Messages from './Messages'
 
 const Editor = props => {
 
@@ -30,6 +31,7 @@ const Editor = props => {
         <p className="editor__sentence">{sentence ? sentence.sentence : ''}</p>
         {tree}
       </div>
+      <Messages messages={current.messages} />
     </div>
   )
 

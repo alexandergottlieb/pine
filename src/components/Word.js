@@ -3,7 +3,7 @@ import '../css/Word.css'
 
 const Word = props => {
 
-    const { index, word, x, y, scaling, current, editable, actions} = props
+    const { index, word, x, y, scaling, current, editable, editWord, actions} = props
 
     const realX = x * scaling.units.x
     const realY = y * scaling.units.y
@@ -22,7 +22,7 @@ const Word = props => {
         if (current.relations && current.relations.length > 0) {
             //Set all relations to point to this word
             current.relations.forEach(childIndex => {
-                actions.editWord(current.sentence, childIndex, {
+                editWord(childIndex, {
                     parent: index
                 })
             })
