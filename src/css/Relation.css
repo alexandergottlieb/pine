@@ -11,7 +11,6 @@
 .relation__label {
   width:8em;
   font-size:0.75rem;
-  color:#78797B;
 }
 .relation__label:focus-within { /* Unsupported by IE/Edge */
   z-index:100;
@@ -37,14 +36,14 @@
     }
     .relation__label .Select-value-label {
       padding:0.25em 0.5em;
-      background-color:white !important;
-      color:inherit !important;
+      background-color:#f3f3f3 !important;
+      color:#78797B !important;
     }
     .relation__label .Select.is-open .Select-value-label {
       display:none;
     }
-    .relation__label .Select-input {
-      background-color:white !important;
+    .relation__label .is-focused .Select-input {
+      background-color:#f3f3f3 !important;
     }
     .relation__label .Select-arrow-zone,
     .relation__label .Select-clear-zone {
@@ -61,7 +60,7 @@
     }
     .relation__label .Select-option.is-focused,
     .relation__label .Select-option.is-selected {
-      background-color:rgba(242,246,255,1);
+      background-color:#f3f3f3;
     }
 .relation__grab {
   width:1rem;
@@ -70,7 +69,7 @@
   padding:0;
   border:2px solid #78797B;
   border-radius:50%;
-  background-color:white;
+  background-color:#f3f3f3;
   color:white;
   cursor:pointer;
 }

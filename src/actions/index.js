@@ -102,11 +102,16 @@ export const clearRelations = () => {
 
 export const editWord = (treebank, sentence, word, data) => {
     return dispatch => {
+        dispatch({
+            type: "EDIT_WORD",
+            sentence, word, data
+        })
         const ref = database.ref(`/sentences/${treebank}/${sentence}/words/${word}`)
-        ref.update(data).then(() => {
+        ref.update(data).catch(error => {
             dispatch({
-                type: "EDIT_WORD",
-                sentence, word, data
+                type: "ADD_MESSAGE",
+                message: "Database error, please refresh.",
+                status: "ERROR"
             })
         })
     }
