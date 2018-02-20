@@ -7,7 +7,7 @@ import '../css/Relation.css'
 class Relation extends Component {
 
     render() {
-        const { coords, word, active, actions } = this.props
+        const { coords, word, active, editWord, addRelation } = this.props
 
         const dX = coords.x2 - coords.x1
         const dY = coords.y2 - coords.y1
@@ -22,12 +22,13 @@ class Relation extends Component {
             top: coords.y1 + dY*0.4 + 'px'
         }
 
-        const down = event => {
-            actions.addRelation(word.index)
+        const click = event => {
+            addRelation(word.index)
+            event.stopPropagation()
         }
 
-        const click = event => {
-            event.stopPropagation()
+        const edit = selected => {
+            if (selected.value !== word.relation) editWord(word.index, {relation: selected.value})
         }
 
         const cls = `relation ${active ? 'relation--active' : ''}`
@@ -42,9 +43,9 @@ class Relation extends Component {
         return (
             <div className={cls}>
                 <div className="relation__label" style={labelStyle}>
-                    <Select value={value} options={relations} menuStyle={{zIndex: 101}} />
+                    <Select value={value} options={relations} onChange={edit}/>
                 </div>
-                <button className="relation__grab" onClick={click} onMouseDown={down} style={grabStyle}></button>
+                <button className="relation__grab" onClick={click} style={grabStyle}></button>
             </div>
         )
     }

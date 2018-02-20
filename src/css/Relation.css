@@ -11,11 +11,10 @@
 .relation__label {
   width:8em;
   font-size:0.75rem;
-  line-height:1em;
   color:#78797B;
   background-color:white;
 }
-.relation__label:focus-within {
+.relation__label:focus-within { /* Unsupported by IE/Edge */
   z-index:100;
 }
     /* Select */
@@ -31,6 +30,7 @@
       padding:0 !important;
       outline:none !important;
       box-shadow:none !important;
+      cursor:pointer;
     }
     .relation__label .Select-value-label {
       color:inherit !important;

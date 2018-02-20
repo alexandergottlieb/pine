@@ -136,19 +136,26 @@ class Tree extends Component {
         if (current.word) actions.setWord()
     }
 
-    editWord(wordID, data) {
+    editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
-        let editedSentence = new Sentence(sentence)
-        editedSentence.words[wordID] = Object.assign({}, sentence.words[wordID], data)
-        try {
-            editedSentence.validate()
-            actions.editWord(current.treebank, current.sentence, wordID, data)
-        } catch (errorMessage) {
-            if (typeof errorMessage === "string") {
-                actions.addError(errorMessage)
-            } else { //Unexpected error
-                throw errorMessage
+
+        if (data.parent) { //If changing tree structure
+            //Validate sentence
+            let editedSentence = new Sentence(sentence)
+            editedSentence.words[wordIndex] = Object.assign({}, sentence.words[wordIndex], data)
+            try {
+                editedSentence.validate()
+                actions.editWord(current.treebank, current.sentence, wordIndex, data)
+            } catch (errorMessage) {
+                if (typeof errorMessage === "string") {
+                    actions.addError(errorMessage)
+                } else { //Unexpected error
+                    throw errorMessage
+                }
             }
+        } else {
+            //No validation needed
+            actions.editWord(current.treebank, current.sentence, wordIndex, data)
         }
     }
 
@@ -182,7 +189,7 @@ class Tree extends Component {
                 lines.push(<Line {...coords} active={active} key={child.index} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} actions={actions} active={active} key={child.index} ref={element => this.registerRelation(element, child.index)} />)
+                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={child.index} ref={element => this.registerRelation(element, child.index)} />)
             })
         })
 
