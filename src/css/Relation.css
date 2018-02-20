@@ -9,12 +9,52 @@
     opacity:0;
 }
 .relation__label {
-  padding:0.125rem;
+  width:8em;
   font-size:0.75rem;
   line-height:1em;
   color:#78797B;
   background-color:white;
 }
+.relation__label:focus-within {
+  z-index:100;
+}
+    /* Select */
+    .relation__label .Select {
+      outline:none !important;
+    }
+    .relation__label .Select-control {
+      border:none;
+      text-align:center;
+      box-shadow:none !important;
+    }
+    .relation__label .Select-value {
+      padding:0 !important;
+      outline:none !important;
+      box-shadow:none !important;
+    }
+    .relation__label .Select-value-label {
+      color:inherit !important;
+    }
+    .relation__label .Select.is-open .Select-value-label {
+      display:none;
+    }
+    .relation__label .Select-arrow-zone,
+    .relation__label .Select-clear-zone {
+      display:none;
+    }
+    .relation__label .Select-menu {
+      text-align:center;
+    }
+    .relation__label .Select-menu-outer {
+      border:0;
+      border-radius:4px;
+      box-shadow:0 4px 20px 0 rgba(0,0,0,0.16);
+      overflow:hidden;
+    }
+    .relation__label .Select-option.is-focused,
+    .relation__label .Select-option.is-selected {
+      background-color:rgba(242,246,255,1);
+    }
 .relation__grab {
   width:1rem;
   height:1rem;

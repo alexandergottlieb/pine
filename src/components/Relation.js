@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import CONLLU from '../classes/CONLLU'
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import '../css/Relation.css'
 
 class Relation extends Component {
@@ -29,9 +32,18 @@ class Relation extends Component {
 
         const cls = `relation ${active ? 'relation--active' : ''}`
 
+        //Setup select
+        let relations = CONLLU.relations()
+        relations = relations.map(relation => {
+            return {value: relation, label: relation}
+        })
+        const value = {value: word.relation, label: word.relation}
+
         return (
             <div className={cls}>
-                <span className="relation__label" style={labelStyle}>{word.relation}</span>
+                <div className="relation__label" style={labelStyle}>
+                    <Select value={value} options={relations} menuStyle={{zIndex: 101}} />
+                </div>
                 <button className="relation__grab" onClick={click} onMouseDown={down} style={grabStyle}></button>
             </div>
         )
