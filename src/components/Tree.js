@@ -166,7 +166,7 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={node.index} />
+            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={`${current.sentence}_${node.index}`} />
         })
 
         //Generate lines & relations
@@ -186,10 +186,10 @@ class Tree extends Component {
                 //Line end co-ordinate
                 coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
                 coords.y2 = child.y * scaling.units.y + scaling.rem
-                lines.push(<Line {...coords} active={active} key={child.index} ref={element => this.registerLine(element, child.index)} />)
+                lines.push(<Line {...coords} active={active} key={`${current.sentence}_${child.index}`} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={child.index} ref={element => this.registerRelation(element, child.index)} />)
+                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={`${current.sentence}_${child.index}`} ref={element => this.registerRelation(element, child.index)} />)
             })
         })
 

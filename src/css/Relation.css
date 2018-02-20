@@ -12,7 +12,6 @@
   width:8em;
   font-size:0.75rem;
   color:#78797B;
-  background-color:white;
 }
 .relation__label:focus-within { /* Unsupported by IE/Edge */
   z-index:100;
@@ -20,6 +19,10 @@
     /* Select */
     .relation__label .Select {
       outline:none !important;
+    }
+
+    .relation__label .Select-control {
+      background-color:transparent !important;
     }
     .relation__label .Select-control {
       border:none;
@@ -33,10 +36,15 @@
       cursor:pointer;
     }
     .relation__label .Select-value-label {
+      padding:0.25em 0.5em;
+      background-color:white !important;
       color:inherit !important;
     }
     .relation__label .Select.is-open .Select-value-label {
       display:none;
+    }
+    .relation__label .Select-input {
+      background-color:white !important;
     }
     .relation__label .Select-arrow-zone,
     .relation__label .Select-clear-zone {
