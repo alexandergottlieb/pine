@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from './Button'
+import '../css/Sidebar.css'
 
 const Sidebar = props => {
 
@@ -16,12 +17,12 @@ const Sidebar = props => {
       <nav className="breadcrumbs">
         <Link to="/">Treebanks</Link>
       </nav>
+      <h1 className="sidebar__title">Name</h1>
       <nav className="sentences">
           {sentences}
       </nav>
-      <div class="sidebar__buttons">
-        <Button>Download</Button>
-        <Button primary>New Sentence</Button>
+      <div className="sidebar__buttons">
+        <Button type="secondary" icon="fa-plus-circle">Add</Button>
       </div>
     </div>
   )

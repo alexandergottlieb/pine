@@ -13,8 +13,22 @@ body {
   font-weight:normal;
 }
 h1 {
+  margin:0;
+  font-size:2rem;
+  font-weight:bold;
+}
+h2 {
   font-weight:inherit;
-  font-size:1.5rem;
+  font-size:1.25rem;
+}
+h3 {
+  margin:0;
+  font-size:1rem;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+p {
+  margin:0 0 1em 0;
 }
 /* Links */
 a {
@@ -24,57 +38,70 @@ a {
 
 /**** Colour Scheme */
 /* White */
-.button--secondary,
-.button--primary {
-  color:white;
-}
-/* Light */
 .editor,
 .relation__grab,
 .relation__label .is-focused .Select-input,
 .relation__label .Select-value-label {
-  background-color:#F2F6FF;
+  background-color:white;
 }
+body,
+.button--primary,
+.button--warning,
 .sidebar {
-  color:#F2F6FF;
+  color:white;
 }
-/* Light Highlight */
+.button--secondary {
+  background-color:white;
+}
+/* Light */
+.current-sentence,
 .relation__label .Select-value-label:hover,
 .relation__label .Select.is-open .Select-input,
 .relation__label .Select-option.is-focused,
 .relation__label .Select-option.is-selected {
-  background-color:#DCE0E8;
+  background-color:#F2F6FF;
 }
 /* Accent */
-.current-sentence {
-  background-color:#EAC435;
+.button--primary,
+.button--secondary:hover {
+  background-color:#FFFF82;
 }
 .sentences__sentence--active {
-  color:#EAC435;
+  color:#FFFF82;
 }
 /* Dark */
-.current-sentence,
-.button--secondary {
-  color:#161E30;
+body,
+.sidebar,
+.sidebar__buttons {
+  background-color:#13161F;
 }
-.sidebar {
-  background-color:#161E30;
+.editor {
+  color:#13161F;
 }
 /* Dark Highlight */
+.treebank,
 .sentences__sentence:hover {
   background-color:#404655;
 }
-/* Medium */
-.button--primary {
-  background-color:#345995;
+/* Grey */
+.editor__no-selection {
+  color:#738290 !important;
+}
+/* Red */
+.button--warning {
+  background-color:#DF2935;
 }
 
-/* Transitions */
+/**** Transitions ****/
+.word,
+.button {
+  transition:0.2s ease-out;
+}
 .word__inflection,
 .relation__label .Select-value-label,
 .relation__label .Select-option,
 .sentences__sentence {
-  transition:background-color 0.15s ease-out;
+  transition: 0.15s ease-out;
 }
 .word__pos-tag {
   transition:opacity 0.15s ease-out;

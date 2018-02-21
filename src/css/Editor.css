@@ -1,51 +1,13 @@
-/* Sidebar */
-.sidebar {
-  position:absolute;
-  top:0; left:0;
-  z-index:11;
-  width:25%;
-  height:100%;
-  overflow-y:scroll;
-  box-shadow:4px 0px 20px 0px rgba(0,0,0,0.16);
-}
-
-/* Sentences */
-.sentences {
-  padding:0;
-}
-.sentences__sentence {
-  display:block;
-  margin:0;
-  padding:0.5em 1.5em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.sidebar__buttons {
-  position:absolute;
-  bottom:0;
-  padding:1em 1.5em;
-  text-align:center;
-}
-
-/* Breadcrumbs */
-.breadcrumbs {
-  padding:1.5rem 1.5rem 0.5rem 1.5rem;
-  font-size:1.25em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 /* Current Sentence */
 .current-sentence {
   position:relative;
   z-index:10;
   margin:0;
-  padding:2rem 2rem 1.5rem 2rem;
+  padding:1.5rem 2rem 1.5rem 2rem;
+  font-size:1rem;
   line-height:1rem;
   white-space:nowrap;
   overflow-x:scroll;
-  box-shadow:0px 4px 20px 0px rgba(0,0,0,0.16)
 }
 
 /* Editor */
@@ -55,6 +17,17 @@
   width:75%;
   height:100%;
   overflow:hidden;
+}
+.editor__no-selection {
+  padding:2rem;
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+}
+.editor__no-selection .fa {
+  margin-bottom:1rem;
+  font-size:4em;
 }
 
 /* Messages */

@@ -1,0 +1,51 @@
+.sidebar {
+  position:absolute;
+  top:0; left:0;
+  z-index:11;
+  width:25%;
+  height:100%;
+  overflow-y:scroll;
+}
+.sidebar > *:not(.sentences) {
+  padding-left:1.5rem;
+  padding-right:1.5rem;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  margin:1.5rem 0 0.25rem 0;
+  white-space: nowrap;
+  font-size:0.825rem;
+  text-overflow: ellipsis;
+}
+
+/* Title */
+.sidebar__title {
+  margin:0 0 1rem 0;
+}
+
+/* Sentences */
+.sentences {
+  padding:0;
+}
+.sentences__sentence {
+  display:block;
+  margin:0;
+  padding:0.5em 1.5rem;
+  font-size:0.825rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  opacity:0.6;
+}
+.sentences__sentence--active {
+  opacity:1;
+}
+
+/* Buttons */
+.sidebar__buttons {
+  position:sticky;
+  bottom:0; left:0;
+  width:100%;
+  padding:1em 1.5em;
+}

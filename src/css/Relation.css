@@ -40,7 +40,7 @@
     .relation__label .Select-value-label {
       padding:0.25em 0.5em;
       border-radius:2px;
-      color:#78797B !important;
+      color:#738290 !important;
       cursor:text !important;
     }
     .relation__label .Select.is-open .Select-value-label {
@@ -60,6 +60,9 @@
     .relation__label .Select-menu {
       text-align:center;
     }
+    .relation__label .Select-option {
+      color:#738290;
+    }
     .relation__label .Select-menu-outer {
       border:0;
       border-radius:4px;
@@ -71,11 +74,11 @@
   height:1rem;
   margin:0;
   padding:0;
-  border:2px solid #78797B;
+  border:2px solid #738290;
   border-radius:50%;
   color:white;
   cursor:pointer;
 }
 .relation__grab:hover {
-  background-color:#78797B;
+  background-color:#738290;
 }

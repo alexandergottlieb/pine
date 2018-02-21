@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CONLLU from '../classes/CONLLU'
 import Treebank from './Treebank'
+import '../css/Home.css'
 
 class Home extends Component {
 
@@ -27,21 +28,23 @@ class Home extends Component {
   }
 
   render() {
+    const { treebanks, actions } = this.props
+
     const treebanksList = []
     for (let id in this.props.treebanks) {
       let treebank = this.props.treebanks[id]
-      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} delete={this.props.actions.deleteTreebank} />)
+      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} actions={actions} />)
     }
 
     return (
       <div className="home">
-        <h2>Treebanks</h2>
-        <label>Add Treebank
-          <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
-        </label>
-        <div>
+        <h1>Treebanks</h1>
+        <div className="treebanks">
           {treebanksList}
         </div>
+        <label className="upload">Upload Treebank
+          <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
+        </label>
       </div>
     )
   }

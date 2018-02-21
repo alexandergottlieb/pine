@@ -18,19 +18,26 @@ const Editor = props => {
     actions.setCurrent(treebankID, sentenceID)
   }
 
-  let tree = null
+  let contents = null
   let sentence = null
   if (current.sentence !== null) {
     sentence = sentences[current.sentence]
-    tree = <Tree actions={actions} sentence={sentence} current={current} />
+    contents = <Tree actions={actions} sentence={sentence} current={current} />
+  } else {
+    contents = (
+      <div className="editor__no-selection">
+        <span className="fa fa-hand-o-left"></span>
+        <p>Select a sentence to edit</p>
+      </div>
+    )
   }
 
   return (
     <div>
       <Sidebar current={current} sentences={sentences} />
       <div className="editor">
-        <h1 className="current-sentence">{sentence ? sentence.sentence : ''}</h1>
-        {tree}
+        <h2 className="current-sentence">{sentence ? sentence.sentence : ''}</h2>
+        {contents}
       </div>
       <Messages messages={current.messages} />
     </div>

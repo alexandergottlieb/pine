@@ -1,12 +1,19 @@
 .button {
     font-size:inherit;
     display:inline-block;
-    padding:0.5em 1em;
+    padding:0.5em 0.75em;
     margin:0;
     border:0px;
-    border-radius:6px;
+    border-radius:3px;
+    background-color:transparent;
+    text-transform:uppercase;
     cursor:pointer;
+    outline:0 !important;
 }
-.button + .button {
+.button + .button,
+.button + a {
     margin-left:1em;
+}
+.button__icon + * {
+    margin-left:0.5em;
 }
