@@ -79,6 +79,243 @@ export default class CONLLU {
     //Get list of relation tags
     static relations() {
         return [ "acl", "advcl", "advmod", "amod", "appos", "aux", "auxpass", "case", "cc", "ccomp", "compound", "conj", "cop", "csubj", "csubjpass", "dep", "det", "discourse", "dislocated", "dobj", "expl", "foreign", "goeswith", "iobj", "list", "mark", "mwe", "name", "neg", "nmod", "nsubj", "nsubjpass", "nummod", "parataxis", "punct", "remnant", "reparandum", "root", "vocative", "xcomp" ]
+        // return [
+        //   {
+        //     "value": "acl",
+        //     "label": "Clausal Modifier Of Noun (Adjectival Clause)"
+        //   },
+        //   {
+        //     "value": "advcl",
+        //     "label": "Adverbial Clause Modifier"
+        //   },
+        //   {
+        //     "value": "advmod",
+        //     "label": "Adverbial Modifier"
+        //   },
+        //   {
+        //     "value": "amod",
+        //     "label": "Adjectival Modifier"
+        //   },
+        //   {
+        //     "value": "appos",
+        //     "label": "Appositional Modifier"
+        //   },
+        //   {
+        //     "value": "aux",
+        //     "label": "Auxiliary"
+        //   },
+        //   {
+        //     "value": "auxpass",
+        //     "label": "Passive Auxiliary"
+        //   },
+        //   {
+        //     "value": "case",
+        //     "label": "Case Marking"
+        //   },
+        //   {
+        //     "value": "cc",
+        //     "label": "Coordinating Conjunction"
+        //   },
+        //   {
+        //     "value": "ccomp",
+        //     "label": "Clausal Complement"
+        //   },
+        //   {
+        //     "value": "compound",
+        //     "label": "Compound"
+        //   },
+        //   {
+        //     "value": "conj",
+        //     "label": "Conjunct"
+        //   },
+        //   {
+        //     "value": "cop",
+        //     "label": "Copula"
+        //   },
+        //   {
+        //     "value": "csubj",
+        //     "label": "Clausal Subject"
+        //   },
+        //   {
+        //     "value": "csubjpass",
+        //     "label": "Clausal Passive Subject"
+        //   },
+        //   {
+        //     "value": "dep",
+        //     "label": "Unspecified Dependency"
+        //   },
+        //   {
+        //     "value": "det",
+        //     "label": "Determiner"
+        //   },
+        //   {
+        //     "value": "discourse",
+        //     "label": "Discourse Element"
+        //   },
+        //   {
+        //     "value": "dislocated",
+        //     "label": "Dislocated Elements"
+        //   },
+        //   {
+        //     "value": "dobj",
+        //     "label": "Direct Object"
+        //   },
+        //   {
+        //     "value": "expl",
+        //     "label": "Expletive"
+        //   },
+        //   {
+        //     "value": "foreign",
+        //     "label": "Foreign Words"
+        //   },
+        //   {
+        //     "value": "goeswith",
+        //     "label": "Goes With"
+        //   },
+        //   {
+        //     "value": "iobj",
+        //     "label": "Indirect Object"
+        //   },
+        //   {
+        //     "value": "list",
+        //     "label": "List"
+        //   },
+        //   {
+        //     "value": "mark",
+        //     "label": "Marker"
+        //   },
+        //   {
+        //     "value": "mwe",
+        //     "label": "Multi-Word Expression"
+        //   },
+        //   {
+        //     "value": "name",
+        //     "label": "Name"
+        //   },
+        //   {
+        //     "value": "neg",
+        //     "label": "Negation Modifier"
+        //   },
+        //   {
+        //     "value": "nmod",
+        //     "label": "Nominal Modifier"
+        //   },
+        //   {
+        //     "value": "nsubj",
+        //     "label": "Nominal Subject"
+        //   },
+        //   {
+        //     "value": "nsubjpass",
+        //     "label": "Passive Nominal Subject"
+        //   },
+        //   {
+        //     "value": "nummod",
+        //     "label": "Numeric Modifier"
+        //   },
+        //   {
+        //     "value": "parataxis",
+        //     "label": "Parataxis"
+        //   },
+        //   {
+        //     "value": "punct",
+        //     "label": "Punctuation"
+        //   },
+        //   {
+        //     "value": "remnant",
+        //     "label": "Remnant In Ellipsis"
+        //   },
+        //   {
+        //     "value": "reparandum",
+        //     "label": "Overridden Disfluency"
+        //   },
+        //   {
+        //     "value": "root",
+        //     "label": "Root"
+        //   },
+        //   {
+        //     "value": "vocative",
+        //     "label": "Vocative"
+        //   },
+        //   {
+        //     "value": "xcomp",
+        //     "label": "Open Clausal Complement"
+        //   }
+        // ]
+    }
+
+    //Get list of UPOS tags
+    static uposTags() {
+        // return [ "ADJ", "ADP", "ADV", "AUX", "CONJ", "DET", "INTJ", "NOUN", "NUM", "PART", "PRON", "PROPN", "PUNCT", "SCONJ", "SYM", "VERB", "X" ]
+        return [
+          {
+            "value": "ADJ",
+            "label": "Adjective"
+          },
+          {
+            "value": "ADP",
+            "label": "Adposition"
+          },
+          {
+            "value": "ADV",
+            "label": "Adverb"
+          },
+          {
+            "value": "AUX",
+            "label": "Auxiliary Verb"
+          },
+          {
+            "value": "CONJ",
+            "label": "Coordinating Conjunction"
+          },
+          {
+            "value": "DET",
+            "label": "Determiner"
+          },
+          {
+            "value": "INTJ",
+            "label": "Interjection"
+          },
+          {
+            "value": "NOUN",
+            "label": "Noun"
+          },
+          {
+            "value": "NUM",
+            "label": "Numeral"
+          },
+          {
+            "value": "PART",
+            "label": "Particle"
+          },
+          {
+            "value": "PRON",
+            "label": "Pronoun"
+          },
+          {
+            "value": "PROPN",
+            "label": "Proper Noun"
+          },
+          {
+            "value": "PUNCT",
+            "label": "Punctuation"
+          },
+          {
+            "value": "SCONJ",
+            "label": "Subordinating Conjunction"
+          },
+          {
+            "value": "SYM",
+            "label": "Symbol"
+          },
+          {
+            "value": "VERB",
+            "label": "Verb"
+          },
+          {
+            "value": "X",
+            "label": "Other"
+          }
+        ]
     }
 
 }

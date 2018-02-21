@@ -43,7 +43,7 @@ class Relation extends Component {
         return (
             <div className={cls}>
                 <div className="relation__label" style={labelStyle}>
-                    <Select value={value} options={relations} onChange={edit}/>
+                    <Select value={value} options={relations} onChange={edit} noResultsText="-" clearable={false} />
                 </div>
                 <button className="relation__grab" onClick={click} style={grabStyle}></button>
             </div>

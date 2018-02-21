@@ -16,6 +16,8 @@ const Editor = props => {
     || current.sentence !== sentenceID
   ) {
     actions.setCurrent(treebankID, sentenceID)
+    actions.setWord()
+    actions.clearRelations()
   }
 
   let contents = null

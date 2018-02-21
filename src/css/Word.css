@@ -9,6 +9,9 @@
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
   cursor:pointer;
 }
+.word--editable {
+  z-index:100;
+}
   /* Inflection */
   .word__inflection {
     width:80%;
@@ -50,15 +53,54 @@
     opacity:0;
   }
   /* Data */
-  .word__data {
+  .word-data {
     padding:0.5em;
     text-align:left;
   }
-  .word__data--hide {
+  .word-data--hide {
     display:none;
   }
-  .word__data--show {
+  .word-data--show {
     display:block;
+  }
+  .word-data__label {
+    display:block;
+    margin:0.75rem 0 0.25rem 0;
+    font-size:0.75rem;
+  }
+  .word-data__label:first-of-type {
+    margin-top:0;
+  }
+  .word-data__input {
+    display:block;
+    max-width:100%;
+    padding:0.5em;
+    border:0;
+    border-radius:4px;
+    background-color:rgba(0,0,0,0.2);
+    color:white;
+    font-size:1rem;
+    outline:none;
+  }
+  /* Select */
+  .word-data .Select {
+    outline:none !important;
+  }
+  .word-data .Select-control {
+    border:0px;
+    background-color:rgba(0,0,0,0.2) !important;
+  }
+  .word-data .Select-value-label {
+    color:white !important;
+  }
+  .word-data .Select-input input {
+    color:white !important;
+  }
+  .word-data .Select-arrow {
+    border-color:white transparent transparent !important;
+  }
+  .word-data .Select-arrow-zone:hover .Select-arrow {
+    opacity:0.7;
   }
 
 /* Colour Code */

@@ -1,16 +1,52 @@
 import React, { Component } from 'react'
+import Select from 'react-select';
 import '../css/Word.css'
+import CONLLU from '../classes/CONLLU'
 
 export default class Word extends Component {
 
     constructor(props) {
         super(props)
         const { word } = props
-        const { inflection } = word
+        const { inflection, lemma, xposTag } = word
         this.state = {
-            inflection
+            inflection, lemma, xposTag
         }
         this.elements = {inflection: null}
+    }
+
+    inflectionChange = event => {
+        const { word, editWord } = this.props
+        const { value } = event.target
+        this.setState({
+            inflection: value
+        })
+        editWord(word.index, {inflection: value})
+    }
+
+    uposChange = selected => {
+        const { word, editWord } = this.props
+        console.log('selected', selected)
+        const { value } = selected
+        if (value !== word.uposTag) editWord(word.index, {uposTag: value})
+    }
+
+    xposChange = event => {
+        const { word, editWord } = this.props
+        const { value } = event.target
+        this.setState({
+            xposTag: value
+        })
+        editWord(word.index, {xposTag: value})
+    }
+
+    lemmaChange = event => {
+        const { word, editWord } = this.props
+        const { value } = event.target
+        this.setState({
+            lemma: value
+        })
+        editWord(word.index, {lemma: value})
     }
 
     render() {
@@ -47,25 +83,28 @@ export default class Word extends Component {
             event.stopPropagation()
         }
 
-        const inflectionChange = event => {
-            const { value } = event.target
-            this.setState({
-                inflection: value
-            })
-            this.props.editWord(word.index, {inflection: value})
+        const uposTags = CONLLU.uposTags()
+        const uposTagValue = {
+            value: word.uposTag,
+            label: uposTags.find(tag => tag.value === word.uposTag).label
         }
+        // uposTags = uposTags.map(tag => {
+        //     return {value: tag, label: tag}
+        // })
 
         return (
             <div className={cls} style={style} onClick={click}>
-                <input className="word__inflection" onChange={inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
+                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
-                <div className={`word__data word__data--${editable ? "show" : "hide"}`}>
-                    <label>Lemma</label>
-                    <input />
-                    <label>UPOS</label>
-                    <input />
-                    <label>XPOS</label>
-                    <input />
+                <div className={`word-data word-data--${editable ? "show" : "hide"}`}>
+                    <label className="word-data__label" title="The root form of the word">Lemma</label>
+                    <input className="word-data__input" onChange={this.lemmaChange.bind(this)} value={this.state.lemma} />
+
+                    <label className="word-data__label" title="Part of speech tag in Universal Dependency notation">UPOS</label>
+                    <Select value={uposTagValue} options={uposTags} onChange={this.uposChange.bind(this)} noResultsText="-" clearable={false} />
+
+                    <label className="word-data__label" title="Language specific part of speech tag">XPOS</label>
+                    <input className="word-data__input" onChange={this.xposChange.bind(this)} value={this.state.xposTag} />
                 </div>
             </div>
         )
