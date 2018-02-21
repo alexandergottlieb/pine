@@ -1,7 +1,7 @@
 .word {
   position: absolute;
   margin:2rem;
-  padding:0.5rem 0.25rem;
+  padding:0.5rem;
   border-radius: 5px;
   text-align:center;
   color:white;
@@ -14,10 +14,10 @@
 }
   /* Inflection */
   .word__inflection {
-    width:80%;
-    padding:0.125em 0.5em;
+    width:100%;
+    padding:0.5em 0.5em;
     border:none;
-    border-radius:2px;
+    border-radius:4px;
     text-align:center;
     font-size:inherit;
     font-weight:bold;
@@ -54,7 +54,7 @@
   }
   /* Data */
   .word-data {
-    padding:0.5em;
+    margin-top:1rem;
     text-align:left;
   }
   .word-data--hide {
