@@ -1,29 +1,34 @@
 .word {
   position: absolute;
   margin:2rem;
-  padding:0.825rem 0.25rem;
+  padding:0.5rem 0.25rem;
   border-radius: 5px;
   text-align:center;
   color:white;
   background-color:#E7ECEF;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
   cursor:pointer;
-  transition:0.3s ease-out;
-}
-.word:not(.word--editable):hover {
-  transform:scale(1.05);
 }
   /* Inflection */
   .word__inflection {
-    display:inline-block;
-    width:100%;
+    width:80%;
+    padding:0.125em 0.5em;
     border:none;
+    border-radius:2px;
     text-align:center;
     font-size:inherit;
     font-weight:bold;
     background-color:transparent;
     color:white;
     opacity:0.9;
+    cursor:pointer;
+  }
+  .word--editable .word__inflection {
+    cursor:text;
+  }
+  .word:not(.word--editable):hover .word__inflection,
+  .word__inflection:focus {
+      background-color:rgba(0,0,0,0.2);
   }
   .word__inflection:focus {
     outline:none;
@@ -38,6 +43,10 @@
     right:0.33rem;
     font-size:0.5rem;
     opacity:0.7;
+  }
+  .word:hover .word__pos-tag,
+  .word--editable .word__pos-tag {
+    opacity:0;
   }
   /* Data */
   .word__data {

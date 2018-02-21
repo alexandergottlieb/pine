@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import Button from './Button'
 
 const Sidebar = props => {
 
@@ -7,17 +8,21 @@ const Sidebar = props => {
 
   sentences = sentences.map( (sentence, id) => {
     const cls = current.sentence !== null && Number(current.sentence) === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
-    return <li key={id} className={cls}><Link to={`/edit/${current.treebank}/${id}`}>{sentence.sentence}</Link></li>
+    return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`}>{sentence.sentence}</Link>
   })
 
   return (
     <div className="sidebar">
-      <p className="breadcrumbs"><Link to="/">Treebanks</Link></p>
-      <ul className="sentences">
+      <nav className="breadcrumbs">
+        <Link to="/">Treebanks</Link>
+      </nav>
+      <nav className="sentences">
           {sentences}
-      </ul>
-      <button type="button">Download</button>
-      <button type="button">New Sentence</button>
+      </nav>
+      <div class="sidebar__buttons">
+        <Button>Download</Button>
+        <Button primary>New Sentence</Button>
+      </div>
     </div>
   )
 

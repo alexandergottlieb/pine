@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 import Tree from './Tree'
 import Messages from './Messages'
+import '../css/Editor.css'
 
 const Editor = props => {
 
@@ -28,7 +29,7 @@ const Editor = props => {
     <div>
       <Sidebar current={current} sentences={sentences} />
       <div className="editor">
-        <p className="editor__sentence">{sentence ? sentence.sentence : ''}</p>
+        <h1 className="current-sentence">{sentence ? sentence.sentence : ''}</h1>
         {tree}
       </div>
       <Messages messages={current.messages} />

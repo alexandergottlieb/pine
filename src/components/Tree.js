@@ -4,6 +4,7 @@ import Sentence from '../classes/Sentence'
 import Word from './Word'
 import Relation from './Relation'
 import Line from './Line'
+import '../css/Tree.css'
 
 class Tree extends Component {
 

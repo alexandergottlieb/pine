@@ -1,0 +1,12 @@
+.tree {
+  position:absolute;
+  top:5rem; right:0; bottom:0; left:0;
+  z-index:0;
+  overflow:scroll;
+}
+.lines,
+.relations {
+  position:absolute;
+  top:2rem; right:2rem; bottom:2rem; left:2rem;
+  overflow:visible;
+}

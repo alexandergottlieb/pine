@@ -1,0 +1,78 @@
+/* Sidebar */
+.sidebar {
+  position:absolute;
+  top:0; left:0;
+  z-index:11;
+  width:25%;
+  height:100%;
+  overflow-y:scroll;
+  box-shadow:4px 0px 20px 0px rgba(0,0,0,0.16);
+}
+
+/* Sentences */
+.sentences {
+  padding:0;
+}
+.sentences__sentence {
+  display:block;
+  margin:0;
+  padding:0.5em 1.5em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.sidebar__buttons {
+  position:absolute;
+  bottom:0;
+  padding:1em 1.5em;
+  text-align:center;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  padding:1.5rem 1.5rem 0.5rem 1.5rem;
+  font-size:1.25em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Current Sentence */
+.current-sentence {
+  position:relative;
+  z-index:10;
+  margin:0;
+  padding:2rem 2rem 1.5rem 2rem;
+  line-height:1rem;
+  white-space:nowrap;
+  overflow-x:scroll;
+  box-shadow:0px 4px 20px 0px rgba(0,0,0,0.16)
+}
+
+/* Editor */
+.editor {
+  position:fixed;
+  left:25%;
+  width:75%;
+  height:100%;
+  overflow:hidden;
+}
+
+/* Messages */
+.messages {
+  position:fixed;
+  bottom:2rem;
+  width:100%;
+  padding:0;
+  margin:0;
+  text-align:center;
+  pointer-events:none;
+}
+.message {
+  display:block;
+  width:33%;
+  margin:auto;
+  padding:0.75rem 1.5rem;
+  background:rgba(0,0,0,0.6);
+  color:white;
+  border-radius:6px;
+}

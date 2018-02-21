@@ -10,6 +10,7 @@ export default class Word extends Component {
         this.state = {
             inflection
         }
+        this.elements = {inflection: null}
     }
 
     render() {
@@ -38,7 +39,10 @@ export default class Word extends Component {
                 })
                 actions.clearRelations()
             } else {
-                if (!editable) actions.setWord(index)
+                if (!editable) {
+                    actions.setWord(index)
+                    this.elements.inflection.focus()
+                }
             }
             event.stopPropagation()
         }
@@ -53,10 +57,14 @@ export default class Word extends Component {
 
         return (
             <div className={cls} style={style} onClick={click}>
-                <input className="word__inflection" onChange={inflectionChange.bind(this)} value={this.state.inflection}/>
+                <input className="word__inflection" onChange={inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word__data word__data--${editable ? "show" : "hide"}`}>
                     <label>Lemma</label>
+                    <input />
+                    <label>UPOS</label>
+                    <input />
+                    <label>XPOS</label>
                     <input />
                 </div>
             </div>
