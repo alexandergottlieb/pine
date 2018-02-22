@@ -1,4 +1,16 @@
-const current = (state = {treebank: null, sentence: null, word: null, relations: [], messages: []}, action) => {
+const defaultState = {
+    treebank: null,
+    sentence: null,
+    word: null,
+    relations: [],
+    messages: [],
+    exports: {
+        downloading: [],
+        ready: []
+    }
+}
+
+const current = (state = defaultState, action) => {
     switch (action.type) {
         case "SET_CURRENT_TREEBANK": {
             return Object.assign({}, state, {
@@ -38,6 +50,22 @@ const current = (state = {treebank: null, sentence: null, word: null, relations:
             return Object.assign({}, state, {
                 messages: state.messages.slice(1)
             })
+        }
+        case "EXPORT_TREEBANK_STARTED": {
+            let newState = Object.assign({}, state)
+            if (newState.exports.downloading.indexOf(action.treebank === -1)) newState.exports.downloading.push(action.treebank)
+            return newState
+        }
+        case "FETCHED_SENTENCES": {
+            let newState = Object.assign({}, state)
+            newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
+            if (newState.exports.ready.indexOf(action.treebank === -1)) newState.exports.ready.push(action.treebank)
+            return newState
+        }
+        case "EXPORT_TREEBANK_COMPLETED": {
+            let newState = Object.assign({}, state)
+            newState.exports.ready = newState.exports.ready.filter(id => action.treebank !== id)
+            return newState
         }
         default:
             return state

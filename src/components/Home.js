@@ -12,6 +12,13 @@ class Home extends Component {
     this.props.actions.fetchTreebanks()
   }
 
+  componentDidUpdate() {
+    const { current, treebanks, sentences, actions } = this.props
+    current.exports.ready.forEach(treebankID => {
+      actions.exportTreebank(treebanks[treebankID], sentences[treebankID])
+    })
+  }
+
   addFile(file) {
     if (!file) return
     let treebank = new CONLLU()
@@ -28,7 +35,7 @@ class Home extends Component {
   }
 
   render() {
-    const { treebanks, actions } = this.props
+    const { treebanks, actions, current } = this.props
 
     const treebanksList = []
     for (let id in this.props.treebanks) {
@@ -43,7 +50,7 @@ class Home extends Component {
           {treebanksList}
         </div>
         <label className="upload-treebank" title=".conllu format">
-          <span class="fa fa-cloud-upload-alt"></span> Upload
+          <span className="fa fa-cloud-upload-alt"></span> Upload
           <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
         </label>
       </div>

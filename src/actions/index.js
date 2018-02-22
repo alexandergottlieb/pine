@@ -1,4 +1,6 @@
 import { database } from '../firebaseApp'
+import FileSaver from 'file-saver'
+import CONLLU from '../classes/CONLLU'
 
 export const addError = message => {
     return dispatch => {
@@ -39,11 +41,11 @@ export const uploadTreebank = treebank => {
             sentencesRef.set(sentences).then(() => {
                 dispatch({ type: "UPLOAD_TREEBANK_SUCCEEDED" })
             }).catch((error) => {
-                console.log(error)
+                console.error(error)
                 dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
             })
         }).catch((error) => {
-            console.log(error)
+            console.error(error)
             dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
         })
     }
@@ -60,6 +62,19 @@ export const deleteTreebank = id => {
     }
 }
 
+export const fetchSentences = (treebankID) => {
+    return dispatch => {
+        const ref = database.ref(`/sentences/${treebankID}`).orderByKey()
+        ref.once('value', snapshot => {
+            dispatch({
+                type: "FETCHED_SENTENCES",
+                treebank: treebankID,
+                sentences: snapshot.val()
+            })
+        })
+    }
+}
+
 export const setCurrent = (treebankID, sentenceID) => {
     return dispatch => {
         dispatch({
@@ -70,13 +85,7 @@ export const setCurrent = (treebankID, sentenceID) => {
             type: "SET_CURRENT_SENTENCE",
             id: sentenceID
         })
-        const ref = database.ref(`/sentences/${treebankID}`).orderByKey()
-        ref.once('value', snapshot => {
-            dispatch({
-                type: "UPDATE_CURRENT_SENTENCES",
-                sentences: snapshot.val()
-            })
-        })
+        dispatch(fetchSentences(treebankID))
     }
 }
 
@@ -104,7 +113,7 @@ export const editWord = (treebank, sentence, word, data) => {
     return dispatch => {
         dispatch({
             type: "EDIT_WORD",
-            sentence, word, data
+            treebank, sentence, word, data
         })
         const ref = database.ref(`/sentences/${treebank}/${sentence}/words/${word}`)
         ref.update(data).catch(error => {
@@ -114,5 +123,27 @@ export const editWord = (treebank, sentence, word, data) => {
                 status: "ERROR"
             })
         })
+    }
+}
+
+export const queueExportTreebank = (treebankID) => {
+    return dispatch => {
+        dispatch({
+            type: "EXPORT_TREEBANK_STARTED",
+            treebank: treebankID
+        })
+        dispatch(fetchSentences(treebankID))
+    }
+}
+
+export const exportTreebank = (treebank, sentences) => {
+    const conllu = new CONLLU(treebank.name, sentences)
+    const text = conllu.export()
+    const blob = new Blob([text])
+    const filename = `${treebank.name}.conllu`
+    FileSaver.saveAs(blob, filename)
+    return {
+        type: "EXPORT_TREEBANK_COMPLETED",
+        treebank: treebank.id
     }
 }

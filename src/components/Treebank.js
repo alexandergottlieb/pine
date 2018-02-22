@@ -15,8 +15,8 @@ const Treebank = props => {
                 <small>{treebank.sentences} sentences</small>
             </p>
             <Button type="warning" onClick={() => actions.deleteTreebank(id)} icon="fa-trash">Delete</Button>
-            <Button type="secondary" link="#">Export</Button>
-            <Button type="primary" link={`/edit/${id}`}>Edit</Button>
+            <Button type="secondary" icon="fa-download" onClick={() => actions.queueExportTreebank(id)}>Export</Button>
+            <Button type="primary" icon="fa-pencil-alt" link={`/edit/${id}`}>Edit</Button>
         </aside>
     )
 

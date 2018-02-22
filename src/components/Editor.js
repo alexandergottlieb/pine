@@ -6,19 +6,25 @@ import '../css/Editor.css'
 
 const Editor = props => {
 
-  const { match, actions, current, sentences } = props
+  const { match, actions, current } = props
 
   //Maybe update current from URL
   const treebankID = match.params.treebank || null
   const sentenceID = match.params.sentence || null
 
+  //Sync react router params with redux current state
   if ( current.treebank !== treebankID
     || current.sentence !== sentenceID
   ) {
     actions.setCurrent(treebankID, sentenceID)
     actions.setWord()
     actions.clearRelations()
+    return null
   }
+
+  //Get only sentences from current treebank
+  let { sentences } = props
+  sentences = sentences[current.treebank] || []
 
   let contents = null
   let sentence = null

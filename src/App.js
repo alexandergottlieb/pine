@@ -12,7 +12,7 @@ const App = (props) => {
   return (
     <BrowserRouter>
       <div className="app">
-        <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} />} />
+        <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
         <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} />} />
       </div>
     </BrowserRouter>

@@ -3,9 +3,9 @@ import Word from './Word'
 
 export default class CONLLU {
 
-    constructor() {
-        this.name = ''
-        this.sentences = []
+    constructor(name = '', sentences = []) {
+        this.name = name
+        this.sentences = sentences
     }
 
     //Parse CoNLL-U text
@@ -64,16 +64,46 @@ export default class CONLLU {
         list = list.split("|")
         list.forEach(keyValue => {
             keyValue = keyValue.split("=")
-            const key = keyValue[0]
-            const value = keyValue[1]
+            const key = keyValue[0].trim()
+            const value = keyValue[1].trim()
             object[key] = value
         })
         return object
     }
 
     //Save state into CoNLL-U format
-    generateFile() {
+    export() {
+        const wordToConll = word => {
+            const stringifyList = object => {
+                let pairs = []
+                for (const key in object) {
+                    pairs.push(`${key}=${object[key]}`)
+                }
+                let string = pairs.join("|")
+                return string ? string : "_"
+            }
+            let data = [].fill("_", 0, 9)
+            data[0] = word.index || "_"
+            data[1] = word.inflection || "_"
+            data[2] = word.lemma || "_"
+            data[3] = word.uposTag || "_"
+            data[4] = word.xposTag || "_"
+            data[5] = stringifyList(word.features)
+            data[6] = word.parent || "_"
+            data[7] = word.relation || "_"
+            data[8] = word.dependencies || "_"
+            data[9] = stringifyList(word.misc)
+            return data.join("\t")
+        }
 
+        let lines = []
+        this.sentences.forEach(sentence => {
+            sentence.comments.forEach(comment => lines.push(comment))
+            sentence.words.forEach(word => lines.push(wordToConll(word)))
+            lines[lines.length-1] += "\n" //sentence separator
+        })
+
+        return lines.join("\n")
     }
 
     //Get list of relation tags
