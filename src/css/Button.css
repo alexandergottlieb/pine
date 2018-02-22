@@ -1,8 +1,7 @@
 .button {
-    font-size:inherit;
     display:inline-block;
-    padding:0.5em 0.75em;
-    margin:0;
+    padding:0.5em 0;
+    font-size:inherit;
     border:0px;
     border-radius:3px;
     background-color:transparent;
@@ -10,9 +9,14 @@
     cursor:pointer;
     outline:0 !important;
 }
-.button + .button,
-.button + a {
+.button + .button {
     margin-left:1em;
+}
+.button--primary {
+    padding:0.5rem 0.75rem;
+}
+.button--secondary {
+    color:inherit;
 }
 .button__icon + * {
     margin-left:0.5em;

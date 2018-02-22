@@ -4,3 +4,12 @@
 .treebanks {
     padding:1rem 0;
 }
+.upload-treebank {
+    padding:0.5em 0.75em;
+    border-radius:3px;
+    text-transform:uppercase;
+    cursor:pointer;
+}
+.upload-treebank input {
+    display:none;
+}

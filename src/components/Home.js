@@ -42,7 +42,8 @@ class Home extends Component {
         <div className="treebanks">
           {treebanksList}
         </div>
-        <label className="upload">Upload Treebank
+        <label className="upload-treebank" title=".conllu format">
+          <span class="fa fa-cloud-upload-alt"></span> Upload
           <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
         </label>
       </div>

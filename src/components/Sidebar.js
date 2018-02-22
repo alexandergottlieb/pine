@@ -22,7 +22,7 @@ const Sidebar = props => {
           {sentences}
       </nav>
       <div className="sidebar__buttons">
-        <Button type="secondary" icon="fa-plus-circle">Add</Button>
+        <Button type="primary" icon="fa-plus-circle">Add</Button>
       </div>
     </div>
   )

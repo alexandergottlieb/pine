@@ -9,14 +9,15 @@ const Treebank = props => {
     const {id, name} = treebank
 
     return (
-        <div className="treebank" to={`/edit/${id}`}>
-            <Link to={`/edit/${id}`}><h3>{name}</h3></Link>
+        <aside className="treebank">
+            <Link to={`/edit/${id}`}><h1>{name}</h1></Link>
             <p>
                 <small>{treebank.sentences} sentences</small>
             </p>
-            <Button type="warning" onClick={() => actions.deleteTreebank(id)} icon="fa-trash"></Button>
-            <Link to={`/edit/${id}`}><Button type="secondary" icon="fa-pencil">Open</Button></Link>
-        </div>
+            <Button type="warning" onClick={() => actions.deleteTreebank(id)} icon="fa-trash">Delete</Button>
+            <Button type="secondary" link="#">Export</Button>
+            <Button type="primary" link={`/edit/${id}`}>Edit</Button>
+        </aside>
     )
 
 }

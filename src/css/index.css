@@ -41,16 +41,16 @@ a {
 .editor,
 .relation__grab,
 .relation__label .is-focused .Select-input,
-.relation__label .Select-value-label {
+.relation__label .Select-value-label,
+.upload-treebank {
   background-color:white;
 }
 body,
-.button--primary,
 .button--warning,
 .sidebar {
   color:white;
 }
-.button--secondary {
+.button--primary {
   background-color:white;
 }
 /* Light */
@@ -62,10 +62,11 @@ body,
   background-color:#F2F6FF;
 }
 /* Accent */
-.button--primary,
-.button--secondary:hover {
+.button--primary:hover,
+.upload-treebank:hover {
   background-color:#FFFF82;
 }
+.button--secondary:hover,
 .sentences__sentence--active {
   color:#FFFF82;
 }
@@ -75,7 +76,9 @@ body,
 .sidebar__buttons {
   background-color:#13161F;
 }
-.editor {
+.editor,
+.upload-treebank,
+.button--primary {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -89,7 +92,7 @@ body,
 }
 /* Red */
 .button--warning {
-  background-color:#DF2935;
+  color:#DF2935;
 }
 
 /**** Transitions ****/

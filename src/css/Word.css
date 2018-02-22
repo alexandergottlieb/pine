@@ -12,6 +12,9 @@
 .word--editable {
   z-index:100;
 }
+.word--relations-selected:hover {
+  transform:scale(1.05);
+}
   /* Inflection */
   .word__inflection {
     width:100%;
@@ -29,7 +32,10 @@
   .word--editable .word__inflection {
     cursor:text;
   }
-  .word:not(.word--editable):hover .word__inflection,
+  .word--relations-selected .word__inflection {
+    pointer-events:none;
+  }
+  .word:not(.word--editable):not(.word--relations-selected):hover .word__inflection,
   .word__inflection:hover,
   .word__inflection:focus {
       background-color:rgba(0,0,0,0.2);
@@ -48,7 +54,7 @@
     font-size:0.5rem;
     opacity:0.7;
   }
-  .word:hover .word__pos-tag,
+  .word:not(.word--relations-selected):hover .word__pos-tag,
   .word--editable .word__pos-tag {
     opacity:0;
   }

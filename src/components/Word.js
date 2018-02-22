@@ -61,10 +61,6 @@ export default class Word extends Component {
             width: scaling.wordWidth+'px',
         }
 
-        const editableClass = editable ? ' word--editable' : ''
-
-        const cls = `word word--${word.uposTag.toLowerCase()}${editableClass}`
-
         const click = event => {
             if (current.relations && current.relations.length > 0) {
                 //Set all relations to point to this word
@@ -88,13 +84,15 @@ export default class Word extends Component {
             value: word.uposTag,
             label: uposTags.find(tag => tag.value === word.uposTag).label
         }
-        // uposTags = uposTags.map(tag => {
-        //     return {value: tag, label: tag}
-        // })
+
+        let classes = ["word"]
+        classes.push(`word--${word.uposTag.toLowerCase()}`)
+        if (editable) classes.push("word--editable")
+        if (current.relations && current.relations.length > 0) classes.push("word--relations-selected")
 
         return (
-            <div className={cls} style={style} onClick={click}>
-                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
+            <div className={classes.join(' ')} style={style} onClick={click}>
+                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} disabled={editable ? "disabled" : "false"} ref={el => this.elements.inflection = el}/>
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word-data word-data--${editable ? "show" : "hide"}`}>
                     <label className="word-data__label" title="The root form of the word">Lemma</label>

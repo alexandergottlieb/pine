@@ -199,7 +199,7 @@ class Tree extends Component {
         } else {
             this.cancelAnimation()
         }
-
+        
         return (
             <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>

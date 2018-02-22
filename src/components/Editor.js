@@ -28,7 +28,7 @@ const Editor = props => {
   } else {
     contents = (
       <div className="editor__no-selection">
-        <span className="fa fa-hand-o-left"></span>
+        <span className="fa fa-hand-point-left"></span>
         <p>Select a sentence to edit</p>
       </div>
     )
