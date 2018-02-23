@@ -61,7 +61,7 @@ class Tree extends Component {
         for (let index in sentence.words) {
           if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
         }
-        const wordWidth = Math.max(longestWord * rem * 0.7, 10 * rem) //At least 10rem
+        const wordWidth = 10 * rem //Math.max(longestWord * rem * 0.7, 10 * rem) //At least 10rem
         const xUnit = wordWidth * 1.33 //Extra padding
 
         //Calculate node positions
