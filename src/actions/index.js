@@ -84,10 +84,10 @@ export const syncSentences = (treebank) => {
             //Remove existing watcher
             stopWatching("/sentences/")
             database.ref(endpoint).orderByKey().on("value", snapshot => {
+                const sentences = snapshot.val() || []
                 dispatch({
                     type: "SENTENCES_UPDATE",
-                    treebank,
-                    sentences: snapshot.val()
+                    treebank, sentences
                 })
             })
         }
@@ -101,11 +101,10 @@ export const syncWords = (treebank, sentence) => {
             stopWatching("/words/")
             watchers.push(endpoint)
             database.ref(endpoint).orderByKey().on('value', snapshot => {
-                const data = snapshot.val()
-                const word = data.index
+                const words = snapshot.val()
                 dispatch({
                     type: "WORDS_UPDATE",
-                    word, data
+                    words
                 })
             })
         }

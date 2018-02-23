@@ -41,8 +41,8 @@ class Editor extends Component {
 
     let contents = null
     let sentence = null
-    if (current.sentence !== null) {
-      sentence = new Sentence(treebankSentences[current.sentence])
+    if (treebankSentences && current.sentence !== null) {
+      sentence = Object.assign({}, treebankSentences[current.sentence])
       sentence.words = words || []
       contents = <Tree actions={actions} sentence={sentence} current={current} />
     } else {

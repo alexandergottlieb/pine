@@ -139,32 +139,26 @@ class Tree extends Component {
 
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
-        let editedSentence = new Sentence(sentence)
+        const editedSentence = new Sentence(sentence)
         Object.assign(editedSentence.words[wordIndex], data)
 
-        //If changing tree structure
-        if (data.parent) {
+        try {
             //Validate sentence
-            try {
-                editedSentence.validate()
-                actions.editWord(current.treebank, current.sentence, wordIndex, data)
-            } catch (errorMessage) {
-                if (typeof errorMessage === "string") {
-                    actions.addError(errorMessage)
-                } else { //Unexpected error
-                    throw errorMessage
-                }
-            }
-        } else {
-            //No validation needed
+            editedSentence.validate()
+            //Edit word
             actions.editWord(current.treebank, current.sentence, wordIndex, data)
+            //Edit sentence
+            editedSentence.stringSentenceTogether()
+            actions.editSentence(current.treebank, current.sentence, {
+                sentence: editedSentence.sentence
+            })
+        } catch (errorMessage) {
+            if (typeof errorMessage === "string") {
+                actions.addError(errorMessage)
+            } else { //Unexpected error
+                throw errorMessage
+            }
         }
-
-        //Update sentence
-        editedSentence.stringSentenceTogether()
-        actions.editSentence(current.treebank, current.sentence, {
-            sentence: editedSentence.sentence
-        })
     }
 
     render() {

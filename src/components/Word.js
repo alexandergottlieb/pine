@@ -15,6 +15,17 @@ export default class Word extends Component {
         this.elements = {inflection: null}
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {inflection, lemma, xposTag} = this.props.word
+
+        //If word properties have changed, update state
+        let newState = {}
+        if (inflection !== nextProps.word.inflection) newState.inflection = nextProps.word.inflection
+        if (lemma !== nextProps.word.lemma) newState.lemma = nextProps.word.lemma
+        if (xposTag !== nextProps.word.xposTag) newState.xposTag = nextProps.word.xposTag
+        this.setState(newState)
+    }
+
     inflectionChange = event => {
         const { word, editWord } = this.props
         const { value } = event.target
@@ -51,6 +62,7 @@ export default class Word extends Component {
     render() {
         const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
 
+        console.log('word state', this.state)
         const realX = x * scaling.units.x
         const realY = y * scaling.units.y
 
@@ -91,7 +103,7 @@ export default class Word extends Component {
 
         return (
             <div className={classes.join(' ')} style={style} onClick={click}>
-                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
+                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el} />
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word-data word-data--${editable ? "show" : "hide"}`}>
                     <label className="word-data__label" title="The root form of the word">Lemma</label>

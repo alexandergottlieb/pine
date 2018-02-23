@@ -6,8 +6,8 @@ export default class TreeDrawer {
         this.nodes = [];
         let self = this;
 
-        sentence.words.forEach( (word, index) => {
-            createNode(index);
+        sentence.words.forEach( word => {
+            createNode(word.index);
         })
 
         function createNode(index) {

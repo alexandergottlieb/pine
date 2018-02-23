@@ -2,8 +2,10 @@ export default class Sentence {
 
     constructor(sentence = {sentence: "", words: [], comments: []}) {
         this.sentence = sentence.sentence
-        this.words = Array.isArray(sentence.words) ? sentence.words.slice(0) : []
-        this.comments = sentence.comments.slice(0)
+        this.words = []
+        sentence.words.forEach(word => this.words[word.index] = Object.assign({}, word))
+        this.comments = []
+        sentence.comments.forEach(comment => this.comments[comment.index] = Object.assign({}, comment))
     }
 
     stringSentenceTogether() {
@@ -16,14 +18,18 @@ export default class Sentence {
 
     //Throw if sentence violates dependency grammar rules
     validate() {
-        let words = this.words.slice(0)
-        words.map(word => Object.assign(word, {children: []}))
+        let words = []
+        this.words.forEach(word => words[word.index] = Object.assign({}, word))
+        words = words.map(word => { return {...word, children: []} })
+
+        //Basic validation
         words.forEach(word => {
             const { parent, index } = word
             if (parent < 0) throw "Something is very wrong."
             if (parent == word.index) throw "A word cannot be related to itself."
             if (parent != 0) words[parent].children.push(index)
         })
+
         //Check every node is reachable from root => no cycles
         let unvisited = [words.find(word => word && word.parent == 0)]
         let visited = []

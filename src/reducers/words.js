@@ -6,8 +6,8 @@ const words = (state = [], action) => {
             return newState
         }
         case "WORDS_UPDATE": {
-            let newState = state.slice(0)
-            newState = action.data
+            let newState = []
+            action.words.forEach(word => newState[word.index] = Object.assign({}, word))
             return newState
         }
         default:
