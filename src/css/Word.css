@@ -1,6 +1,5 @@
 .word {
   position: absolute;
-  max-height:20rem;
   margin:2rem;
   padding:0.5rem;
   border-radius: 5px;
@@ -9,8 +8,6 @@
   background-color:#E7ECEF;
   box-shadow:0 2px 4px 0 rgba(0,0,0,0.16);
   cursor:pointer;
-  overflow-y:scroll;
-  overflow-x:hidden;
 }
 .word--editable {
   z-index:100;
@@ -111,6 +108,12 @@
   }
   .word-data .Select-arrow-zone:hover .Select-arrow {
     opacity:0.7;
+  }
+  .word-data .Select-menu-outer {
+    border:0;
+    border-radius:4px;
+    box-shadow:0 4px 20px 0 rgba(0,0,0,0.16);
+    overflow:hidden;
   }
 
 /* Colour Code */
