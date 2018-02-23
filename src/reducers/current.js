@@ -58,8 +58,13 @@ const current = (state = defaultState, action) => {
         }
         case "FETCHED_SENTENCES": {
             let newState = Object.assign({}, state)
-            newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
-            if (newState.exports.ready.indexOf(action.treebank === -1)) newState.exports.ready.push(action.treebank)
+            //If treebank was downloading for export
+            if (newState.exports.downloading.indexOf(action.treebank) !== -1) {
+                //treebank ready to download
+                if (newState.exports.ready.indexOf(action.treebank === -1)) newState.exports.ready.push(action.treebank)
+                //treebank no longer downloading
+                newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
+            }
             return newState
         }
         case "EXPORT_TREEBANK_COMPLETED": {
