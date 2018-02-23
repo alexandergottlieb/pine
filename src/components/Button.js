@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Button = props => {
 
-  let { children, type, icon, onClick, link, disabled } = props
+  let { children, type, icon, onClick, link, disabled, title } = props
 
   if (children) children = <span>{children}</span>
 
@@ -13,7 +13,7 @@ const Button = props => {
   const style = disabled ? {pointerEvents: "none"} : {}
 
   return (
-    <Tag className={`button button--${type}`} onClick={onClick} type="button" to={link} style={style}>
+    <Tag className={`button button--${type}`} onClick={onClick} type="button" to={link} style={style} title={title}>
         {iconSpan}
         {children}
     </Tag>

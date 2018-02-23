@@ -9,7 +9,7 @@ const Sidebar = props => {
 
   sentences = sentences.map( (sentence, id) => {
     const cls = current.sentence !== null && Number(current.sentence) === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
-    return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`}>{sentence.sentence}</Link>
+    return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`} title={sentence.sentence}>{sentence.sentence}</Link>
   })
 
   return (
@@ -22,7 +22,7 @@ const Sidebar = props => {
           {sentences}
       </nav>
       <div className="sidebar__buttons">
-        <Button type="primary" icon="fa-plus-circle">Add</Button>
+        <Button type="primary" icon="fa-plus-circle" title="New Sentence">Add</Button>
       </div>
     </div>
   )

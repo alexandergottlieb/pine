@@ -44,12 +44,7 @@ export const uploadTreebank = treebank => {
         treebank.id = treebankRef.key
         treebankRef.set(treebank).then(() => {
             const sentencesRef = database.ref(`/sentences/${treebankRef.key}`)
-            sentencesRef.set(sentences).then(() => {
-                dispatch({ type: "UPLOAD_TREEBANK_SUCCEEDED" })
-            }).catch((error) => {
-                console.error(error)
-                dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
-            })
+            sentencesRef.set(sentences)
         }).catch((error) => {
             console.error(error)
             dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
