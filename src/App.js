@@ -22,13 +22,13 @@ class App extends Component {
   }
 
   render() {
-    const { actions, current, treebanks, sentences } = this.props
+    const { actions, current, treebanks, sentences, words } = this.props
 
     return (
       <BrowserRouter>
         <div className="app">
           <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
-          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} />} />
+          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} words={words} />} />
         </div>
       </BrowserRouter>
     )

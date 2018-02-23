@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 import Tree from './Tree'
 import Messages from './Messages'
+import Sentence from '../classes/Sentence'
 import '../css/Editor.css'
 
 class Editor extends Component {
@@ -33,7 +34,7 @@ class Editor extends Component {
   }
 
   render() {
-    const { actions, current, sentences } = this.props
+    const { actions, current, sentences, words } = this.props
 
     //Get only sentences from current treebank
     const treebankSentences = sentences[current.treebank] || []
@@ -41,7 +42,8 @@ class Editor extends Component {
     let contents = null
     let sentence = null
     if (current.sentence !== null) {
-      sentence = treebankSentences[current.sentence]
+      sentence = new Sentence(treebankSentences[current.sentence])
+      sentence.words = words || []
       contents = <Tree actions={actions} sentence={sentence} current={current} />
     } else {
       contents = (

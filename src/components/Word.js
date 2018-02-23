@@ -26,7 +26,6 @@ export default class Word extends Component {
 
     uposChange = selected => {
         const { word, editWord } = this.props
-        console.log('selected', selected)
         const { value } = selected
         if (value !== word.uposTag) editWord(word.index, {uposTag: value})
     }

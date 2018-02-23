@@ -5,6 +5,14 @@ import CONLLU from "../classes/CONLLU"
 //Track listeners on firebase endpoints to aviod duplication
 let watchers = []
 
+const stopWatching = endpoint => {
+    watchers = watchers.filter(watcher => {
+        const keep = watcher.indexOf(endpoint) !== 0
+        if (!keep) database.ref(watcher).off('value')
+        return keep
+    })
+}
+
 export const addError = message => {
     return dispatch => {
         //Automatically remove message later
@@ -43,11 +51,15 @@ export const uploadTreebank = treebank => {
         const treebankRef = database.ref("/treebanks").push()
         treebank.id = treebankRef.key
         treebankRef.set(treebank).then(() => {
+            //Normalise sentences and words at eg. words/:treebankID/:sentenceID
+            sentences.forEach( (sentence, index) => {
+                const wordsRef = database.ref(`/words/${treebankRef.key}/${index}`)
+                wordsRef.set(sentence.words)
+                sentence.words = sentence.words.length
+            })
             const sentencesRef = database.ref(`/sentences/${treebankRef.key}`)
             sentencesRef.set(sentences)
-        }).catch((error) => {
-            console.error(error)
-            dispatch({ type: "UPLOAD_TREEBANK_FAILED" })
+
         })
     }
 }
@@ -57,36 +69,63 @@ export const deleteTreebank = id => {
         dispatch({ type: "DELETE_TREEBANK_STARTED" })
         database.ref(`/treebanks/${id}`).remove().then(() => {
             database.ref(`/sentences/${id}`).remove().then(() => {
-                dispatch({ type: "DELETE_TREEBANK_SUCCEEDED", id })
+                database.ref(`/words/${id}`).remove().then(() => {
+                    dispatch({ type: "DELETE_TREEBANK_SUCCEEDED", id })
+                })
             })
         })
     }
 }
 
-export const fetchSentences = (treebankID) => {
+export const syncSentences = (treebank) => {
     return dispatch => {
-        const ref = database.ref(`/sentences/${treebankID}`).orderByKey()
-        ref.once("value", snapshot => {
-            dispatch({
-                type: "FETCHED_SENTENCES",
-                treebank: treebankID,
-                sentences: snapshot.val()
+        const endpoint = `/sentences/${treebank}`
+        if (watchers.indexOf(endpoint) === -1) {
+            //Remove existing watcher
+            stopWatching("/sentences/")
+            database.ref(endpoint).orderByKey().on("value", snapshot => {
+                dispatch({
+                    type: "SENTENCES_UPDATE",
+                    treebank,
+                    sentences: snapshot.val()
+                })
             })
-        })
+        }
     }
 }
 
-export const setCurrent = (treebankID, sentenceID) => {
+export const syncWords = (treebank, sentence) => {
+    return dispatch => {
+        const endpoint = `/words/${treebank}/${sentence}`
+        if (watchers.indexOf(endpoint) === -1) {
+            stopWatching("/words/")
+            watchers.push(endpoint)
+            database.ref(endpoint).orderByKey().on('value', snapshot => {
+                const data = snapshot.val()
+                const word = data.index
+                dispatch({
+                    type: "WORDS_UPDATE",
+                    word, data
+                })
+            })
+        }
+    }
+}
+
+export const setCurrent = (treebank, sentence = null) => {
     return dispatch => {
         dispatch({
             type: "SET_CURRENT_TREEBANK",
-            id: treebankID
+            id: treebank
         })
         dispatch({
             type: "SET_CURRENT_SENTENCE",
-            id: sentenceID
+            id: sentence
         })
-        dispatch(fetchSentences(treebankID))
+        //Watch changes to words sentence
+        if (sentence) dispatch(syncWords(treebank, sentence))
+        //Watch changes to sentences in treebank
+        dispatch(syncSentences(treebank))
     }
 }
 
@@ -113,10 +152,10 @@ export const clearRelations = () => {
 export const editWord = (treebank, sentence, word, data) => {
     return dispatch => {
         dispatch({
-            type: "EDIT_WORD",
+            type: "WORD_EDIT",
             treebank, sentence, word, data
         })
-        const ref = database.ref(`/sentences/${treebank}/${sentence}/words/${word}`)
+        const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
         ref.update(data)
     }
 }
@@ -124,11 +163,10 @@ export const editWord = (treebank, sentence, word, data) => {
 export const editSentence = (treebank, sentence, data) => {
     return dispatch => {
         dispatch({
-            type: "EDIT_SENTENCE",
+            type: "SENTENCE_EDIT",
             treebank, sentence, data
         })
         const ref = database.ref(`/sentences/${treebank}/${sentence}`)
-        console.log('incoming', data)
         ref.update(data)
     }
 }
@@ -139,7 +177,7 @@ export const queueExportTreebank = (treebankID) => {
             type: "EXPORT_TREEBANK_STARTED",
             treebank: treebankID
         })
-        dispatch(fetchSentences(treebankID))
+        dispatch(syncSentences(treebankID))
     }
 }
 

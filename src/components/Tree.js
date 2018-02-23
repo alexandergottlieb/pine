@@ -54,7 +54,7 @@ class Tree extends Component {
         const { actions, current, sentence } = props
         const { rem } = this.state.scaling
 
-        if (!sentence) return
+        if (!sentence || sentence.words.length === 0) return
 
         //Scale x unit to longest word
         let longestWord = 0
@@ -139,9 +139,8 @@ class Tree extends Component {
 
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
-
         let editedSentence = new Sentence(sentence)
-        editedSentence.words[wordIndex] = Object.assign({}, sentence.words[wordIndex], data)
+        Object.assign(editedSentence.words[wordIndex], data)
 
         //If changing tree structure
         if (data.parent) {

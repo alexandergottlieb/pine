@@ -5,6 +5,7 @@ export default class TreeDrawer {
     constructor(sentence) {
         this.nodes = [];
         let self = this;
+
         sentence.words.forEach( (word, index) => {
             createNode(index);
         })

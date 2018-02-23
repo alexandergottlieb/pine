@@ -1,14 +1,9 @@
 export default class Sentence {
 
-    constructor(sentence = null) {
-        this.sentence = ""
-        this.words = []
-        this.comments = []
-        if (sentence !== null) {
-            this.sentence = sentence.sentence
-            this.words = sentence.words.slice(0)
-            this.comments = sentence.comments.slice(0)
-        }
+    constructor(sentence = {sentence: "", words: [], comments: []}) {
+        this.sentence = sentence.sentence
+        this.words = Array.isArray(sentence.words) ? sentence.words.slice(0) : []
+        this.comments = sentence.comments.slice(0)
     }
 
     stringSentenceTogether() {
