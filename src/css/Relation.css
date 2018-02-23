@@ -21,6 +21,7 @@
     }
     .relation__label .Select {
       outline:none !important;
+      pointer-events:none;
     }
 
     .relation__label .Select-control {
@@ -42,6 +43,7 @@
       border-radius:2px;
       color:#738290 !important;
       cursor:text !important;
+      pointer-events:all;
     }
     .relation__label .Select.is-open .Select-value-label {
       display:none;
