@@ -92,7 +92,7 @@ export default class Word extends Component {
 
         return (
             <div className={classes.join(' ')} style={style} onClick={click}>
-                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} disabled={editable ? "disabled" : "false"} ref={el => this.elements.inflection = el}/>
+                <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el}/>
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word-data word-data--${editable ? "show" : "hide"}`}>
                     <label className="word-data__label" title="The root form of the word">Lemma</label>

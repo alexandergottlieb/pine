@@ -1,6 +1,9 @@
-import { database } from '../firebaseApp'
-import FileSaver from 'file-saver'
-import CONLLU from '../classes/CONLLU'
+import { database } from "../firebaseApp"
+import FileSaver from "file-saver"
+import CONLLU from "../classes/CONLLU"
+
+//Track listeners on firebase endpoints to aviod duplication
+let watchers = []
 
 export const addError = message => {
     return dispatch => {
@@ -18,13 +21,16 @@ export const addError = message => {
 
 export const fetchTreebanks = () => {
     return dispatch => {
-        const ref = database.ref('/treebanks')
-        ref.once('value', snapshot => {
-            dispatch({
-                type: "FETCH_TREEBANKS_COMPLETE",
-                treebanks: snapshot.val()
+        if (watchers.indexOf("/treebanks") === -1) {
+            watchers.push("/treebanks")
+            const ref = database.ref("/treebanks")
+            ref.on("value", snapshot => {
+                dispatch({
+                    type: "FETCH_TREEBANKS_COMPLETE",
+                    treebanks: snapshot.val()
+                })
             })
-        })
+        }
     }
 }
 
@@ -34,7 +40,7 @@ export const uploadTreebank = treebank => {
         const sentences = treebank.sentences
         treebank.sentences = treebank.sentences.length
 
-        const treebankRef = database.ref('/treebanks').push()
+        const treebankRef = database.ref("/treebanks").push()
         treebank.id = treebankRef.key
         treebankRef.set(treebank).then(() => {
             const sentencesRef = database.ref(`/sentences/${treebankRef.key}`)
@@ -65,7 +71,7 @@ export const deleteTreebank = id => {
 export const fetchSentences = (treebankID) => {
     return dispatch => {
         const ref = database.ref(`/sentences/${treebankID}`).orderByKey()
-        ref.once('value', snapshot => {
+        ref.once("value", snapshot => {
             dispatch({
                 type: "FETCHED_SENTENCES",
                 treebank: treebankID,
@@ -116,13 +122,19 @@ export const editWord = (treebank, sentence, word, data) => {
             treebank, sentence, word, data
         })
         const ref = database.ref(`/sentences/${treebank}/${sentence}/words/${word}`)
-        ref.update(data).catch(error => {
-            dispatch({
-                type: "ADD_MESSAGE",
-                message: "Database error, please refresh.",
-                status: "ERROR"
-            })
+        ref.update(data)
+    }
+}
+
+export const editSentence = (treebank, sentence, data) => {
+    return dispatch => {
+        dispatch({
+            type: "EDIT_SENTENCE",
+            treebank, sentence, data
         })
+        const ref = database.ref(`/sentences/${treebank}/${sentence}`)
+        console.log('incoming', data)
+        ref.update(data)
     }
 }
 

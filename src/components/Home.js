@@ -12,13 +12,6 @@ class Home extends Component {
     this.props.actions.fetchTreebanks()
   }
 
-  componentDidUpdate() {
-    const { current, treebanks, sentences, actions } = this.props
-    current.exports.ready.forEach(treebankID => {
-      actions.exportTreebank(treebanks[treebankID], sentences[treebankID])
-    })
-  }
-
   addFile(file) {
     if (!file) return
     let treebank = new CONLLU()
@@ -40,7 +33,8 @@ class Home extends Component {
     const treebanksList = []
     for (let id in this.props.treebanks) {
       let treebank = this.props.treebanks[id]
-      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} actions={actions} />)
+      const exporting = current.exports.downloading.indexOf(id) !== -1
+      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} actions={actions} exporting={exporting} />)
     }
 
     return (

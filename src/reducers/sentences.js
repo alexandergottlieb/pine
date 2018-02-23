@@ -10,6 +10,11 @@ const sentences = (state = {}, action) => {
             Object.assign(newState[action.treebank][action.sentence].words[action.word], action.data)
             return newState
         }
+        case "EDIT_SENTENCE": {
+            let newState = Object.assign({}, state)
+            Object.assign(newState[action.treebank][action.sentence], action.data)
+            return newState
+        }
         default:
             return state
     }

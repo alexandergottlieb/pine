@@ -12,6 +12,7 @@ export default class Sentence {
     }
 
     stringSentenceTogether() {
+        this.sentence = ""
         this.words.forEach(word => {
             let glue = word.uposTag === 'PUNCT' ? '' : ' ' //Add space between words but not punctuation
             this.sentence = this.sentence + glue + word.inflection

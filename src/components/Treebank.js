@@ -5,8 +5,12 @@ import '../css/Treebank.css'
 
 const Treebank = props => {
 
-    const { treebank, actions } = props
+    const { treebank, exporting, actions } = props
     const {id, name} = treebank
+
+    const exportButton = !exporting
+        ? <Button type="secondary" icon="fa-download" onClick={() => actions.queueExportTreebank(id)}>Export</Button>
+        : <Button type="secondary" icon="fa-cog fa-spin" disabled>Export</Button>
 
     return (
         <aside className="treebank">
@@ -15,7 +19,7 @@ const Treebank = props => {
                 <small>{treebank.sentences} sentences</small>
             </p>
             <Button type="warning" onClick={() => actions.deleteTreebank(id)} icon="fa-trash">Delete</Button>
-            <Button type="secondary" icon="fa-download" onClick={() => actions.queueExportTreebank(id)}>Export</Button>
+            {exportButton}
             <Button type="primary" icon="fa-pencil-alt" link={`/edit/${id}`}>Edit</Button>
         </aside>
     )

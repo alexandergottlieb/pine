@@ -6,18 +6,33 @@ import * as actionCreators from "./actions";
 import Editor from './components/Editor'
 import Home from './components/Home'
 
-const App = (props) => {
-  const {actions, treebanks, sentences, current} = props
+class App extends Component {
 
-  return (
-    <BrowserRouter>
-      <div className="app">
-        <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
-        <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} />} />
-      </div>
-    </BrowserRouter>
-  )
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
+  componentDidUpdate() {
+    const { actions, current, treebanks, sentences } = this.props
+    //Do pending exports
+    current.exports.ready.forEach(treebankID => {
+      actions.exportTreebank(treebanks[treebankID], sentences[treebankID])
+    })
+  }
+
+  render() {
+    const { actions, current, treebanks, sentences } = this.props
+
+    return (
+      <BrowserRouter>
+        <div className="app">
+          <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
+          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} />} />
+        </div>
+      </BrowserRouter>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({...state});

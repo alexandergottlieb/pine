@@ -61,7 +61,7 @@ class Tree extends Component {
         for (let index in sentence.words) {
           if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
         }
-        const wordWidth = Math.max(longestWord * rem, 10 * rem) //At least 10rem
+        const wordWidth = Math.max(longestWord * rem * 0.7, 10 * rem) //At least 10rem
         const xUnit = wordWidth * 1.33 //Extra padding
 
         //Calculate node positions
@@ -140,10 +140,12 @@ class Tree extends Component {
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
 
-        if (data.parent) { //If changing tree structure
+        let editedSentence = new Sentence(sentence)
+        editedSentence.words[wordIndex] = Object.assign({}, sentence.words[wordIndex], data)
+
+        //If changing tree structure
+        if (data.parent) {
             //Validate sentence
-            let editedSentence = new Sentence(sentence)
-            editedSentence.words[wordIndex] = Object.assign({}, sentence.words[wordIndex], data)
             try {
                 editedSentence.validate()
                 actions.editWord(current.treebank, current.sentence, wordIndex, data)
@@ -158,6 +160,12 @@ class Tree extends Component {
             //No validation needed
             actions.editWord(current.treebank, current.sentence, wordIndex, data)
         }
+
+        //Update sentence
+        editedSentence.stringSentenceTogether()
+        actions.editSentence(current.treebank, current.sentence, {
+            sentence: editedSentence.sentence
+        })
     }
 
     render() {
@@ -199,7 +207,7 @@ class Tree extends Component {
         } else {
             this.cancelAnimation()
         }
-        
+
         return (
             <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>
