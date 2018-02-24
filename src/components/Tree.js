@@ -54,8 +54,6 @@ class Tree extends Component {
         const { actions, current, sentence } = props
         const { rem } = this.state.scaling
 
-        if (!sentence || sentence.words.length === 0) return
-
         //Scale x unit to longest word
         let longestWord = 0
         for (let index in sentence.words) {

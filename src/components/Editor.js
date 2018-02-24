@@ -37,13 +37,14 @@ class Editor extends Component {
     const { actions, current, sentences } = this.props
 
     let contents = null
-    let sentence = null
-    if (sentences && current.sentence !== null) {
-      sentence = sentences[current.sentence]
-      contents = <Tree actions={actions} sentence={sentence} current={current} />
+    const sentence = sentences[current.sentence] || null
+    if (sentence) {
+      contents = sentence.words.length > 0
+        ? <Tree actions={actions} sentence={sentence} current={current} />
+        : <div className="editor__default"><span className="fa fa-cog fa-spin"></span></div>
     } else {
       contents = (
-        <div className="editor__no-selection">
+        <div className="editor__default">
           <span className="fa fa-hand-point-left fa-5x"></span>
           <p>Select a sentence to edit</p>
         </div>

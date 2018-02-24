@@ -87,8 +87,8 @@ body,
   background-color:#404655;
 }
 /* Grey */
-.editor__no-selection {
-  color:#738290 !important;
+.editor__default {
+  color:#738290;
 }
 /* Red */
 .button--warning {
