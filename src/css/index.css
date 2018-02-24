@@ -50,11 +50,12 @@ body,
 .sidebar {
   color:white;
 }
-.button--primary {
+.button--primary,
+.sentence-editor__word {
   background-color:white;
 }
 /* Light */
-.current-sentence,
+.sentence-editor,
 .relation__label .Select-value-label:hover,
 .relation__label .Select.is-open .Select-input,
 .relation__label .Select-option.is-focused,
@@ -78,7 +79,8 @@ body,
 }
 .editor,
 .upload-treebank,
-.button--primary {
+.button--primary,
+.sentence-editor__word {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -87,6 +89,9 @@ body,
   background-color:#404655;
 }
 /* Grey */
+/* .sentence-editor {
+  background-color:#738290;
+} */
 .editor__default {
   color:#738290;
 }

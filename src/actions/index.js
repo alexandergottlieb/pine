@@ -34,9 +34,7 @@ export const uploadTreebank = treebank => {
                 wordsRef.set(sentence.words)
                 delete sentence.words
             })
-            const sentencesRef = database.ref(`/sentences/${treebankRef.key}`)
-            sentencesRef.set(sentences)
-
+            database.ref(`/sentences/${treebankRef.key}`).set(sentences)
         })
     }
 }
@@ -108,8 +106,16 @@ export const editSentence = (treebank, sentence, data) => {
             type: "SENTENCE_EDIT",
             treebank, sentence, data
         })
-        const ref = database.ref(`/sentences/${treebank}/${sentence}`)
-        ref.update(data)
+        database.ref(`/sentences/${treebank}/${sentence}`).update(data)
+    }
+}
+
+export const moveWord = (treebankID, sentence, oldIndex, newIndex) => {
+    return dispatch => {
+        const newWords = sentence.words
+        //TODO Move elements in array while preserving relations
+        database.ref(`/words/${treebankID}/${sentence.index}`).set(newWords)
+        dispatch({type: "WORD_MOVED"})
     }
 }
 

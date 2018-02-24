@@ -1,0 +1,75 @@
+.sentence-editor {
+  position:relative;
+  z-index:10;
+  height:4.5rem;
+  margin:0;
+  padding:1.5rem 2rem 1.5rem 2rem;
+  font-size:1rem;
+  line-height:1rem;
+  white-space:nowrap;
+  overflow-x:scroll;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
+  user-select:none;
+}
+.sentence-editor__word {
+  display:inline-block;
+  padding:0.25em 0.5em;
+  margin-left:0.5em;
+  border-bottom:0.125em solid transparent;
+  border-radius:2px;
+  box-shadow:0 1px 2px 0 rgba(0,0,0,0.16);
+  cursor:move;
+}
+.sentence-editor__word:first-child {
+  margin-left:0;
+}
+
+/* Colour Code */
+.sentence-editor__word--adj {
+  border-color:#E7DB2A;
+}
+.sentence-editor__word--adp {
+  border-color:#549688;
+}
+.sentence-editor__word--cconj {
+  border-color:#D9EB5D;
+}
+.sentence-editor__word--adv {
+  border-color:#D44320;
+}
+.sentence-editor__word--aux {
+  border-color:#A8E1DD;
+}
+.sentence-editor__word--sym {
+  border-color:#CF1E25;
+}
+.sentence-editor__word--intj {
+  border-color:#F1F375;
+}
+.sentence-editor__word--punct {
+  border-color:#7A161A;
+}
+.sentence-editor__word--noun {
+  border-color:#6FC847;
+}
+.sentence-editor__word--det {
+  border-color:#E692B6;
+}
+.sentence-editor__word--propn {
+  border-color:#4B66BA;
+}
+.sentence-editor__word--num {
+  border-color:#EBC38A;
+}
+.sentence-editor__word--verb {
+  border-color:#DAC4F7;
+}
+.sentence-editor__word--part {
+  border-color:#5243A3;
+}
+.sentence-editor__word--pron {
+  border-color:#DD991E;
+}
+.sentence-editor__word--sconj {
+  border-color:#96187F;
+}

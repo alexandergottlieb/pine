@@ -1,6 +1,6 @@
 export default class Sentence {
 
-    constructor(sentence = {sentence: "", words: [], comments: []}) {
+    constructor(sentence = {sentence: "", words: [], comments: [], index: null}) {
         this.sentence = sentence.sentence
         this.words = []
         sentence.words.forEach(word => this.words[word.index] = Object.assign({}, word))

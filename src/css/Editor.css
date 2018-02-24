@@ -1,15 +1,3 @@
-/* Current Sentence */
-.current-sentence {
-  position:relative;
-  z-index:10;
-  margin:0;
-  padding:1.5rem 2rem 1.5rem 2rem;
-  font-size:1rem;
-  line-height:1rem;
-  white-space:nowrap;
-  overflow-x:scroll;
-}
-
 /* Editor */
 .editor {
   position:fixed;

@@ -35,8 +35,9 @@ export default class CONLLU {
                 self.sentences[current].words[index] = word
             }
         })
-        self.sentences.forEach(sentence => {
+        self.sentences.forEach( (sentence, index) => {
             sentence.stringSentenceTogether()
+            sentence.index = index
         })
     }
 

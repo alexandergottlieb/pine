@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Sidebar from './Sidebar'
 import Tree from './Tree'
 import Messages from './Messages'
+import SentenceEditor from './SentenceEditor'
 import Sentence from '../classes/Sentence'
 import '../css/Editor.css'
 
@@ -33,6 +34,13 @@ class Editor extends Component {
     }
   }
 
+  moveWord(oldIndex, newIndex) {
+    const { actions, current, sentences } = this.props
+    const sentence = sentences[current.sentence]
+
+    actions.moveWord(current.treebank, sentence, oldIndex, newIndex)
+  }
+
   render() {
     const { actions, current, sentences } = this.props
 
@@ -55,7 +63,7 @@ class Editor extends Component {
       <div>
         <Sidebar current={current} sentences={sentences} />
         <div className="editor">
-          <h2 className="current-sentence">{sentence ? sentence.sentence : ''}</h2>
+          <SentenceEditor sentence={sentence} moveWord={this.moveWord.bind(this)} />
           {contents}
         </div>
         <Messages messages={current.messages} />
