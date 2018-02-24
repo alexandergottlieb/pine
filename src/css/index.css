@@ -68,7 +68,7 @@ body,
   background-color:#FFFF82;
 }
 .button--secondary:hover,
-.sentences__sentence--active {
+.sentences__sentence.sentences__sentence--active {
   color:#FFFF82;
 }
 /* Dark */
@@ -92,7 +92,9 @@ body,
 /* .sentence-editor {
   background-color:#738290;
 } */
-.editor__default {
+.editor__default,
+.breadcrumbs__breadcrumb--current,
+.sentences__sentence {
   color:#738290;
 }
 /* Red */
