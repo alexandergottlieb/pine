@@ -62,7 +62,6 @@ export default class Word extends Component {
     render() {
         const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
 
-        console.log('word state', this.state)
         const realX = x * scaling.units.x
         const realY = y * scaling.units.y
 

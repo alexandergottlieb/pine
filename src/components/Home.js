@@ -9,7 +9,7 @@ class Home extends Component {
     super(props)
     this.state = {}
 
-    this.props.actions.fetchTreebanks()
+    this.props.actions.syncTreebanks()
   }
 
   addFile(file) {

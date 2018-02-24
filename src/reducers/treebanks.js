@@ -1,8 +1,8 @@
 const treebanks = (state = {}, action) => {
     switch (action.type) {
-        case "FETCH_TREEBANKS_COMPLETE":
+        case "TREEBANKS_UPDATED":
             return Object.assign({}, action.treebanks)
-        case "DELETE_TREEBANK_SUCCEEDED":
+        case "TREEBANK_DELETE_SUCCEEDED":
             let newState = Object.assign({}, state)
             delete newState[action.id]
             return newState

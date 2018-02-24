@@ -2,16 +2,8 @@ import { database } from "../firebaseApp"
 import FileSaver from "file-saver"
 import CONLLU from "../classes/CONLLU"
 
-//Track listeners on firebase endpoints to aviod duplication
-let watchers = []
-
-const stopWatching = endpoint => {
-    watchers = watchers.filter(watcher => {
-        const keep = watcher.indexOf(endpoint) !== 0
-        if (!keep) database.ref(watcher).off('value')
-        return keep
-    })
-}
+import { syncTreebanks, syncSentences, syncWords } from "./sync"
+export * from "./sync"
 
 export const addError = message => {
     return dispatch => {
@@ -24,21 +16,6 @@ export const addError = message => {
             message,
             status: "ERROR"
         })
-    }
-}
-
-export const fetchTreebanks = () => {
-    return dispatch => {
-        if (watchers.indexOf("/treebanks") === -1) {
-            watchers.push("/treebanks")
-            const ref = database.ref("/treebanks")
-            ref.on("value", snapshot => {
-                dispatch({
-                    type: "FETCH_TREEBANKS_COMPLETE",
-                    treebanks: snapshot.val()
-                })
-            })
-        }
     }
 }
 
@@ -66,48 +43,14 @@ export const uploadTreebank = treebank => {
 
 export const deleteTreebank = id => {
     return dispatch => {
-        dispatch({ type: "DELETE_TREEBANK_STARTED" })
+        dispatch({ type: "TREEBANK_DELETE_STARTED" })
         database.ref(`/treebanks/${id}`).remove().then(() => {
             database.ref(`/sentences/${id}`).remove().then(() => {
                 database.ref(`/words/${id}`).remove().then(() => {
-                    dispatch({ type: "DELETE_TREEBANK_SUCCEEDED", id })
+                    dispatch({ type: "TREEBANK_DELETE_SUCCEEDED", id })
                 })
             })
         })
-    }
-}
-
-export const syncSentences = (treebank) => {
-    return dispatch => {
-        const endpoint = `/sentences/${treebank}`
-        if (watchers.indexOf(endpoint) === -1) {
-            //Remove existing watcher
-            stopWatching("/sentences/")
-            database.ref(endpoint).orderByKey().on("value", snapshot => {
-                const sentences = snapshot.val() || []
-                dispatch({
-                    type: "SENTENCES_UPDATE",
-                    treebank, sentences
-                })
-            })
-        }
-    }
-}
-
-export const syncWords = (treebank, sentence) => {
-    return dispatch => {
-        const endpoint = `/words/${treebank}/${sentence}`
-        if (watchers.indexOf(endpoint) === -1) {
-            stopWatching("/words/")
-            watchers.push(endpoint)
-            database.ref(endpoint).orderByKey().on('value', snapshot => {
-                const words = snapshot.val()
-                dispatch({
-                    type: "WORDS_UPDATE",
-                    words
-                })
-            })
-        }
     }
 }
 
@@ -121,10 +64,10 @@ export const setCurrent = (treebank, sentence = null) => {
             type: "SET_CURRENT_SENTENCE",
             id: sentence
         })
-        //Watch changes to words sentence
-        if (sentence) dispatch(syncWords(treebank, sentence))
         //Watch changes to sentences in treebank
         dispatch(syncSentences(treebank))
+        //Watch changes to words in sentence
+        if (sentence) dispatch(syncWords(treebank, sentence))
     }
 }
 
@@ -176,18 +119,26 @@ export const queueExportTreebank = (treebankID) => {
             type: "EXPORT_TREEBANK_STARTED",
             treebank: treebankID
         })
-        dispatch(syncSentences(treebankID))
-    }
-}
-
-export const exportTreebank = (treebank, sentences) => {
-    const conllu = new CONLLU(treebank.name, sentences)
-    const text = conllu.export()
-    const blob = new Blob([text])
-    const filename = `${treebank.name}.conllu`
-    FileSaver.saveAs(blob, filename)
-    return {
-        type: "EXPORT_TREEBANK_COMPLETED",
-        treebank: treebank.id
+        database.ref(`/treebanks/${treebankID}`).once('value', snapshot => {
+            let treebank = snapshot.val()
+            database.ref(`/sentences/${treebankID}`).orderByKey().once('value', snapshot => {
+                treebank.sentences = snapshot.val()
+                database.ref(`/words/${treebankID}`).orderByKey().once('value', snapshot => {
+                    let wordsBySentence = snapshot.val()
+                    wordsBySentence.forEach( (words, index) => {
+                        treebank.sentences[index].words = words
+                    })
+                    const conllu = new CONLLU(treebank.name, treebank.sentences)
+                    const text = conllu.export()
+                    const blob = new Blob([text])
+                    const filename = `${treebank.name}.conllu`
+                    FileSaver.saveAs(blob, filename)
+                    dispatch({
+                        type: "EXPORT_TREEBANK_COMPLETED",
+                        treebank: treebank.id
+                    })
+                })
+            })
+        })
     }
 }

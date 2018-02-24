@@ -13,14 +13,6 @@ class App extends Component {
     this.state = {}
   }
 
-  componentDidUpdate() {
-    const { actions, current, treebanks, sentences } = this.props
-    //Do pending exports
-    current.exports.ready.forEach(treebankID => {
-      actions.exportTreebank(treebanks[treebankID], sentences[treebankID])
-    })
-  }
-
   render() {
     const { actions, current, treebanks, sentences, words } = this.props
 
