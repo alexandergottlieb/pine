@@ -23,7 +23,6 @@
       outline:none !important;
       pointer-events:none;
     }
-
     .relation__label .Select-control {
       background-color:transparent !important;
     }
@@ -54,6 +53,7 @@
     }
     .relation__label .Select-input input {
       cursor:text !important;
+      pointer-events:all;
     }
     .relation__label .Select-arrow-zone,
     .relation__label .Select-clear-zone {
@@ -61,6 +61,7 @@
     }
     .relation__label .Select-menu {
       text-align:center;
+      pointer-events:all;
     }
     .relation__label .Select-option {
       color:#738290;

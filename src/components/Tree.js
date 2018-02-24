@@ -205,8 +205,8 @@ class Tree extends Component {
 
         return (
             <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
-                {/* <svg id="lines" className="lines">{lines}</svg>
-                <div className="relations">{relations}</div> */}
+                <svg id="lines" className="lines">{lines}</svg>
+                <div className="relations">{relations}</div>
                 {words}
             </div>
         )

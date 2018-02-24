@@ -34,16 +34,12 @@ class Editor extends Component {
   }
 
   render() {
-    const { actions, current, sentences, words } = this.props
-
-    //Get only sentences from current treebank
-    const treebankSentences = sentences[current.treebank] || []
+    const { actions, current, sentences } = this.props
 
     let contents = null
     let sentence = null
-    if (treebankSentences && current.sentence !== null) {
-      sentence = Object.assign({}, treebankSentences[current.sentence])
-      sentence.words = words || []
+    if (sentences && current.sentence !== null) {
+      sentence = sentences[current.sentence]
       contents = <Tree actions={actions} sentence={sentence} current={current} />
     } else {
       contents = (
@@ -56,7 +52,7 @@ class Editor extends Component {
 
     return (
       <div>
-        <Sidebar current={current} sentences={treebankSentences} />
+        <Sidebar current={current} sentences={sentences} />
         <div className="editor">
           <h2 className="current-sentence">{sentence ? sentence.sentence : ''}</h2>
           {contents}

@@ -32,7 +32,7 @@ export const uploadTreebank = treebank => {
             sentences.forEach( (sentence, index) => {
                 const wordsRef = database.ref(`/words/${treebankRef.key}/${index}`)
                 wordsRef.set(sentence.words)
-                sentence.words = sentence.words.length
+                delete sentence.words
             })
             const sentencesRef = database.ref(`/sentences/${treebankRef.key}`)
             sentencesRef.set(sentences)

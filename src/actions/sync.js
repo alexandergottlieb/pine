@@ -51,7 +51,7 @@ export const syncWords = (treebank, sentence) => {
                 const words = snapshot.val() || []
                 dispatch({
                     type: "WORDS_UPDATE",
-                    words
+                    treebank, sentence, words
                 })
             })
         }
