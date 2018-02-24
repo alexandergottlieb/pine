@@ -11,6 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {}
+
+    this.props.actions.syncTreebanks()
   }
 
   render() {
@@ -20,7 +22,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="app">
           <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
-          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} />} />
+          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
         </div>
       </BrowserRouter>
     )

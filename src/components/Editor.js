@@ -42,7 +42,7 @@ class Editor extends Component {
   }
 
   render() {
-    const { actions, current, sentences } = this.props
+    const { actions, current, sentences, treebanks } = this.props
 
     let contents = null
     const sentence = sentences[current.sentence] || null
@@ -61,7 +61,7 @@ class Editor extends Component {
 
     return (
       <div>
-        <Sidebar current={current} sentences={sentences} />
+        <Sidebar current={current} sentences={sentences} treebanks={treebanks} />
         <div className="editor">
           <SentenceEditor sentence={sentence} moveWord={this.moveWord.bind(this)} />
           {contents}

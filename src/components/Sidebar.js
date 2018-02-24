@@ -5,7 +5,9 @@ import '../css/Sidebar.css'
 
 const Sidebar = props => {
 
-  const { current, sentences } = props
+  const { current, sentences, treebanks } = props
+
+  const treebank = treebanks[current.treebank] || {name: "", sentences: ""}
 
   const sentenceLinks = sentences.map( (sentence, id) => {
     const cls = current.sentence !== null && Number(current.sentence) === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
@@ -15,9 +17,9 @@ const Sidebar = props => {
   return (
     <div className="sidebar">
       <nav className="breadcrumbs">
-        <Link to="/">Treebanks</Link>
+        <Link to="/">Treebanks /</Link> Edit
       </nav>
-      <h1 className="sidebar__title">Name</h1>
+      <h1 className="sidebar__title">{treebank.name}</h1>
       <nav className="sentences">
           {sentenceLinks}
       </nav>
