@@ -90,10 +90,12 @@ export default class Word extends Component {
         }
 
         const uposTags = CONLLU.uposTags()
-        const uposTagValue = {
-            value: word.uposTag,
-            label: uposTags.find(tag => tag.value === word.uposTag).label
-        }
+        const uposTagValue = word.uposTag
+            ? {
+                value: word.uposTag,
+                label: uposTags.find(tag => tag.value === word.uposTag).label
+            }
+            : null
 
         let classes = ["word"]
         classes.push(`word--${word.uposTag.toLowerCase()}`)

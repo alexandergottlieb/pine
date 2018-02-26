@@ -38,7 +38,7 @@ class Relation extends Component {
         relations = relations.map(relation => {
             return {value: relation, label: relation}
         })
-        const value = {value: word.relation, label: word.relation}
+        const value = {value: word.relation, label: word.relation ? word.relation : "?"}
 
         return (
             <div className={cls}>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import Sentence from '../classes/Sentence'
+import Word from '../classes/Word'
 import Sidebar from './Sidebar'
 import Tree from './Tree'
 import Messages from './Messages'
 import SentenceEditor from './SentenceEditor'
-import Sentence from '../classes/Sentence'
 import '../css/Editor.css'
 
 class Editor extends Component {
@@ -60,6 +61,28 @@ class Editor extends Component {
     })
   }
 
+  createWord(data) {
+    const { actions, current, sentences } = this.props
+    const sentence = sentences.find(sentence => sentence.id === current.sentence)
+
+    let word = new Word()
+    //Either parent is the root descendent or artificial root
+    const rootDescendent = sentence.words.find(word => word.parent === 0)
+    const parent = rootDescendent ? rootDescendent.index : 0
+    const index = sentence.wordCount()
+    const newWord = { ...word, ...data, index, parent }
+    actions.createWord(current.treebank, current.sentence, newWord)
+
+    //Update sentence.sentence
+    let newWords = sentence.words.map(word => word)
+    newWords.push(newWord)
+    let editedSentence = new Sentence({words: newWords})
+    editedSentence.stringSentenceTogether()
+    actions.editSentence(current.treebank, current.sentence, {
+        sentence: editedSentence.sentence
+    })
+  }
+
   render() {
     const { actions, current, sentences, treebanks } = this.props
 
@@ -82,10 +105,10 @@ class Editor extends Component {
       <div>
         <Sidebar current={current} sentences={sentences} treebanks={treebanks} />
         <div className="editor">
-          <SentenceEditor sentence={sentence} moveWord={this.moveWord.bind(this)} />
+          <SentenceEditor sentence={sentence} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
           {contents}
+          <Messages messages={current.messages} />
         </div>
-        <Messages messages={current.messages} />
       </div>
     )
   }

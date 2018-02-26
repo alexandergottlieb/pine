@@ -25,7 +25,7 @@ const Sidebar = props => {
           {sentenceLinks}
       </nav>
       <div className="sidebar__buttons">
-        <Button type="primary" icon="fa-plus-circle" title="New Sentence">Add</Button>
+        <Button type="secondary" icon="fa-plus-circle" title="New Sentence">New Sentence</Button>
       </div>
     </div>
   )

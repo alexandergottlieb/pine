@@ -20,6 +20,12 @@ export default class Sentence {
         return this.words.find(word => word && word.index === index)
     }
 
+    wordCount() {
+        return this.words.reduce( (maxIndex, word) => {
+            return word.index > maxIndex ? word.index : maxIndex
+        }, -1) + 1;
+    }
+
     //Throw if sentence violates dependency grammar rules
     validate() {
         let words = []

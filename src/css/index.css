@@ -59,7 +59,8 @@ body,
 .relation__label .Select-value-label:hover,
 .relation__label .Select.is-open .Select-input,
 .relation__label .Select-option.is-focused,
-.relation__label .Select-option.is-selected {
+.relation__label .Select-option.is-selected,
+.orphans {
   background-color:#F2F6FF;
 }
 /* Accent */
@@ -80,7 +81,8 @@ body,
 .editor,
 .upload-treebank,
 .button--primary,
-.sentence-editor__word {
+.sentence-editor__word,
+.sentence-editor .sentence-editor__button:hover {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -94,7 +96,8 @@ body,
 } */
 .editor__default,
 .breadcrumbs__breadcrumb--current,
-.sentences__sentence {
+.sentences__sentence,
+.create-word__button {
   color:#738290;
 }
 /* Red */

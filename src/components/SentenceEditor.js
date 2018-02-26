@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import Button from "./Button"
 import '../css/SentenceEditor.css'
 
 export default class SentenceEditor extends Component {
@@ -31,19 +32,21 @@ export default class SentenceEditor extends Component {
   }
 
   render() {
-    const { sentence } = this.props
-    if (sentence) {
-      return <Sentence words={this.state.words} sentenceIndex={sentence.index} onSortEnd={this.onSortEnd} axis="x" />
-    } else {
-      return null
-    }
+    const { sentence, createWord } = this.props
+    if (!sentence) return null
+    return (
+      <div className="sentence-editor">
+        <Sentence words={this.state.words} sentenceIndex={sentence.index} onSortEnd={this.onSortEnd} axis="x" />
+        <CreateWord onCreate={createWord} />
+      </div>
+    )
   }
 
 }
 
 const Sentence = SortableContainer( ({ words, sentenceIndex }) => {
   return (
-    <ul className="sentence-editor">
+    <ul className="sentence-editor__sentence">
       {words.map( (word, index) => (
         <Word key={`${sentenceIndex}_${index}`} index={Number(index)} word={word} />
       ))}
@@ -58,3 +61,60 @@ const Word = SortableElement( ({word}) => {
     if (uposTag) classes.push(`sentence-editor__word--${uposTag.toLowerCase()}`)
     return <li className={classes.join(" ")}>{inflection}</li>
 })
+
+class CreateWord extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      expanded: false,
+      input: ""
+    }
+  }
+
+  buttonClick() {
+    //Toggle expansion
+    const expanded = this.state.expanded ? false : true
+    this.setState({
+      expanded: expanded,
+      input: ""
+    })
+    this.input.focus()
+  }
+
+  inputChange(event) {
+    this.setState({
+      input: event.target.value.replace(/[\s]+/, '')
+    })
+  }
+
+  keyUp(event) {
+    if (event.keyCode === 13) {
+      this.props.onCreate({inflection: event.target.value.trim()})
+      this.setState({
+        expanded: false,
+        input: ""
+      })
+    }
+  }
+
+  render() {
+    const { expanded, input } = this.state
+
+    let cls = "create-word"
+    if (expanded) cls += " create-word--expanded"
+    return (
+      <div className={cls}>
+        <input
+          ref={e => this.input = e}
+          className="create-word__input sentence-editor__word"
+          value={this.state.input}
+          onChange={this.inputChange.bind(this)}
+          onKeyUp={this.keyUp.bind(this)}
+        />
+        <Button className="create-word__button" icon="fa-plus-circle" onClick={this.buttonClick.bind(this)}></Button>
+      </div>
+    )
+  }
+
+}

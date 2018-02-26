@@ -19,7 +19,7 @@
 
 /* Messages */
 .messages {
-  position:fixed;
+  position:absolute;
   bottom:2rem;
   width:100%;
   padding:0;

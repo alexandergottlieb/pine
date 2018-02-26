@@ -133,6 +133,19 @@ export const editWords = (treebank, sentence, words) => {
     }
 }
 
+export const createWord = (treebank, sentence, data) => {
+    return dispatch => {
+        dispatch({type: "WORD_CREATE_STARTED"})
+        const key = database.ref(`/words/${treebank}/${sentence}`).ref.push().key
+        database.ref(`/words/${treebank}/${sentence}/${key}`).set({
+            ...data,
+            id: key
+        }).then(() => {
+            dispatch({type: "WORD_CREATE_COMPLETED"})
+        })
+    }
+}
+
 export const queueExportTreebank = (treebankID) => {
     return dispatch => {
         dispatch({
