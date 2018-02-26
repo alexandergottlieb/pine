@@ -99,6 +99,16 @@ export const clearRelations = () => {
     }
 }
 
+export const editSentence = (treebank, sentence, data) => {
+    return dispatch => {
+        dispatch({
+            type: "SENTENCE_EDIT",
+            treebank, sentence, data
+        })
+        database.ref(`/sentences/${treebank}/${sentence}`).update(data)
+    }
+}
+
 export const editWord = (treebank, sentence, word, data) => {
     return dispatch => {
         dispatch({
@@ -110,35 +120,16 @@ export const editWord = (treebank, sentence, word, data) => {
     }
 }
 
-export const editSentence = (treebank, sentence, data) => {
+export const editWords = (treebank, sentence, words) => {
     return dispatch => {
+        let updates = {}
+        words.forEach(word => updates[word.id] = word)
         dispatch({
-            type: "SENTENCE_EDIT",
-            treebank, sentence, data
+            type: "WORDS_EDIT",
+            treebank, sentence, words
         })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data)
-    }
-}
-
-export const moveWord = (treebankID, sentence, oldIndex, newIndex) => {
-    return dispatch => {
-        //Move elements in array while preserving relations
-        // const newWords = []
-        // sentence.words.forEach( (word, index) => {
-        //     //Update parent
-        //     if (word.parent == oldIndex) word.parent = newIndex
-        //     if (index == oldIndex) {
-        //         newWords[newIndex] = Object.assign({}, word, {index: newIndex})
-        //     } else if (index < newIndex) {
-        //         //words before stay the same
-        //         newWords[index] = Object.assign({}, word)
-        //     } else if (index >= newIndex) {
-        //         //Shift words after along
-        //         newWords[index+1] =
-        //     }
-        // })
-        // database.ref(`/words/${treebankID}/${sentence.index}`).set(newWords)
-        // dispatch({type: "WORD_MOVED"})
+        const ref = database.ref(`/words/${treebank}/${sentence}`)
+        ref.update(updates)
     }
 }
 

@@ -56,9 +56,9 @@ class Tree extends Component {
 
         //Scale x unit to longest word
         let longestWord = 0
-        for (let index in sentence.words) {
-          if (sentence.words[index].inflection.length > longestWord) longestWord = sentence.words[index].inflection.length
-        }
+        sentence.words.forEach( word => {
+          if (word.inflection.length > longestWord) longestWord = word.inflection.length
+        })
         const wordWidth = 10 * rem //Math.max(longestWord * rem * 0.7, 10 * rem) //At least 10rem
         const xUnit = wordWidth * 1.33 //Extra padding
 
@@ -147,6 +147,7 @@ class Tree extends Component {
             actions.editWord(current.treebank, current.sentence, wordID, data)
             //Edit sentence
             editedSentence.stringSentenceTogether()
+            //Update sentence.sentence
             actions.editSentence(current.treebank, current.sentence, {
                 sentence: editedSentence.sentence
             })

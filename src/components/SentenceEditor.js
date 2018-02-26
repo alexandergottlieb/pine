@@ -14,16 +14,20 @@ export default class SentenceEditor extends Component {
     if (sentence) this.state = { words: sentence.words }
   }
 
-  componentWillReceiveProps(props) {
-    const { sentence } = props
+  componentWillReceiveProps(newProps) {
+    const { sentence } = newProps
     if (sentence) this.setState({ words: sentence.words })
   }
 
   onSortEnd = ({oldIndex, newIndex}) => {
-    this.setState({
-      words: arrayMove(this.state.words, oldIndex, newIndex)
+    let newWords = this.state.words.map(word => {
+      return {...word}
     })
-    this.props.moveWord(oldIndex, newIndex)
+    newWords = arrayMove(newWords, oldIndex, newIndex)
+    this.setState({
+      words: newWords
+    })
+    this.props.moveWord(newWords, oldIndex, newIndex)
   }
 
   render() {

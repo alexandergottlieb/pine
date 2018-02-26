@@ -39,6 +39,23 @@ const sentences = (state = [], action) => {
                 return newSentence
             })
         }
+        case "WORDS_EDIT": {
+            return state.map(sentence => {
+                let newSentence = new Sentence(sentence)
+                newSentence.words = action.words.map(word => word)
+                //Sort by id
+                newSentence.words.sort( (a, b) => {
+                    if (a.index < b.index) {
+                        return -1;
+                    } else if (a.index > b.index) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                })
+                return newSentence
+            })
+        }
         default:
             return state
     }

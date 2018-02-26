@@ -30,8 +30,10 @@ export const syncSentences = (treebank) => {
             if (watchers.sentences) database.ref(watchers.sentences).off()
             watchers.sentences = endpoint
             database.ref(endpoint).orderByChild("index").on("value", snapshot => {
-                let data = snapshot.val() || {}
-                let sentences = Object.values(data)
+                let sentences = []
+                snapshot.forEach(data => {
+                    sentences.push(data.val())
+                })
                 dispatch({
                     type: "SENTENCES_UPDATE",
                     treebank, sentences
@@ -49,8 +51,10 @@ export const syncWords = (treebank, sentence) => {
             if (watchers.words) database.ref(watchers.words).off()
             watchers.words = endpoint
             database.ref(endpoint).orderByChild("index").on("value", snapshot => {
-                let words = snapshot.val() || {}
-                words = Object.values(words)
+                let words = []
+                snapshot.forEach(data => {
+                    words.push(data.val())
+                })
                 dispatch({
                     type: "WORDS_UPDATE",
                     treebank, sentence, words

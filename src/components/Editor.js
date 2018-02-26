@@ -34,11 +34,30 @@ class Editor extends Component {
     }
   }
 
-  moveWord(oldIndex, newIndex) {
+  moveWord(moved, oldIndex, newIndex) {
     const { actions, current, sentences } = this.props
-    const sentence = sentences[current.sentence]
-
-    actions.moveWord(current.treebank, sentence, oldIndex, newIndex)
+    const sentence = sentences.find(sentence => sentence.id === current.sentence)
+    //Update indices in sentence, starting from 1
+    let words = moved.map( (word, newPosition) => {
+      word.index = newPosition + 1
+      return word
+    })
+    //Update parents
+    words = words.map( word => {
+      if (word.parent !== 0) { //If not root
+        const parentID = sentence.wordByIndex(word.parent).id
+        word.parent = words.find(otherWord => otherWord.id === parentID).index
+      }
+      return word
+    })
+    //Update words
+    actions.editWords(current.treebank, current.sentence, words)
+    //Update sentence.sentence
+    let editedSentence = new Sentence({words})
+    editedSentence.stringSentenceTogether()
+    actions.editSentence(current.treebank, current.sentence, {
+        sentence: editedSentence.sentence
+    })
   }
 
   render() {
