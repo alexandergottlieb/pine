@@ -45,8 +45,8 @@ class Editor extends Component {
     const { actions, current, sentences, treebanks } = this.props
 
     let contents = null
-    const sentence = sentences[current.sentence] || null
-    if (sentence) {
+    let sentence = sentences.find(sentence => sentence.id === current.sentence)
+    if (sentence !== undefined) {
       contents = sentence.words.length > 0
         ? <Tree actions={actions} sentence={sentence} current={current} />
         : <div className="editor__default"><span className="fa fa-cog fa-spin"></span></div>

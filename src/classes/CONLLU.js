@@ -44,14 +44,14 @@ export default class CONLLU {
     parseWord(line) {
         let word = new Word()
         let data = line.split("\t")
-        if (data[0] !== '_') word.index = data[0]
-        if (data[1] !== '_') word.inflection = data[1]
-        if (data[2] !== '_') word.lemma = data[2]
-        if (data[3] !== '_') word.uposTag = data[3]
-        if (data[4] !== '_') word.xposTag = data[4]
+        if (data[0] !== '_') word.index = Number(data[0])
+        if (data[1] !== '_') word.inflection = String(data[1])
+        if (data[2] !== '_') word.lemma = String(data[2])
+        if (data[3] !== '_') word.uposTag = String(data[3]).toUpperCase()
+        if (data[4] !== '_') word.xposTag = String(data[4]).toUpperCase()
         if (data[5] !== '_') word.features = this.parseList(data[5])
-        if (data[6] !== '_') word.parent = data[6]
-        if (data[7] !== '_') word.relation = data[7]
+        if (data[6] !== '_') word.parent = Number(data[6])
+        if (data[7] !== '_') word.relation = String(data[7]).toLowerCase()
         if (data[8] !== '_') word.dependencies = data[8]
         if (data[9] !== '_') word.misc = this.parseList(data[9])
         //Check word has required properties

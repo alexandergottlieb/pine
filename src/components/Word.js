@@ -82,7 +82,7 @@ export default class Word extends Component {
                 actions.clearRelations()
             } else {
                 if (!editable) {
-                    actions.setWord(index)
+                    actions.setWord(word.index)
                     this.elements.inflection.focus()
                 }
             }

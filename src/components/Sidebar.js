@@ -9,8 +9,9 @@ const Sidebar = props => {
 
   const treebank = treebanks[current.treebank] || {name: "", sentences: ""}
 
-  const sentenceLinks = sentences.map( (sentence, id) => {
-    const cls = current.sentence !== null && Number(current.sentence) === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
+  const sentenceLinks = sentences.map( sentence => {
+    const { id } = sentence
+    const cls = current.sentence !== null && current.sentence === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
     return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`} title={sentence.sentence}>{sentence.sentence}</Link>
   })
 

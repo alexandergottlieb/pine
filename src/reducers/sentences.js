@@ -1,36 +1,43 @@
+import Sentence from "../classes/Sentence"
 const sentences = (state = [], action) => {
     switch (action.type) {
         case "SENTENCES_UPDATE": {
-            let newState = state.slice(0)
-            action.sentences.forEach( (sentence, index) => {
-                const oldSentence = newState[index] || {}
-                newState[index] = Object.assign({words: []}, oldSentence, sentence)
+            return action.sentences.map(sentence => {
+                const existing = state.find(old => old.id === sentence.id)
+                const words = existing ? existing.words : []
+                return new Sentence({...sentence, words})
             })
-            return newState
         }
         case "WORDS_UPDATE": {
-            if (!state[action.sentence]) state[action.sentence] = { sentence: "", words: [], comments:[] }
-            return state.map( (sentence, index) => {
-                if (Number(action.sentence) === Number(index)) {
+            if (!state[action.sentence]) state[action.sentence] = new Sentence()
+            return state.map( sentence => {
+                if (action.sentence === sentence.id) {
                     const words = action.words
-                    return {
-                        ...sentence,
-                        words
-                    }
-                } else {
-                    return sentence
+                    return Object.assign(new Sentence(), sentence, { words })
                 }
+                return new Sentence(sentence)
             })
         }
         case "SENTENCE_EDIT": {
-            let newState = state.slice(0)
-            Object.assign(newState[action.sentence], action.data)
-            return newState
+            return state.map(sentence => {
+                if (action.sentence === sentence.id) {
+                    return new Sentence({
+                        ...sentence,
+                        ...action.data
+                    })
+                }
+                return new Sentence(sentence)
+            })
         }
         case "WORD_EDIT": {
-            let newState = state.slice(0)
-            Object.assign(newState[action.sentence].words[action.word], action.data)
-            return newState
+            return state.map(sentence => {
+                let newSentence = new Sentence(sentence)
+                newSentence.words = newSentence.words.map(word => {
+                    if (word.id === action.word) word = {...word, ...action.data}
+                    return word
+                })
+                return newSentence
+            })
         }
         default:
             return state

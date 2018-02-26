@@ -7,7 +7,7 @@ export default class TreeDrawer {
         let self = this;
 
         sentence.words.forEach( word => {
-            createNode(word.index);
+            if (word) createNode(word.index);
         })
 
         function createNode(index) {
@@ -15,9 +15,9 @@ export default class TreeDrawer {
             if (self.nodes[index]) return self.nodes[index];
 
             let node = new Node();
-            node.index = Number(index);
-            node.word = sentence.words[index]
-            if (Number(node.word.parent) === 0) { //is root
+            node.index = index;
+            node.word = sentence.words.find(word => word.index === index)
+            if (node.word.parent === 0) { //is root
                 node.parent = 0;
                 node.depth = 0;
                 self.root = node;

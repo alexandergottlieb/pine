@@ -29,12 +29,22 @@ export const uploadTreebank = treebank => {
         treebank.id = treebankRef.key
         treebankRef.set(treebank).then(() => {
             //Normalise sentences and words at eg. words/:treebankID/:sentenceID
-            sentences.forEach( (sentence, index) => {
-                const wordsRef = database.ref(`/words/${treebankRef.key}/${index}`)
-                wordsRef.set(sentence.words)
+            let sentenceUpdates = {}
+            let wordUpdates = {}
+            sentences.forEach( sentence => {
+                const sentenceKey = database.ref(`/sentences/${treebankRef.key}`).push().key
+                sentence.words.forEach( word => {
+                    const wordKey = database.ref(`/words/${treebankRef.key}/${sentenceKey}`).push().key
+                    word.id = wordKey
+                    wordUpdates[`${sentenceKey}/${wordKey}`] = word
+                })
                 delete sentence.words
+                sentence.id = sentenceKey
+                sentenceUpdates[sentenceKey] = sentence
             })
-            database.ref(`/sentences/${treebankRef.key}`).set(sentences)
+            //Batch requests
+            database.ref(`/sentences/${treebankRef.key}`).update(sentenceUpdates)
+            database.ref(`/words/${treebankRef.key}`).update(wordUpdates)
         })
     }
 }
@@ -112,10 +122,23 @@ export const editSentence = (treebank, sentence, data) => {
 
 export const moveWord = (treebankID, sentence, oldIndex, newIndex) => {
     return dispatch => {
-        const newWords = sentence.words
-        //TODO Move elements in array while preserving relations
-        database.ref(`/words/${treebankID}/${sentence.index}`).set(newWords)
-        dispatch({type: "WORD_MOVED"})
+        //Move elements in array while preserving relations
+        // const newWords = []
+        // sentence.words.forEach( (word, index) => {
+        //     //Update parent
+        //     if (word.parent == oldIndex) word.parent = newIndex
+        //     if (index == oldIndex) {
+        //         newWords[newIndex] = Object.assign({}, word, {index: newIndex})
+        //     } else if (index < newIndex) {
+        //         //words before stay the same
+        //         newWords[index] = Object.assign({}, word)
+        //     } else if (index >= newIndex) {
+        //         //Shift words after along
+        //         newWords[index+1] =
+        //     }
+        // })
+        // database.ref(`/words/${treebankID}/${sentence.index}`).set(newWords)
+        // dispatch({type: "WORD_MOVED"})
     }
 }
 

@@ -138,13 +138,13 @@ class Tree extends Component {
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
         const editedSentence = new Sentence(sentence)
-        Object.assign(editedSentence.words[wordIndex], data)
-
+        Object.assign(editedSentence.wordByIndex(wordIndex), data)
         try {
             //Validate sentence
             editedSentence.validate()
             //Edit word
-            actions.editWord(current.treebank, current.sentence, wordIndex, data)
+            const wordID = sentence.wordByIndex(wordIndex).id
+            actions.editWord(current.treebank, current.sentence, wordID, data)
             //Edit sentence
             editedSentence.stringSentenceTogether()
             actions.editSentence(current.treebank, current.sentence, {

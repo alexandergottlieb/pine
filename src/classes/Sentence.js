@@ -1,11 +1,11 @@
 export default class Sentence {
 
-    constructor(sentence = {sentence: "", words: [], comments: [], index: null}) {
-        this.sentence = sentence.sentence
+    constructor(sentence = {sentence: "", index: null}) {
+        Object.assign(this, sentence)
         this.words = []
-        sentence.words.forEach(word => this.words[word.index] = Object.assign({}, word))
+        if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push({...word}) )
         this.comments = []
-        sentence.comments.forEach(comment => this.comments[comment.index] = Object.assign({}, comment))
+        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push({...comment}) )
     }
 
     stringSentenceTogether() {
@@ -14,6 +14,10 @@ export default class Sentence {
             let glue = (word.uposTag === 'PUNCT' || this.sentence === "") ? '' : ' ' //Add space between words but not punctuation
             this.sentence = this.sentence + glue + word.inflection
         })
+    }
+
+    wordByIndex(index) {
+        return this.words.find(word => word && word.index === index)
     }
 
     //Throw if sentence violates dependency grammar rules
