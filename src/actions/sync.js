@@ -26,6 +26,7 @@ export const syncSentences = (treebank) => {
     return dispatch => {
         const endpoint = `/sentences/${treebank}`
         if (watchers.sentences !== endpoint) {
+            dispatch({type: "SENTENCES_CHANGED_TREEBANK"})
             //Replace existing watcher
             if (watchers.sentences) database.ref(watchers.sentences).off()
             watchers.sentences = endpoint

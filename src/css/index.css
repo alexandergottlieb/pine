@@ -43,15 +43,17 @@ a {
 .relation__label .is-focused .Select-input,
 .relation__label .Select-value-label,
 .upload-treebank,
-.button--primary,
 .sentence-editor__word {
   background-color:white;
 }
 body,
 .button--warning,
+.button--primary:hover,
 .sidebar,
 .tree__root,
-.word .word__delete:hover {
+.word .word__delete:hover,
+.sentences__sentence.sentences__sentence--active,
+.sentences__sentence:hover {
   color:white;
 }
 /* Light */
@@ -63,15 +65,18 @@ body,
 .tree__root {
   background-color:#F2F6FF;
 }
-/* Accent */
-.button--primary:hover,
+/* Accent - yellow */
 .upload-treebank:hover {
   background-color:#FFFF82;
 }
 .button--secondary:hover,
-.sentences__sentence.sentences__sentence--active {
+.button--primary {
   color:#FFFF82;
 }
+/* Accent - blue */
+/* .nothing {
+  color:#48BEFF;
+} */
 /* Dark */
 body,
 .sidebar,
@@ -80,7 +85,6 @@ body,
 }
 .editor,
 .upload-treebank,
-.button--primary,
 .sentence-editor__word,
 .sentence-editor .sentence-editor__button:hover,
 .tree__root {
@@ -91,16 +95,23 @@ body,
 .sentences__sentence:hover {
   background-color:#404655;
 }
+.sidebar__create-sentence {
+  border-color:#404655;
+}
+/* Less Dark */
+.sidebar__buttons {
+  background-color:#1D2333;
+}
 /* Grey */
 .tree__root:after,
 .word__delete {
-  background-color:#738290;
+  background-color:#758AA8;
 }
 .editor__default,
 .breadcrumbs__breadcrumb--current,
 .sentences__sentence,
 .create-word__button {
-  color:#738290;
+  color:#758AA8;
 }
 /* Red */
 .button--warning {

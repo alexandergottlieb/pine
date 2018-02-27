@@ -40,7 +40,7 @@
     .relation__label .Select-value-label {
       padding:0.25em 0.5em;
       border-radius:2px;
-      color:#738290 !important;
+      color:#758AA8 !important;
       cursor:text !important;
       pointer-events:all;
     }
@@ -64,7 +64,7 @@
       pointer-events:all;
     }
     .relation__label .Select-option {
-      color:#738290;
+      color:#758AA8;
     }
     .relation__label .Select-menu-outer {
       border:0;
@@ -77,11 +77,11 @@
   height:1rem;
   margin:0;
   padding:0;
-  border:2px solid #738290;
+  border:2px solid #758AA8;
   border-radius:50%;
   color:white;
   cursor:pointer;
 }
 .relation__grab:hover {
-  background-color:#738290;
+  background-color:#758AA8;
 }

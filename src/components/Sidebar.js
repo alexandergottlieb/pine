@@ -22,10 +22,14 @@ const Sidebar = props => {
       </nav>
       <h1 className="sidebar__title">{treebank.name}</h1>
       <nav className="sentences">
-          {sentenceLinks}
+        {sentenceLinks}
       </nav>
       <div className="sidebar__buttons">
-        <Button type="secondary" icon="fa-plus-circle" title="New Sentence">New Sentence</Button>
+        <div className="sidebar__create-sentence">
+          <Button type="primary" icon="fa-plus-circle">New Sentence</Button>
+        </div>
+        <Button type="secondary" icon="fa-question-circle">Help</Button>
+        <Button type="secondary" icon="fa-cog">Settings</Button>
       </div>
     </div>
   )

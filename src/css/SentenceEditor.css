@@ -38,10 +38,10 @@
 }
 .create-word .create-word__button {
   padding:0.375em 0 0.125em 0;
-  transform:translateX(-6rem);
+  transform:translateX(-6.5rem);
 }
 .create-word--expanded .create-word__button {
-  transform:translateX(0.5rem) rotate(45deg);
+  transform:translateX(0) rotate(45deg);
 }
 .create-word .create-word__input {
   display:inline-block;

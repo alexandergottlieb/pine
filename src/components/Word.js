@@ -98,10 +98,11 @@ export default class Word extends Component {
         }
 
         const uposTags = CONLLU.uposTags()
+        const uposTag = uposTags.find(tag => tag.value === word.uposTag)
         const uposTagValue = word.uposTag
             ? {
                 value: word.uposTag,
-                label: uposTags.find(tag => tag.value === word.uposTag).label
+                label: uposTag !== undefined ? uposTag.label : word.uposTag
             }
             : null
 
@@ -125,7 +126,7 @@ export default class Word extends Component {
                     <input className="word-data__input" onChange={this.xposChange.bind(this)} value={this.state.xposTag} />
                 </div>
                 <div className="word__delete" onClick={this.deleteClicked.bind(this)}>
-                    <span className="fa fa-times"></span>
+                    <span className="fas fa-times"></span>
                 </div>
             </div>
         )

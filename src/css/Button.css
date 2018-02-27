@@ -1,5 +1,6 @@
 .button {
     display:inline-block;
+    margin:0 0.5em;
     padding:0.5em 0;
     font-size:inherit;
     border:0px;
@@ -8,12 +9,6 @@
     text-transform:uppercase;
     cursor:pointer;
     outline:0 !important;
-}
-.button + .button {
-    margin-left:1em;
-}
-.button--primary {
-    padding:0.5rem 0.75rem;
 }
 .button--secondary {
     color:inherit;

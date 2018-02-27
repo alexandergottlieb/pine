@@ -1,6 +1,9 @@
 import Sentence from "../classes/Sentence"
 const sentences = (state = [], action) => {
     switch (action.type) {
+        case "SENTENCES_CHANGED_TREEBANK": {
+            return []
+        }
         case "SENTENCES_UPDATE": {
             return action.sentences.map(sentence => {
                 const existing = state.find(old => old.id === sentence.id)

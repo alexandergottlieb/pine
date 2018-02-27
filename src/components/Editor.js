@@ -95,7 +95,7 @@ class Editor extends Component {
     } else {
       contents = (
         <div className="editor__default">
-          <span className="fa fa-hand-point-left fa-5x"></span>
+          <span className="fas fa-hand-point-left fa-5x"></span>
           <p>Select a sentence to edit</p>
         </div>
       )

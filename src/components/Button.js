@@ -9,7 +9,7 @@ const Button = props => {
   if (children) children = <span>{children}</span>
 
   const Tag = link ? Link : "button"
-  const iconSpan = icon ? <span className={`button__icon fa fa-fw ${icon}`}></span> : null
+  const iconSpan = icon ? <span className={`button__icon fas fa-fw ${icon}`}></span> : null
   const style = disabled ? {pointerEvents: "none"} : {}
 
   return (
