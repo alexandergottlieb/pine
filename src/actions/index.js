@@ -68,7 +68,7 @@ export const deleteTreebank = id => {
     }
 }
 
-export const setCurrent = (treebank, sentence = null) => {
+export const setCurrent = (treebank, sentence = null, page = null) => {
     return dispatch => {
         dispatch({
             type: "SET_CURRENT_TREEBANK",
@@ -77,6 +77,10 @@ export const setCurrent = (treebank, sentence = null) => {
         dispatch({
             type: "SET_CURRENT_SENTENCE",
             id: sentence
+        })
+        dispatch({
+            type: "SET_CURRENT_PAGE",
+            page
         })
         //Watch changes to sentences in treebank
         dispatch(syncSentences(treebank))

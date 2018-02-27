@@ -12,17 +12,18 @@ body {
 body {
   font-weight:normal;
 }
-h1 {
+h1, h2, h3 {
   margin:0;
+}
+h1 {
   font-size:2rem;
   font-weight:bold;
 }
 h2 {
   font-weight:inherit;
-  font-size:1.25rem;
+  font-size:1.5rem;
 }
 h3 {
-  margin:0;
   font-size:1rem;
   text-transform:uppercase;
   font-weight:bold;
@@ -38,7 +39,7 @@ a {
 
 /**** Colour Scheme */
 /* White */
-.editor,
+.main,
 .relation__grab,
 .relation__label .is-focused .Select-input,
 .relation__label .Select-value-label,
@@ -83,7 +84,7 @@ body,
 .sidebar__buttons {
   background-color:#13161F;
 }
-.editor,
+.main,
 .upload-treebank,
 .sentence-editor__word,
 .sentence-editor .sentence-editor__button:hover,

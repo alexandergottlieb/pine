@@ -1,10 +1,14 @@
-/* Editor */
-.editor {
+.main {
   position:fixed;
   left:300px;
   width:calc(100% - 300px);
   height:100%;
   overflow:hidden;
+}
+
+/* Editor */
+.editor {
+
 }
 .editor__default {
   padding:2rem;

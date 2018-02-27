@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { BrowserRouter, Route } from 'react-router-dom';
 import Sidebar from './Sidebar'
 import Editor from './Editor'
-import '../css/Editor.css'
+import Settings from './Settings'
+import Help from './Help'
+import '../css/Edit.css'
 
 export default class Edit extends Component {
 
@@ -21,11 +23,13 @@ export default class Edit extends Component {
     //Maybe update current from URL
     const treebankID = match.params.treebank || null
     const sentenceID = match.params.sentence || null
+    const page = match.params.page || null
 
     if ( current.treebank !== treebankID
       || current.sentence !== sentenceID
+      || current.page !== page
     ) {
-      actions.setCurrent(treebankID, sentenceID)
+      actions.setCurrent(treebankID, sentenceID, page)
       actions.setWord()
       actions.clearRelations()
       return null
@@ -39,8 +43,11 @@ export default class Edit extends Component {
     return (
       <div>
         <Sidebar current={current} sentences={sentences} treebanks={treebanks} />
-        <Route path='/edit/:treebank/:sentence' exact render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
-        <Route path='/edit/:treebank/:sentence/settings' component={null} />
+        <main className="main">
+          <Route path="/edit/:treebank/:sentence" exact render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
+          <Route path="/edit/:treebank/:sentence/help" exact component={Help} />
+          <Route path="/edit/:treebank/:sentence/settings" exact component={Settings} />
+        </main>
       </div>
     )
   }

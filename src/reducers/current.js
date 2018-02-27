@@ -22,6 +22,11 @@ const current = (state = defaultState, action) => {
                sentence: action.id
             })
         }
+        case "SET_CURRENT_PAGE": {
+            return Object.assign({}, state, {
+               page: action.page
+            })
+        }
         case "SET_CURRENT_WORD": {
             return Object.assign({}, state, {
                word: action.id
