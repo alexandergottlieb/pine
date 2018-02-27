@@ -7,7 +7,7 @@
 .lines,
 .relations {
   position:absolute;
-  top:2rem; right:2rem; bottom:2rem; left:2rem;
+  top:4rem; right:2rem; bottom:2rem; left:2rem;
   overflow:visible;
 }
 .word:after {
@@ -17,4 +17,25 @@
   right:-2rem;
   width: 2rem;
   height: 1px;
+}
+.tree__root {
+  position:absolute;
+  transform:translate(-50%, calc(-50% - 1.5rem));
+  width:1.5em;
+  height:1.5em;
+  padding:0.25em;
+  font-size:0.825rem;
+  line-height:100%;
+  border-radius:50%;
+  text-align:center;
+  cursor:pointer;
+}
+.tree__root:after {
+  content:"";
+  display:block;
+  position:absolute;
+  top:100%;
+  left:calc(50% - 1px);
+  width:2px;
+  height:1rem;
 }

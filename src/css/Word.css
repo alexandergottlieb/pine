@@ -1,6 +1,6 @@
 .word {
   position: absolute;
-  margin:2rem;
+  margin:4rem 2rem 2rem 2rem;
   padding:0.5rem;
   border-radius: 5px;
   text-align:center;

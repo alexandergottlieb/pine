@@ -37,12 +37,11 @@
   transition:0.2s ease-out;
 }
 .create-word .create-word__button {
-  margin-left:0.5rem;
   padding:0.375em 0 0.125em 0;
   transform:translateX(-6rem);
 }
 .create-word--expanded .create-word__button {
-  transform:translateX(0) rotate(45deg);
+  transform:translateX(0.5rem) rotate(45deg);
 }
 .create-word .create-word__input {
   display:inline-block;

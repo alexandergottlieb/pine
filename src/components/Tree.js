@@ -85,7 +85,7 @@ class Tree extends Component {
         const rect = container.getBoundingClientRect()
         //Add padding
         rect.x += 2 * this.state.scaling.rem
-        rect.y += 2 * this.state.scaling.rem
+        rect.y += 4 * this.state.scaling.rem
         const lines = this.children.lines.filter((line, index) => relations.indexOf(index) !== -1)
 
         lines.forEach((line, index) => {
@@ -137,14 +137,26 @@ class Tree extends Component {
 
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
+
+        //Edit word in test sentence for validation
         const editedSentence = new Sentence(sentence)
         Object.assign(editedSentence.wordByIndex(wordIndex), data)
+
+        //If assigning new root, set current root to descend from the new
+        const oldRoot = data.parent && data.parent === 0 ? editedSentence.rootWord() : null
+        if (oldRoot) oldRoot.parent = wordIndex
+
+        //Validate sentence & update
         try {
-            //Validate sentence
             editedSentence.validate()
-            //Edit word
             const wordID = sentence.wordByIndex(wordIndex).id
-            actions.editWord(current.treebank, current.sentence, wordID, data)
+            if (oldRoot) {
+                //Edit old root & word
+                actions.editWords(current.treebank, current.sentence, editedSentence.words)
+            } else {
+                //Edit word
+                actions.editWord(current.treebank, current.sentence, wordID, data)
+            }
             //Edit sentence
             editedSentence.stringSentenceTogether()
             //Update sentence.sentence
@@ -160,15 +172,28 @@ class Tree extends Component {
         }
     }
 
+    clickRoot() {
+        const { current, actions } = this.props
+        try {
+            if (current.relations.length > 1) throw "Only one word can descend from the root."
+            current.relations.forEach(childIndex => {
+                this.editWord(childIndex, {
+                    parent: 0
+                })
+            })
+        } catch (errorMessage) {
+            actions.addError(errorMessage)
+        }
+    }
+
     render() {
         const { actions, current } = this.props
         const { nodes, scaling, origin } = this.state
 
         //Generate words
         const words = nodes.map(node => {
-            const key = `${current.sentence}_${node.index}`
             const editable = node.index == current.word ? true : false
-            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={key} />
+            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={node.word.id} />
         })
 
         //Generate lines & relations
@@ -177,7 +202,6 @@ class Tree extends Component {
         nodes.forEach(node => {
             //Draw lines from parent to child
             node.children.forEach(child => {
-                const key = `${current.sentence}_${child.index}`
                 //Active if user is moving relation line of current child
                 const active = current.relations.indexOf(child.index) !== -1
 
@@ -189,12 +213,18 @@ class Tree extends Component {
                 //Line end co-ordinate
                 coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
                 coords.y2 = child.y * scaling.units.y + scaling.rem
-                lines.push(<Line {...coords} active={active} key={key} ref={element => this.registerLine(element, child.index)} />)
+                lines.push(<Line {...coords} active={active} key={child.word.id} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={key} ref={element => this.registerRelation(element, child.index)} />)
+                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={child.word.id} ref={element => this.registerRelation(element, child.index)} />)
             })
         })
+
+        const rootNode = nodes.find(node => node && node.parent === 0)
+        const rootStyle = rootNode ? {
+            top: rootNode.y * scaling.units.y + "px",
+            left: rootNode.x * scaling.units.x + scaling.wordWidth/2 + "px"
+        } : {top: "0px", left: "0px"};
 
         if (current.relations && current.relations.length > 0) {
             this.animate()
@@ -205,7 +235,12 @@ class Tree extends Component {
         return (
             <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>
-                <div className="relations">{relations}</div>
+                <div className="relations">
+                    {relations}
+                    <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>
+                        <span className="fa fa-tree"></span>
+                    </div>
+                </div>
                 {words}
             </div>
         )

@@ -42,17 +42,16 @@ a {
 .relation__grab,
 .relation__label .is-focused .Select-input,
 .relation__label .Select-value-label,
-.upload-treebank {
+.upload-treebank,
+.button--primary,
+.sentence-editor__word {
   background-color:white;
 }
 body,
 .button--warning,
-.sidebar {
+.sidebar,
+.tree__root {
   color:white;
-}
-.button--primary,
-.sentence-editor__word {
-  background-color:white;
 }
 /* Light */
 .sentence-editor,
@@ -91,9 +90,10 @@ body,
   background-color:#404655;
 }
 /* Grey */
-/* .sentence-editor {
+.tree__root,
+.tree__root:after {
   background-color:#738290;
-} */
+}
 .editor__default,
 .breadcrumbs__breadcrumb--current,
 .sentences__sentence,

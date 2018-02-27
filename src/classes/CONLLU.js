@@ -30,12 +30,24 @@ export default class CONLLU {
                 self.sentences.push(new Sentence())
                 current++
             } else {
-                let index = line.match(/^\d+/)[0]
                 let word = self.parseWord(line)
-                self.sentences[current].words[index] = word
+                self.sentences[current].words.push(word)
             }
         })
         self.sentences.forEach( (sentence, index) => {
+            //Orphan words should point to root descendent
+            let rootDescendent = sentence.words.find(word => word.parent === 0) || null
+            sentence.words.forEach(word => {
+                if (word.parent === null) {
+                    if (rootDescendent === null) { //If no root descendent, set as the first orphan
+                        rootDescendent = word.index
+                        word.parent = 0
+                    } else { //descend from root descendent
+                        word.parent = rootDescendent
+                    }
+                }
+            })
+            console.log('words', sentence.words)
             sentence.stringSentenceTogether()
             sentence.index = index
         })

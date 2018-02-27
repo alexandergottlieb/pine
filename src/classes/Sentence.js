@@ -20,6 +20,10 @@ export default class Sentence {
         return this.words.find(word => word && word.index === index)
     }
 
+    rootWord() {
+        return this.words.find(word => word && word.parent === 0)
+    }
+
     wordCount() {
         return this.words.reduce( (maxIndex, word) => {
             return word.index > maxIndex ? word.index : maxIndex
