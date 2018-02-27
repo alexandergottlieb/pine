@@ -15,6 +15,20 @@
 .word--relations-selected:hover {
   transform:scale(1.05);
 }
+  /* Delete */
+  .word__delete {
+    position:absolute;
+    top:-0.75rem; left:-0.75rem;
+    width:1.5rem;
+    height:1.5rem;
+    padding:0;
+    border-radius:50%;
+    font-size:0.875rem;
+    opacity:0;
+  }
+  .word:hover .word__delete {
+    opacity:1;
+  }
   /* Inflection */
   .word__inflection {
     width:100%;

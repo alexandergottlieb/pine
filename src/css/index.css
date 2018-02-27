@@ -50,7 +50,8 @@ a {
 body,
 .button--warning,
 .sidebar,
-.tree__root {
+.tree__root,
+.word .word__delete:hover {
   color:white;
 }
 /* Light */
@@ -91,7 +92,8 @@ body,
   background-color:#404655;
 }
 /* Grey */
-.tree__root:after {
+.tree__root:after,
+.word__delete {
   background-color:#738290;
 }
 .editor__default,
@@ -103,6 +105,9 @@ body,
 /* Red */
 .button--warning {
   color:#DF2935;
+}
+.word__delete:hover {
+  background-color:#DF2935;
 }
 
 /**** Transitions ****/

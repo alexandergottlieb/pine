@@ -16,7 +16,7 @@
 .breadcrumbs {
   margin:1.5rem 0 0.25rem 0;
   white-space: nowrap;
-  font-size:0.825rem;
+  font-size:0.875rem;
   text-overflow: ellipsis;
 }
 
@@ -33,7 +33,7 @@
   display:block;
   margin:0;
   padding:0.5em 1.5rem;
-  font-size:0.825rem;
+  font-size:0.875rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

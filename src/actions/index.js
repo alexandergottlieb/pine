@@ -6,7 +6,9 @@ import { syncTreebanks, syncSentences, syncWords } from "./sync"
 export * from "./sync"
 
 export const addError = message => {
-    addMessage(message, true)
+    return dispatch => {
+        addMessage(message, true)
+    }
 }
 
 export const addMessage = (message, error = false) => {
@@ -133,7 +135,7 @@ export const editWords = (treebank, sentence, words) => {
             treebank, sentence, words
         })
         const ref = database.ref(`/words/${treebank}/${sentence}`)
-        ref.update(updates)
+        ref.set(updates)
     }
 }
 

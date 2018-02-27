@@ -69,7 +69,7 @@ class Editor extends Component {
     //Either parent is the root descendent or artificial root
     const rootDescendent = sentence.words.find(word => word.parent === 0)
     const parent = rootDescendent ? rootDescendent.index : 0
-    const index = sentence.wordCount()
+    let index = sentence.wordCount() + 1 //index starts at 1
     const newWord = { ...word, ...data, index, parent }
     actions.createWord(current.treebank, current.sentence, newWord)
 

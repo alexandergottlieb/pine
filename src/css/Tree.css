@@ -20,9 +20,10 @@
 }
 .tree__root {
   position:absolute;
-  transform:translate(-50%, calc(-50% - 1.625rem));
-  padding:0.375em 0.625em;
-  font-size:0.825rem;
+  transform:translate(-50%, -50%);
+  margin-top:-1.75rem;
+  padding:0.25rem 0.5rem;
+  font-size:0.875rem;
   line-height:100%;
   border-radius:3px;
   box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
@@ -36,7 +37,7 @@
   top:100%;
   left:calc(50% - 1px);
   width:2px;
-  height:1rem;
+  height:1.5rem;
   cursor:default;
 }
 .tree--with-relations .tree__root {

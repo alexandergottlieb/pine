@@ -135,6 +135,20 @@ class Tree extends Component {
         if (current.word) actions.setWord()
     }
 
+    clickRoot() {
+        const { current, actions } = this.props
+        try {
+            if (current.relations.length > 1) throw "Only one word descends from root."
+            current.relations.forEach(childIndex => {
+                this.editWord(childIndex, {
+                    parent: 0
+                })
+            })
+        } catch (errorMessage) {
+            actions.addError(errorMessage)
+        }
+    }
+
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
         const editedSentence = new Sentence(sentence)
@@ -172,18 +186,35 @@ class Tree extends Component {
         }
     }
 
-    clickRoot() {
-        const { current, actions } = this.props
-        try {
-            if (current.relations.length > 1) throw "Only one word descends from root."
-            current.relations.forEach(childIndex => {
-                this.editWord(childIndex, {
-                    parent: 0
-                })
-            })
-        } catch (errorMessage) {
-            actions.addError(errorMessage)
-        }
+    deleteWord(word) {
+        const { actions, current, sentence } = this.props
+        let editedSentence = new Sentence(sentence)
+        //Remove word
+        editedSentence.words = editedSentence.words.filter(aWord => aWord.id !== word.id)
+        //Change order & relations
+        let newParent = word.parent > word.index ? word.parent - 1 : word.parent
+        editedSentence.words = editedSentence.words.map(aWord => {
+            //Shift indices of all words after the deleted word down 1
+            if (aWord.index > word.index) aWord.index--
+            if (aWord.parent > word.index) aWord.parent--
+            if (aWord.parent === word.index) {
+                //Only one word can descend from root, so attach to sibling if multiple words
+                if (newParent === 0) {
+                    newParent = aWord.index
+                    aWord.parent = 0
+                } else {
+                    aWord.parent = newParent
+                }
+            }
+            return aWord
+        })
+        //Update words
+        actions.editWords(current.treebank, current.sentence, editedSentence.words)
+        //Update sentence text
+        editedSentence.stringSentenceTogether()
+        actions.editSentence(current.treebank, current.sentence, {
+            sentence: editedSentence.sentence
+        })
     }
 
     render() {
@@ -193,7 +224,15 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            return <Word {...node} scaling={scaling} editWord={this.editWord.bind(this)} actions={actions} current={current} editable={editable} key={node.word.id} />
+            return <Word {...node}
+                scaling={scaling}
+                editWord={this.editWord.bind(this)}
+                deleteWord={this.deleteWord.bind(this)}
+                actions={actions}
+                current={current}
+                editable={editable}
+                key={node.word.id}
+            />
         })
 
         //Generate lines & relations

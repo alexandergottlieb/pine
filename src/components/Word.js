@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
-import Select from 'react-select';
-import '../css/Word.css'
-import CONLLU from '../classes/CONLLU'
+import React, { Component } from "react"
+import Select from "react-select";
+import Button from "./Button"
+import "../css/Word.css"
+import CONLLU from "../classes/CONLLU"
 
 export default class Word extends Component {
 
@@ -59,6 +60,31 @@ export default class Word extends Component {
         editWord(word.index, {lemma: value})
     }
 
+    deleteClicked = event => {
+        const { deleteWord, word } = this.props
+        event.stopPropagation();
+        deleteWord(word)
+    }
+
+    click = event => {
+        const { current, actions, editWord, word, index, editable } = this.props
+        if (current.relations && current.relations.length > 0) {
+            //Set all relations to point to this word
+            current.relations.forEach(childIndex => {
+                editWord(childIndex, {
+                    parent: index
+                })
+            })
+            actions.clearRelations()
+        } else {
+            if (!editable) {
+                actions.setWord(word.index)
+                this.elements.inflection.focus()
+            }
+        }
+        event.stopPropagation()
+    }
+
     render() {
         const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
 
@@ -69,24 +95,6 @@ export default class Word extends Component {
             top: realY+'px',
             left: realX+'px',
             width: scaling.wordWidth+'px',
-        }
-
-        const click = event => {
-            if (current.relations && current.relations.length > 0) {
-                //Set all relations to point to this word
-                current.relations.forEach(childIndex => {
-                    editWord(childIndex, {
-                        parent: index
-                    })
-                })
-                actions.clearRelations()
-            } else {
-                if (!editable) {
-                    actions.setWord(word.index)
-                    this.elements.inflection.focus()
-                }
-            }
-            event.stopPropagation()
         }
 
         const uposTags = CONLLU.uposTags()
@@ -103,7 +111,7 @@ export default class Word extends Component {
         if (current.relations && current.relations.length > 0) classes.push("word--relations-selected")
 
         return (
-            <div className={classes.join(' ')} style={style} onClick={click}>
+            <div className={classes.join(' ')} style={style} onClick={this.click.bind(this)}>
                 <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el} />
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word-data word-data--${editable ? "show" : "hide"}`}>
@@ -116,6 +124,7 @@ export default class Word extends Component {
                     <label className="word-data__label" title="Language specific part of speech tag">XPOS</label>
                     <input className="word-data__input" onChange={this.xposChange.bind(this)} value={this.state.xposTag} />
                 </div>
+                <Button className="word__delete" type="secondary" icon="fa-times" onClick={this.deleteClicked.bind(this)}></Button>
             </div>
         )
     }

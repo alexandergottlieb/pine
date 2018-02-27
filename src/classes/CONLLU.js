@@ -42,15 +42,18 @@ export default class CONLLU {
             //Orphan words should point to root descendent
             let rootDescendent = sentence.words.find(word => word.parent === 0) || null
             sentence.words.forEach(word => {
-                if (word.parent === null) {
+                if (word.parent === null
+                    || (word.parent === 0 && word.index !== rootDescendent.index) //Only be one root descendent, any others with 0 are set to the first
+                ) {
                     if (rootDescendent === null) { //If no root descendent, set as the first orphan
                         rootDescendent = word.index
                         word.parent = 0
                     } else { //descend from root descendent
-                        word.parent = rootDescendent
+                        word.parent = rootDescendent.index
                     }
                 }
             })
+            //Sentence needs metadata
             sentence.stringSentenceTogether()
             sentence.index = index
         })

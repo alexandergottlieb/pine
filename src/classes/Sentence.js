@@ -25,9 +25,11 @@ export default class Sentence {
     }
 
     wordCount() {
-        return this.words.reduce( (maxIndex, word) => {
-            return word.index > maxIndex ? word.index : maxIndex
-        }, -1) + 1;
+        let count = 0
+        this.words.forEach(word => {
+            if (word) count++
+        })
+        return count
     }
 
     //Throw if sentence violates dependency grammar rules
