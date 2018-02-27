@@ -6,6 +6,7 @@ export default class CONLLU {
     constructor(name = '', sentences = []) {
         this.name = name
         this.sentences = sentences
+        this.multitokens = false
     }
 
     //Parse CoNLL-U text
@@ -29,7 +30,10 @@ export default class CONLLU {
             } else if (line.length === 0) { //New sentence
                 self.sentences.push(new Sentence())
                 current++
-            } else {
+            } else if (line.match(/^\d+[-.]/)) { //Multitoken
+                //Skip
+                self.multitokens = true
+            } else { //Word
                 let word = self.parseWord(line)
                 self.sentences[current].words.push(word)
             }
@@ -47,7 +51,6 @@ export default class CONLLU {
                     }
                 }
             })
-            console.log('words', sentence.words)
             sentence.stringSentenceTogether()
             sentence.index = index
         })
@@ -56,18 +59,20 @@ export default class CONLLU {
     parseWord(line) {
         let word = new Word()
         let data = line.split("\t")
-        if (data[0] !== '_') word.index = Number(data[0])
-        if (data[1] !== '_') word.inflection = String(data[1])
-        if (data[2] !== '_') word.lemma = String(data[2])
-        if (data[3] !== '_') word.uposTag = String(data[3]).toUpperCase()
-        if (data[4] !== '_') word.xposTag = String(data[4]).toUpperCase()
-        if (data[5] !== '_') word.features = this.parseList(data[5])
-        if (data[6] !== '_') word.parent = Number(data[6])
-        if (data[7] !== '_') word.relation = String(data[7]).toLowerCase()
-        if (data[8] !== '_') word.dependencies = data[8]
-        if (data[9] !== '_') word.misc = this.parseList(data[9])
-        //Check word has required properties
-        if (!word.inflection) throw new Error('Invalid word')
+        //Words must at least have an index
+        if (data[0] === undefined || !data[0].match(/^\d/)) {
+            throw new Error("some words are missing indices")
+        }
+        if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
+        if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
+        if (data[2] !== undefined && data[2] !== '_') word.lemma = String(data[2])
+        if (data[3] !== undefined && data[3] !== '_') word.uposTag = String(data[3]).toUpperCase()
+        if (data[4] !== undefined && data[4] !== '_') word.xposTag = String(data[4]).toUpperCase()
+        if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(data[5])
+        if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
+        if (data[7] !== undefined && data[7] !== '_') word.relation = String(data[7]).toLowerCase()
+        if (data[8] !== undefined && data[8] !== '_') word.dependencies = data[8]
+        if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(data[9])
         return word
     }
 

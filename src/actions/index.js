@@ -6,6 +6,10 @@ import { syncTreebanks, syncSentences, syncWords } from "./sync"
 export * from "./sync"
 
 export const addError = message => {
+    addMessage(message, true)
+}
+
+export const addMessage = (message, error = false) => {
     return dispatch => {
         //Automatically remove message later
         setTimeout(() => dispatch({
@@ -14,7 +18,7 @@ export const addError = message => {
         dispatch({
             type: "ADD_MESSAGE",
             message,
-            status: "ERROR"
+            status: error ? "ERROR" : "NORMAL"
         })
     }
 }

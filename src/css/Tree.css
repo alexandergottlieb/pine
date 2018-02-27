@@ -25,8 +25,9 @@
   font-size:0.825rem;
   line-height:100%;
   border-radius:3px;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
   text-align:center;
-  cursor:pointer;
+  cursor:default;
 }
 .tree__root:after {
   content:"";
@@ -36,4 +37,8 @@
   left:calc(50% - 1px);
   width:2px;
   height:1rem;
+  cursor:default;
+}
+.tree--with-relations .tree__root {
+  cursor:pointer;
 }

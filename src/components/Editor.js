@@ -91,7 +91,7 @@ class Editor extends Component {
     if (sentence !== undefined) {
       contents = sentence.words.length > 0
         ? <Tree actions={actions} sentence={sentence} current={current} />
-        : <div className="editor__default"><span className="fa fa-cog fa-spin"></span></div>
+        : null
     } else {
       contents = (
         <div className="editor__default">

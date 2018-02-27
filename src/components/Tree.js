@@ -137,17 +137,17 @@ class Tree extends Component {
 
     editWord(wordIndex, data) {
         const { sentence, current, actions } = this.props
-
-        //Edit word in test sentence for validation
         const editedSentence = new Sentence(sentence)
-        Object.assign(editedSentence.wordByIndex(wordIndex), data)
 
         //If assigning new root, set current root to descend from the new
-        const oldRoot = data.parent && data.parent === 0 ? editedSentence.rootWord() : null
+        const oldRoot = (data.hasOwnProperty("parent") && data.parent === 0) ? editedSentence.rootWord() : null
         if (oldRoot) oldRoot.parent = wordIndex
+
+        Object.assign(editedSentence.wordByIndex(wordIndex), data)
 
         //Validate sentence & update
         try {
+            console.log('validating', editedSentence.words)
             editedSentence.validate()
             const wordID = sentence.wordByIndex(wordIndex).id
             if (oldRoot) {
@@ -175,7 +175,7 @@ class Tree extends Component {
     clickRoot() {
         const { current, actions } = this.props
         try {
-            if (current.relations.length > 1) throw "Only one word can descend from the root."
+            if (current.relations.length > 1) throw "Only one word descends from root."
             current.relations.forEach(childIndex => {
                 this.editWord(childIndex, {
                     parent: 0
@@ -226,14 +226,18 @@ class Tree extends Component {
             left: rootNode.x * scaling.units.x + scaling.wordWidth/2 + "px"
         } : {top: "0px", left: "0px"};
 
+        const treeClasses = ["tree"]
+
         if (current.relations && current.relations.length > 0) {
             this.animate()
+            treeClasses.push("tree--with-relations")
         } else {
             this.cancelAnimation()
         }
 
+
         return (
-            <div className="tree" onClick={this.deselect.bind(this)} ref={element => this.element = element}>
+            <div className={treeClasses.join(' ')} onClick={this.deselect.bind(this)} ref={element => this.element = element}>
                 <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">
                     {relations}
