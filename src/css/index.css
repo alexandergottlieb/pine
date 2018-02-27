@@ -110,7 +110,8 @@ body,
 .editor__default,
 .breadcrumbs__breadcrumb--current,
 .sentences__sentence,
-.create-word__button {
+.create-word__button,
+.tree__root {
   color:#758AA8;
 }
 /* Red */

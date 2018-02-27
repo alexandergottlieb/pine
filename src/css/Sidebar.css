@@ -55,4 +55,5 @@
   padding:0.5rem 0;
   border-top:1px solid;
   border-bottom:1px solid;
+  box-shadow:0 -2px 12px 0 rgba(0,0,0,0.32), 0 2px 12px 0 rgba(0,0,0,0.32);
 }

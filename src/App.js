@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "./actions";
-import Editor from './components/Editor'
+import Edit from './components/Edit'
 import Home from './components/Home'
 
 class App extends Component {
@@ -22,7 +22,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="app">
           <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
-          <Route path="/edit/:treebank/:sentence?" render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
+          <Route path="/edit/:treebank/:sentence?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
         </div>
       </BrowserRouter>
     )
