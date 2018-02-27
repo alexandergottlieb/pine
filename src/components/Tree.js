@@ -238,7 +238,7 @@ class Tree extends Component {
                 <div className="relations">
                     {relations}
                     <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>
-                        <span className="fa fa-tree"></span>
+                        root
                     </div>
                 </div>
                 {words}

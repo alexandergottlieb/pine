@@ -59,7 +59,7 @@ body,
 .relation__label .Select.is-open .Select-input,
 .relation__label .Select-option.is-focused,
 .relation__label .Select-option.is-selected,
-.orphans {
+.tree__root {
   background-color:#F2F6FF;
 }
 /* Accent */
@@ -81,7 +81,8 @@ body,
 .upload-treebank,
 .button--primary,
 .sentence-editor__word,
-.sentence-editor .sentence-editor__button:hover {
+.sentence-editor .sentence-editor__button:hover,
+.tree__root {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -90,7 +91,6 @@ body,
   background-color:#404655;
 }
 /* Grey */
-.tree__root,
 .tree__root:after {
   background-color:#738290;
 }
