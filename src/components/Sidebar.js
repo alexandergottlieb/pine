@@ -28,8 +28,8 @@ const Sidebar = props => {
         <div className="sidebar__create-sentence">
           <Button type="primary" icon="fa-plus-circle">New Sentence</Button>
         </div>
-        <Button type="secondary" icon="fa-question-circle">Help</Button>
-        <Button type="secondary" icon="fa-cog">Settings</Button>
+        <Button type="secondary" icon="fa-question-circle" link={`/edit/${current.treebank}/${current.sentence}/help`}>Help</Button>
+        <Button type="secondary" icon="fa-cog" link={`/edit/${current.treebank}/${current.sentence}/settings`}>Settings</Button>
       </div>
     </div>
   )
