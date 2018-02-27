@@ -24,10 +24,13 @@
     padding:0;
     border-radius:50%;
     font-size:0.875rem;
+    line-height:1.5rem;
     opacity:0;
+    transform:scale(0);
   }
   .word:hover .word__delete {
     opacity:1;
+    transform:scale(1);
   }
   /* Inflection */
   .word__inflection {

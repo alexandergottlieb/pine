@@ -118,7 +118,8 @@ body,
 .word__inflection,
 .relation__label .Select-value-label,
 .relation__label .Select-option,
-.sentences__sentence {
+.sentences__sentence,
+.word__delete {
   transition: 0.15s ease-out;
 }
 .word__pos-tag {

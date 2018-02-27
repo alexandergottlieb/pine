@@ -124,7 +124,9 @@ export default class Word extends Component {
                     <label className="word-data__label" title="Language specific part of speech tag">XPOS</label>
                     <input className="word-data__input" onChange={this.xposChange.bind(this)} value={this.state.xposTag} />
                 </div>
-                <Button className="word__delete" type="secondary" icon="fa-times" onClick={this.deleteClicked.bind(this)}></Button>
+                <div className="word__delete" onClick={this.deleteClicked.bind(this)}>
+                    <span className="fa fa-times"></span>
+                </div>
             </div>
         )
     }
