@@ -5,27 +5,30 @@ import { connect } from "react-redux";
 import * as actionCreators from "./actions";
 import Edit from './components/Edit'
 import Home from './components/Home'
+import Login from './components/Login'
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {}
-
-    this.props.actions.syncTreebanks()
+  componentDidMount() {
+    const { user, actions } = this.props
+    if (user.loggedIn) actions.syncTreebanks()
   }
 
   render() {
-    const { actions, current, treebanks, sentences } = this.props
+    const { user, actions, current, treebanks, sentences } = this.props
 
-    return (
-      <BrowserRouter>
-        <div className="app">
-          <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
-          <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
-        </div>
-      </BrowserRouter>
-    )
+    if (user.loggedIn) {
+      return (
+        <BrowserRouter>
+          <div className="app">
+            <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
+            <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
+          </div>
+        </BrowserRouter>
+      )
+    } else {
+      return <Login current={current} actions={actions} />
+    }
   }
 }
 

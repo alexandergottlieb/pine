@@ -47,6 +47,7 @@ p {
 /* Links */
 a {
     text-decoration:none;
+    cursor:pointer;
 }
 a:hover {
   text-decoration:underline;
@@ -115,7 +116,8 @@ body,
   border-color:#404655;
 }
 /* Less Dark */
-.sidebar__buttons {
+.sidebar__buttons,
+.login__form {
   background-color:#1D2333;
 }
 /* Grey */
