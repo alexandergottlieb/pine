@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import Input from "./Input"
 import Button from "./Button"
+import Messages from "./Messages"
 import "../css/Login.css"
 
 export default class Login extends Component {
@@ -48,23 +49,33 @@ export default class Login extends Component {
     }
 
     render() {
+        const { current } = this.props
         const { register } = this.state
         return (
             <div className="login">
                 <div className="login__form">
                     <h1>{register ? "Register" : "Sign In"}</h1>
                     <small>or <a onClick={this.toggleRegister.bind(this)}>{register ? "Sign In" : "Register"}</a></small>
+                    <Input type="email" label="Email" onChange={val => this.changeEmail(val)} />
+                    <Input type="password" label="Password" />
                     {register
                         ? <Input type="text" label="Name" />
                         : null
                     }
-                    <Input type="email" label="Email" onChange={val => this.changeEmail(val)} />
-                    <Input type="password" label="Password" />
                     <div className="login__buttons">
-                        <a onClick={this.forgotPassword.bind(this)}>Forgot password?</a>
-                        <Button type="primary" onClick={this.login.bind(this)}>Sign In</Button>
+                        {register
+                            ? <Button type="primary" onClick={this.register.bind(this)}>Register</Button>
+                            : <div>
+                                <small>
+                                    <a onClick={this.forgotPassword.bind(this)}>Forgot password?</a>
+                                </small>
+                                <Button type="primary" onClick={this.login.bind(this)}>Sign In</Button>
+                            </div>
+                         }
+
                     </div>
                 </div>
+                <Messages messages={current.messages} />
             </div>
         )
     }

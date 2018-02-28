@@ -65,7 +65,6 @@ a:hover {
 }
 body,
 .button--warning,
-.button--primary:hover,
 .sidebar,
 .tree__root,
 .word .word__delete:hover,
@@ -79,15 +78,15 @@ body,
 .relation__label .Select.is-open .Select-input,
 .relation__label .Select-option.is-focused,
 .relation__label .Select-option.is-selected,
-.tree__root {
+.tree__root,
+.button--primary {
   background-color:#F2F6FF;
 }
 /* Accent - yellow */
 .upload-treebank:hover {
   background-color:#FFFF82;
 }
-.button--secondary:hover,
-.button--primary {
+.button--secondary:hover {
   color:#FFFF82;
 }
 /* Accent - blue */
@@ -104,7 +103,8 @@ body,
 .upload-treebank,
 .sentence-editor__word,
 .sentence-editor .sentence-editor__button:hover,
-.tree__root {
+.tree__root,
+.button--primary {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -122,7 +122,8 @@ body,
 }
 /* Grey */
 .tree__root:after,
-.word__delete {
+.word__delete,
+.button--primary:hover {
   background-color:#758AA8;
 }
 .editor__default,

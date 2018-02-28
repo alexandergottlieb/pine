@@ -10,6 +10,10 @@
     cursor:pointer;
     outline:0 !important;
 }
+.button--primary {
+    padding:0.5em 0.75em;
+    box-shadow:0 2px 8px 0 rgba(0,0,0,0.32);
+}
 .button--secondary {
     color:inherit;
 }
