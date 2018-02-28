@@ -4,10 +4,11 @@ import CONLLU from "../classes/CONLLU"
 
 import { syncTreebanks, syncSentences, syncWords } from "./sync"
 export * from "./sync"
+export * from "./user.js"
 
 export const addError = message => {
     return dispatch => {
-        addMessage(message, true)
+        dispatch(addMessage(message, true))
     }
 }
 

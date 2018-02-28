@@ -11,6 +11,7 @@ export default class Login extends Component {
         this.state = {
             email: "",
             password: "",
+            name: "",
             register: false
         }
     }
@@ -27,9 +28,16 @@ export default class Login extends Component {
         })
     }
 
+    changeName(value) {
+        this.setState({
+            name: value
+        })
+    }
+
     login() {
         const { actions } = this.props
-        actions.login(this.state.email, this.state.password)
+        const { email, password } = this.state
+        if (email.length > 0 && password.length > 0) actions.login(email, password)
     }
 
     forgotPassword() {
@@ -39,7 +47,9 @@ export default class Login extends Component {
 
     register() {
         const { actions } = this.props
-
+        const { email, password, name } = this.state
+        //TODO - validation
+        if (email.length > 0 && password.length > 0 && name.length > 0) actions.register(email, password, name)
     }
 
     toggleRegister() {
@@ -48,27 +58,35 @@ export default class Login extends Component {
         })
     }
 
+    keyUp(event) {
+        if (event.keyCode === 13) {
+            if (this.state.register) {
+                this.register()
+            } else {
+                this.login()
+            }
+        }
+    }
+
     render() {
         const { current } = this.props
         const { register } = this.state
         return (
             <div className="login">
-                <div className="login__form">
+                <div className="login__form" onKeyUp={this.keyUp.bind(this)}>
                     <h1>{register ? "Register" : "Sign In"}</h1>
                     <small>or <a onClick={this.toggleRegister.bind(this)}>{register ? "Sign In" : "Register"}</a></small>
                     <Input type="email" label="Email" onChange={val => this.changeEmail(val)} />
                     <Input type="password" label="Password" />
                     {register
-                        ? <Input type="text" label="Name" />
+                        ? <Input type="text" label="Name" onChange={val => this.changeName(val)} />
                         : null
                     }
                     <div className="login__buttons">
                         {register
                             ? <Button type="primary" onClick={this.register.bind(this)}>Register</Button>
                             : <div>
-                                <small>
-                                    <a onClick={this.forgotPassword.bind(this)}>Forgot password?</a>
-                                </small>
+                                <a className="login__forgot" onClick={this.forgotPassword.bind(this)}>Forgot password?</a>
                                 <Button type="primary" onClick={this.login.bind(this)}>Sign In</Button>
                             </div>
                          }

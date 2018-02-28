@@ -11,6 +11,7 @@ class App extends Component {
 
   componentDidMount() {
     const { user, actions } = this.props
+    actions.syncAuth()
     if (user.loggedIn) actions.syncTreebanks()
   }
 

@@ -15,3 +15,8 @@
 .login__buttons {
     text-align:right;
 }
+.login .login__forgot {
+    margin-right:1rem;
+    font-size:0.825rem;
+    color:inherit;
+}

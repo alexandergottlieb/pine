@@ -1,13 +1,13 @@
 import React, { Component } from "react"
 import "../css/Input.css"
 
-export default class Edit extends Component {
+export default class Input extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-
+            input: ""
         }
     }
 
