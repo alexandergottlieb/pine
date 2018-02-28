@@ -18,7 +18,8 @@ const Sidebar = props => {
   return (
     <div className="sidebar">
       <nav className="breadcrumbs">
-        <Link to="/">Treebanks</Link> <span className="breadcrumbs__breadcrumb breadcrumbs__breadcrumb--current">/ Edit</span>
+        <Link className="breadcrumbs__breadcrumb" to="/">Treebanks</Link>
+        <span className="breadcrumbs__breadcrumb breadcrumbs__breadcrumb--current"> / Edit</span>
       </nav>
       <h1 className="sidebar__title">{treebank.name}</h1>
       <nav className="sentences">

@@ -14,6 +14,7 @@ export default class Sentence {
             let glue = (word.uposTag === 'PUNCT' || this.sentence === "") ? '' : ' ' //Add space between words but not punctuation
             this.sentence = this.sentence + glue + word.inflection
         })
+        if (this.sentence === "") this.sentence = "Empty Sentence"
     }
 
     wordByIndex(index) {

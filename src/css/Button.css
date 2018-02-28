@@ -16,3 +16,6 @@
 .button__icon + * {
     margin-left:0.5em;
 }
+.button:hover {
+    text-decoration:none;
+}

@@ -12,20 +12,33 @@ body {
 body {
   font-weight:normal;
 }
-h1, h2, h3 {
-  margin:0;
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
+  margin-top:0;
 }
 h1 {
-  font-size:2rem;
+  margin:0 0 1rem 0;
+  font-size:2.25rem;
   font-weight:bold;
 }
 h2 {
+  margin:2rem 0 0 0;
   font-weight:inherit;
-  font-size:1.5rem;
+  font-size:1.75rem;
 }
 h3 {
-  font-size:1rem;
+  margin:2rem 0 0.25rem 0;
+  font-size:1.25rem;
+  font-weight:bold;
+}
+h4 {
+  margin:1.5rem 0 0.25rem 0;
+  font-size:0.875rem;
+  font-weight:bold;
   text-transform:uppercase;
+}
+h5 {
+  margin:1rem 0 0.25rem 0;
+  font-size:0.875rem;
   font-weight:bold;
 }
 p {
@@ -33,8 +46,10 @@ p {
 }
 /* Links */
 a {
-    color:inherit;
     text-decoration:none;
+}
+a:hover {
+  text-decoration:underline;
 }
 
 /**** Colour Scheme */
@@ -75,9 +90,9 @@ body,
   color:#FFFF82;
 }
 /* Accent - blue */
-/* .nothing {
+a {
   color:#48BEFF;
-} */
+}
 /* Dark */
 body,
 .sidebar,

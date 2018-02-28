@@ -19,6 +19,9 @@
   font-size:0.875rem;
   text-overflow: ellipsis;
 }
+.breadcrumbs__breadcrumb--current {
+  pointer-events:none;
+}
 
 /* Title */
 .sidebar__title {
@@ -37,6 +40,9 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.sentences__sentence:hover {
+  text-decoration:none;
 }
 
 /* Buttons */
