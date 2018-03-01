@@ -63,3 +63,12 @@
   border-bottom:1px solid;
   box-shadow:0 -2px 12px 0 rgba(0,0,0,0.32), 0 2px 12px 0 rgba(0,0,0,0.32);
 }
+.sidebar__create-sentence .button {
+  padding-left:0;
+  padding-right:0;
+  background-color:inherit;
+  box-shadow:none;
+}
+.sidebar__create-sentence .button:hover {
+  background-color:inherit;
+}

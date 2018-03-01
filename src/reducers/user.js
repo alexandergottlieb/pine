@@ -1,5 +1,5 @@
 const initial = {
-    loggedIn: false
+    loggedIn: true
 }
 
 const user = (state = initial, action) => {

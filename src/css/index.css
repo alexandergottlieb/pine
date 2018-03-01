@@ -86,11 +86,13 @@ body,
 .upload-treebank:hover {
   background-color:#FFFF82;
 }
-.button--secondary:hover {
+.sidebar__create-sentence .button {
   color:#FFFF82;
 }
 /* Accent - blue */
-a {
+a,
+.button--secondary:hover,
+.sidebar__create-sentence .button:hover {
   color:#48BEFF;
 }
 /* Dark */

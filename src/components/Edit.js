@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Sidebar from './Sidebar'
 import Editor from './Editor'
 import Settings from './Settings'
@@ -44,9 +44,11 @@ export default class Edit extends Component {
       <div>
         <Sidebar current={current} sentences={sentences} treebanks={treebanks} />
         <main className="main">
-          <Route path="/edit/:treebank/:sentence" exact render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
-          <Route path="/edit/:treebank/:sentence/help" exact component={Help} />
-          <Route path="/edit/:treebank/:sentence/settings" exact component={Settings} />
+          <Switch>
+            <Route path="/edit/:treebank/help" exact component={Help} />
+            <Route path="/edit/:treebank/settings" exact component={Settings} />
+            <Route path="/edit/:treebank/:sentence?" exact render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
+          </Switch>
         </main>
       </div>
     )

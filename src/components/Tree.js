@@ -280,9 +280,7 @@ class Tree extends Component {
                 <svg id="lines" className="lines">{lines}</svg>
                 <div className="relations">
                     {relations}
-                    <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>
-                        root
-                    </div>
+                    <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>
                 </div>
                 {words}
             </div>
