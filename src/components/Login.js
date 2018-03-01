@@ -42,12 +42,16 @@ export default class Login extends Component {
 
     forgotPassword() {
         const { actions } = this.props
-        actions.forgotPassword(this.state.email)
+        const email = prompt("Enter your email to reset your password", this.state.email)
+        if (email) {
+            actions.forgotPassword(email)
+        }
     }
 
     register() {
         const { actions } = this.props
         const { email, password, name } = this.state
+        console.log('register clicked', email, password, name)
         //TODO - validation
         if (email.length > 0 && password.length > 0 && name.length > 0) actions.register(email, password, name)
     }
@@ -77,7 +81,7 @@ export default class Login extends Component {
                     <h1>{register ? "Register" : "Sign In"}</h1>
                     <small>or <a onClick={this.toggleRegister.bind(this)}>{register ? "Sign In" : "Register"}</a></small>
                     <Input type="email" label="Email" onChange={val => this.changeEmail(val)} />
-                    <Input type="password" label="Password" />
+                    <Input type="password" label="Password" onChange={val => this.changePassword(val)} />
                     {register
                         ? <Input type="text" label="Name" onChange={val => this.changeName(val)} />
                         : null

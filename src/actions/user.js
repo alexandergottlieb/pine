@@ -24,7 +24,7 @@ export const register = (email, password, displayName) => {
 export const forgotPassword = (email) => {
     return dispatch => {
         auth.sendPasswordResetEmail(email).then(() => {
-            addMessage(`New password sent to ${email}`)
+            dispatch(addMessage(`New password sent to ${email}`))
         }).catch(error => {
             console.error(error)
             dispatch(addError(error.message))
@@ -36,9 +36,13 @@ let syncingAuth = false
 export const syncAuth = () => {
     return dispatch => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
+            console.log('stateChange')
+            const { email, displayName, emailVerified, photoURL } = user
             if (user) {
                 dispatch({
-                    ...user,
+                    user: {
+                        email, displayName, emailVerified, photoURL
+                    },
                     type: "USER_CHANGE"
                 })
             } else {
