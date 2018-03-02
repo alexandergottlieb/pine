@@ -12,6 +12,10 @@ class App extends Component {
   componentDidMount() {
     const { user, actions } = this.props
     actions.syncAuth()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { user, actions } = nextProps
     if (user.loggedIn) actions.syncTreebanks()
   }
 
@@ -22,7 +26,7 @@ class App extends Component {
       return (
         <BrowserRouter>
           <div className="app">
-            <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} />} />
+            <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} user={user} />} />
             <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
           </div>
         </BrowserRouter>

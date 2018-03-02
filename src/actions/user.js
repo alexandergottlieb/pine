@@ -32,13 +32,20 @@ export const forgotPassword = (email) => {
     }
 }
 
+export const logout = () => {
+    return dispatch => {
+        auth.signOut().catch(e => {
+            console.error(e)
+        })
+    }
+}
+
 let syncingAuth = false
 export const syncAuth = () => {
     return dispatch => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
-            console.log('stateChange')
-            const { email, displayName, emailVerified, photoURL } = user
             if (user) {
+                const { email, displayName, emailVerified, photoURL } = user
                 dispatch({
                     user: {
                         email, displayName, emailVerified, photoURL

@@ -98,7 +98,7 @@ a,
 /* Dark */
 body,
 .sidebar,
-.sidebar__buttons {
+.sidebar__footer {
   background-color:#13161F;
 }
 .main,
@@ -114,11 +114,13 @@ body,
 .sentences__sentence:hover {
   background-color:#404655;
 }
-.sidebar__create-sentence {
+.sidebar__create-sentence,
+.sidebar__header {
   border-color:#404655;
 }
 /* Less Dark */
-.sidebar__buttons,
+.sidebar__footer,
+.sidebar__header,
 .login__form {
   background-color:#1D2333;
 }

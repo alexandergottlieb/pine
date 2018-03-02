@@ -17,15 +17,17 @@ const Sidebar = props => {
 
   return (
     <div className="sidebar">
-      <nav className="breadcrumbs">
-        <Link className="breadcrumbs__breadcrumb" to="/">Treebanks</Link>
-        <span className="breadcrumbs__breadcrumb breadcrumbs__breadcrumb--current"> / Edit</span>
-      </nav>
-      <h1 className="sidebar__title">{treebank.name}</h1>
+      <header className="sidebar__header">
+        <nav className="breadcrumbs">
+          <Link className="breadcrumbs__breadcrumb" to="/">Treebanks</Link>
+          <span className="breadcrumbs__breadcrumb breadcrumbs__breadcrumb--current"> / Edit</span>
+        </nav>
+        <h1 className="sidebar__title">{treebank.name}</h1>
+      </header>
       <nav className="sentences">
         {sentenceLinks}
       </nav>
-      <nav className="sidebar__buttons">
+      <footer className="sidebar__footer">
         <div className="sidebar__create-sentence">
           <Button type="primary" icon="fa-plus-circle">New Sentence</Button>
         </div>
@@ -45,7 +47,7 @@ const Sidebar = props => {
         >
           Settings
         </Button>
-      </nav>
+      </footer>
     </div>
   )
 

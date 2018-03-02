@@ -8,7 +8,7 @@ const user = (state = initial, action) => {
             return initial
         }
         case "USER_CHANGE": {
-            return {...state, ...action.user}
+            return {...state, ...action.user, loggedIn: true }
         }
         default:
             return state

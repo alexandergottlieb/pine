@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CONLLU from '../classes/CONLLU'
 import Treebank from './Treebank'
 import Messages from './Messages'
+import Header from './Header'
 import '../css/Home.css'
 
 class Home extends Component {
@@ -33,7 +34,7 @@ class Home extends Component {
   }
 
   render() {
-    const { treebanks, actions, current } = this.props
+    const { treebanks, actions, current, user } = this.props
 
     const treebanksList = []
     for (let id in this.props.treebanks) {
@@ -44,6 +45,7 @@ class Home extends Component {
 
     return (
       <div className="home">
+        <Header current={current} user={user} actions={actions} />
         <h1>Treebanks</h1>
         <div className="treebanks">
           {treebanksList}
