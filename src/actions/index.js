@@ -194,3 +194,10 @@ export const queueExportTreebank = (treebankID) => {
         })
     }
 }
+
+export const createRelationLabel = (label, value) => {
+    return (dispatch, getState) => {
+        const { user, current } = getState()
+        database.ref(`/user/${user.uid}/treebanks/${current.treebank}/settings/relations/${value}`).set(label)
+    }
+}

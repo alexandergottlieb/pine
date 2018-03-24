@@ -150,7 +150,7 @@ class Tree extends Component {
     }
 
     editWord(wordIndex, data) {
-        const { sentence, current, actions } = this.props
+        const { sentence, current, actions, treebank } = this.props
         const editedSentence = new Sentence(sentence)
 
         //If assigning new root, set current root to descend from the new
@@ -161,7 +161,6 @@ class Tree extends Component {
 
         //Validate sentence & update
         try {
-            console.log('validating', editedSentence.words)
             editedSentence.validate()
             const wordID = sentence.wordByIndex(wordIndex).id
             if (oldRoot) {
@@ -171,9 +170,8 @@ class Tree extends Component {
                 //Edit word
                 actions.editWord(current.treebank, current.sentence, wordID, data)
             }
-            //Edit sentence
+            //Re-string sentence together
             editedSentence.stringSentenceTogether()
-            //Update sentence.sentence
             actions.editSentence(current.treebank, current.sentence, {
                 sentence: editedSentence.sentence
             })
@@ -218,7 +216,7 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, current } = this.props
+        const { actions, current, treebank } = this.props
         const { nodes, scaling, origin } = this.state
 
         //Generate words
@@ -255,7 +253,15 @@ class Tree extends Component {
                 lines.push(<Line {...coords} active={active} key={child.word.id} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
-                relations.push(<Relation coords={coords} word={child.word} editWord={this.editWord.bind(this)} addRelation={actions.addRelation} active={active} key={child.word.id} ref={element => this.registerRelation(element, child.index)} />)
+                relations.push(<Relation
+                    coords={coords}
+                    word={child.word}
+                    editWord={this.editWord.bind(this)}
+                    actions={actions}
+                    active={active} key={child.word.id}
+                    relations={treebank.settings.relations}
+                    ref={element => this.registerRelation(element, child.index)}
+                />)
             })
         })
 

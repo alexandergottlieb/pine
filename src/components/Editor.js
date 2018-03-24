@@ -58,11 +58,12 @@ export default class Editor extends Component {
     render() {
         const { actions, current, sentences, treebanks } = this.props
 
+        const treebank = treebanks[current.treebank]
         let contents = null
         let sentence = sentences.find(sentence => sentence.id === current.sentence)
         if (sentence !== undefined) {
           contents = sentence.words.length > 0
-            ? <Tree actions={actions} sentence={sentence} current={current} />
+            ? <Tree actions={actions} sentence={sentence} current={current} treebank={treebank} />
             : null
         } else {
           contents = (

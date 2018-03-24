@@ -1,3 +1,4 @@
+import uniqid from 'uniqid'
 import Sentence from './Sentence'
 import Word from './Word'
 
@@ -7,6 +8,10 @@ export default class CONLLU {
         this.name = name
         this.sentences = sentences
         this.multitokens = false
+        this.settings = {
+            xpos: {},
+            relations: {}
+        }
     }
 
     //Parse CoNLL-U text
@@ -73,10 +78,21 @@ export default class CONLLU {
         if (data[4] !== undefined && data[4] !== '_') word.xposTag = String(data[4]).toUpperCase()
         if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(data[5])
         if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
-        if (data[7] !== undefined && data[7] !== '_') word.relation = String(data[7]).toLowerCase()
+        if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase())
         if (data[8] !== undefined && data[8] !== '_') word.dependencies = data[8]
         if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(data[9])
         return word
+    }
+
+    relationKeyByValue(value) {
+        for (const key in this.settings.relations) {
+            if (this.settings.relations[key] === value) {
+                return key
+            }
+        }
+        const newKey = uniqid()
+        this.settings.relations[newKey] = value
+        return newKey
     }
 
     //Parse key=value|key=value... property from CoNLL-U into object
@@ -129,169 +145,7 @@ export default class CONLLU {
 
     //Get list of relation tags
     static relations() {
-        return [ "acl", "advcl", "advmod", "amod", "appos", "aux", "auxpass", "case", "cc", "ccomp", "compound", "conj", "cop", "csubj", "csubjpass", "dep", "det", "discourse", "dislocated", "dobj", "expl", "foreign", "goeswith", "iobj", "list", "mark", "mwe", "name", "neg", "nmod", "nsubj", "nsubjpass", "nummod", "parataxis", "punct", "remnant", "reparandum", "root", "vocative", "xcomp" ]
-        // return [
-        //   {
-        //     "value": "acl",
-        //     "label": "Clausal Modifier Of Noun (Adjectival Clause)"
-        //   },
-        //   {
-        //     "value": "advcl",
-        //     "label": "Adverbial Clause Modifier"
-        //   },
-        //   {
-        //     "value": "advmod",
-        //     "label": "Adverbial Modifier"
-        //   },
-        //   {
-        //     "value": "amod",
-        //     "label": "Adjectival Modifier"
-        //   },
-        //   {
-        //     "value": "appos",
-        //     "label": "Appositional Modifier"
-        //   },
-        //   {
-        //     "value": "aux",
-        //     "label": "Auxiliary"
-        //   },
-        //   {
-        //     "value": "auxpass",
-        //     "label": "Passive Auxiliary"
-        //   },
-        //   {
-        //     "value": "case",
-        //     "label": "Case Marking"
-        //   },
-        //   {
-        //     "value": "cc",
-        //     "label": "Coordinating Conjunction"
-        //   },
-        //   {
-        //     "value": "ccomp",
-        //     "label": "Clausal Complement"
-        //   },
-        //   {
-        //     "value": "compound",
-        //     "label": "Compound"
-        //   },
-        //   {
-        //     "value": "conj",
-        //     "label": "Conjunct"
-        //   },
-        //   {
-        //     "value": "cop",
-        //     "label": "Copula"
-        //   },
-        //   {
-        //     "value": "csubj",
-        //     "label": "Clausal Subject"
-        //   },
-        //   {
-        //     "value": "csubjpass",
-        //     "label": "Clausal Passive Subject"
-        //   },
-        //   {
-        //     "value": "dep",
-        //     "label": "Unspecified Dependency"
-        //   },
-        //   {
-        //     "value": "det",
-        //     "label": "Determiner"
-        //   },
-        //   {
-        //     "value": "discourse",
-        //     "label": "Discourse Element"
-        //   },
-        //   {
-        //     "value": "dislocated",
-        //     "label": "Dislocated Elements"
-        //   },
-        //   {
-        //     "value": "dobj",
-        //     "label": "Direct Object"
-        //   },
-        //   {
-        //     "value": "expl",
-        //     "label": "Expletive"
-        //   },
-        //   {
-        //     "value": "foreign",
-        //     "label": "Foreign Words"
-        //   },
-        //   {
-        //     "value": "goeswith",
-        //     "label": "Goes With"
-        //   },
-        //   {
-        //     "value": "iobj",
-        //     "label": "Indirect Object"
-        //   },
-        //   {
-        //     "value": "list",
-        //     "label": "List"
-        //   },
-        //   {
-        //     "value": "mark",
-        //     "label": "Marker"
-        //   },
-        //   {
-        //     "value": "mwe",
-        //     "label": "Multi-Word Expression"
-        //   },
-        //   {
-        //     "value": "name",
-        //     "label": "Name"
-        //   },
-        //   {
-        //     "value": "neg",
-        //     "label": "Negation Modifier"
-        //   },
-        //   {
-        //     "value": "nmod",
-        //     "label": "Nominal Modifier"
-        //   },
-        //   {
-        //     "value": "nsubj",
-        //     "label": "Nominal Subject"
-        //   },
-        //   {
-        //     "value": "nsubjpass",
-        //     "label": "Passive Nominal Subject"
-        //   },
-        //   {
-        //     "value": "nummod",
-        //     "label": "Numeric Modifier"
-        //   },
-        //   {
-        //     "value": "parataxis",
-        //     "label": "Parataxis"
-        //   },
-        //   {
-        //     "value": "punct",
-        //     "label": "Punctuation"
-        //   },
-        //   {
-        //     "value": "remnant",
-        //     "label": "Remnant In Ellipsis"
-        //   },
-        //   {
-        //     "value": "reparandum",
-        //     "label": "Overridden Disfluency"
-        //   },
-        //   {
-        //     "value": "root",
-        //     "label": "Root"
-        //   },
-        //   {
-        //     "value": "vocative",
-        //     "label": "Vocative"
-        //   },
-        //   {
-        //     "value": "xcomp",
-        //     "label": "Open Clausal Complement"
-        //   }
-        // ]
+        return ["acl", "advcl", "advmod", "amod", "appos", "aux", "auxpass", "case", "cc", "ccomp", "compound", "conj", "cop", "csubj", "csubjpass", "dep", "det", "discourse", "dislocated", "dobj", "expl", "foreign", "goeswith", "iobj", "list", "mark", "mwe", "name", "neg", "nmod", "nsubj", "nsubjpass", "nummod", "parataxis", "punct", "remnant", "reparandum", "root", "vocative", "xcomp"]
     }
 
     //Get list of UPOS tags
