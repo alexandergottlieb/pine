@@ -1,11 +1,12 @@
 export default class Sentence {
 
-    constructor(sentence = {sentence: "", index: null}) {
+    constructor(sentence = {sentence: ""}) {
         Object.assign(this, sentence)
         this.words = []
         if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push({...word}) )
         this.comments = []
         if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push({...comment}) )
+        if (!this.sentence) this.stringSentenceTogether()
     }
 
     stringSentenceTogether() {
@@ -14,7 +15,6 @@ export default class Sentence {
             let glue = (word.uposTag === 'PUNCT' || this.sentence === "") ? '' : ' ' //Add space between words but not punctuation
             this.sentence = this.sentence + glue + word.inflection
         })
-        if (this.sentence === "") this.sentence = "Empty Sentence"
     }
 
     wordByIndex(index) {

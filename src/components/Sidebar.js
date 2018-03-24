@@ -1,18 +1,43 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Sentence from '../classes/Sentence'
+import Word from '../classes/Word'
 import Button from './Button'
 import '../css/Sidebar.css'
 
 const Sidebar = props => {
 
-  const { current, sentences, treebanks } = props
+  const { current, sentences, treebanks, actions } = props
 
   const treebank = treebanks[current.treebank] || {name: "", sentences: ""}
+
+  const newSentenceClicked = () => {
+    const sentenceText = prompt("Type a new sentence")
+    if (sentenceText) {
+      let words = sentenceText.split(' ')
+      let rootDescendent = null
+      words = words.map((inflection, index) => {
+        let word = new Word()
+        word.inflection = inflection
+        word.index = index+1
+        if (rootDescendent === null) {
+          rootDescendent = word
+          word.parent = 0
+        } else {
+          word.parent = rootDescendent.index
+        }
+        return word
+      })
+      const sentence = new Sentence({words})
+      actions.createSentence(sentence)
+    }
+  }
 
   const sentenceLinks = sentences.map( sentence => {
     const { id } = sentence
     const cls = current.sentence !== null && current.sentence === id ? "sentences__sentence sentences__sentence--active" : "sentences__sentence"
-    return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`} title={sentence.sentence}>{sentence.sentence}</Link>
+    const title = sentence.sentence.length > 0 ? sentence.sentence : "Empty Sentence"
+    return <Link key={id} className={cls} to={`/edit/${current.treebank}/${id}`} title={title}>{title}</Link>
   })
 
   return (
@@ -29,7 +54,7 @@ const Sidebar = props => {
       </nav>
       <footer className="sidebar__footer">
         <div className="sidebar__create-sentence">
-          <Button type="primary" icon="fa-plus-circle">New Sentence</Button>
+          <Button type="primary" icon="fa-plus-circle" onClick={newSentenceClicked}>New Sentence</Button>
         </div>
         <Button
           className={`sidebar__button ${current.page === "help" ? "sidebar__button--active" : ""}`}

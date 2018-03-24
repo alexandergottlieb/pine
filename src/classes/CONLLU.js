@@ -43,7 +43,7 @@ export default class CONLLU {
                 self.sentences[current].words.push(word)
             }
         })
-        self.sentences.forEach( (sentence, index) => {
+        self.sentences.forEach( (sentence) => {
             //Orphan words should point to root descendent
             let rootDescendent = sentence.words.find(word => word.parent === 0) || null
             sentence.words.forEach(word => {
@@ -51,7 +51,7 @@ export default class CONLLU {
                     || (word.parent === 0 && word.index !== rootDescendent.index) //Only be one root descendent, any others with 0 are set to the first
                 ) {
                     if (rootDescendent === null) { //If no root descendent, set as the first orphan
-                        rootDescendent = word.index
+                        rootDescendent = word
                         word.parent = 0
                     } else { //descend from root descendent
                         word.parent = rootDescendent.index
@@ -60,7 +60,6 @@ export default class CONLLU {
             })
             //Sentence needs metadata
             sentence.stringSentenceTogether()
-            sentence.index = index
         })
     }
 
@@ -74,8 +73,24 @@ export default class CONLLU {
         if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
         if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
         if (data[2] !== undefined && data[2] !== '_') word.lemma = String(data[2])
-        if (data[3] !== undefined && data[3] !== '_') word.uposTag = String(data[3]).toUpperCase()
-        if (data[4] !== undefined && data[4] !== '_') word.xposTag = String(data[4]).toUpperCase()
+        //Part of Speech
+        let xposTag = null
+        if (data[3] !== undefined && data[3] !== '_') {
+            //Validate UPOS
+            const uposTag = String(data[3]).toUpperCase()
+            if (CONLLU.uposTags().find(tag => tag.value == uposTag) !== undefined) {
+                word.uposTag = uposTag
+            } else {
+                //Populate XPOS with the non-standard UPOS
+                xposTag = uposTag
+            }
+        }
+        if (data[4] !== undefined && data[4] !== '_') {
+            word.xposTag = String(data[4]).toUpperCase()
+        } else if (xposTag !== null) {
+            //Default to non-standard UPOS
+            word.xposTag = xposTag
+        }
         if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(data[5])
         if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
         if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase())

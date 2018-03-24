@@ -42,7 +42,7 @@ export default class Edit extends Component {
 
     return (
       <div>
-        <Sidebar current={current} sentences={sentences} treebanks={treebanks} />
+        <Sidebar current={current} sentences={sentences} treebanks={treebanks} actions={actions} />
         <main className="main">
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />

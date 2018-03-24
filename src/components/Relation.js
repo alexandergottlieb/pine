@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select, { Creatable } from 'react-select';
+import { Creatable } from 'react-select';
 import uniqid from 'uniqid'
 import 'react-select/dist/react-select.css';
 import '../css/Relation.css'
@@ -48,7 +48,7 @@ class Relation extends Component {
 
         //Setup select
         let relationOptions = []
-        let label = "?"
+        let label = "_"
         for (const key in relations) {
             relationOptions.push({
                 value: key,
@@ -56,6 +56,10 @@ class Relation extends Component {
             })
             if (word.relation == key) label = relations[key]
         }
+        relationOptions.push({
+            value: "_",
+            label: "_"
+        })
         const value = {value: word.relation, label}
 
         return (

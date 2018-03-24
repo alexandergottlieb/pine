@@ -47,9 +47,7 @@ export const uploadTreebank = (treebank) => {
                     word.id = wordKey
                     wordUpdates[`${sentenceKey}/${wordKey}`] = word
                 })
-                delete sentence.words
-                sentence.id = sentenceKey
-                sentenceUpdates[sentenceKey] = sentence
+                sentenceUpdates[sentenceKey] = {...sentence, id: sentenceKey, words: null}
             })
             //Batch requests
             database.ref(`/user/${user.uid}/sentences/${treebankRef.key}`).update(sentenceUpdates)
@@ -154,7 +152,7 @@ export const createWord = (treebank, sentence, data) => {
     return (dispatch, getState) => {
         const { user } = getState()
         dispatch({type: "WORD_CREATE_STARTED"})
-        const key = database.ref(`/words/${treebank}/${sentence}`).ref.push().key
+        const key = database.ref(`/user/${user.uid}/words/${treebank}/${sentence}`).ref.push().key
         database.ref(`/user/${user.uid}/words/${treebank}/${sentence}/${key}`).set({
             ...data,
             id: key
@@ -198,6 +196,22 @@ export const queueExportTreebank = (treebankID) => {
 export const createRelationLabel = (label, value) => {
     return (dispatch, getState) => {
         const { user, current } = getState()
-        database.ref(`/user/${user.uid}/treebanks/${current.treebank}/settings/relations/${value}`).set(label)
+        database.ref(`/user/${user.uid}/treebanks/${current.treebank}/settings/relations/${value}`).set(label).then(() => {
+            dispatch({
+                type: "RELATION_LABEL_CREATED"
+            })
+        })
+    }
+}
+
+export const createSentence = sentence => {
+    return (dispatch, getState) => {
+        const { user, current } = getState()
+        const sentenceID = database.ref(`/user/${user.uid}/sentences/${current.treebank}`).push().key
+        database.ref(`/user/${user.uid}/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null})
+        database.ref(`/user/${user.uid}/words/${current.treebank}/${sentenceID}`).set(sentence.words)
+        dispatch({
+            type: "SENTENCE_CREATED"
+        })
     }
 }
