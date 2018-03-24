@@ -16,7 +16,7 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { user, actions } = nextProps
-    if (user.loggedIn) actions.syncTreebanks()
+    if (user.loggedIn) actions.syncTreebanks(user)
   }
 
   render() {

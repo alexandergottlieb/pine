@@ -45,11 +45,8 @@ export const syncAuth = () => {
     return dispatch => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
             if (user) {
-                const { email, displayName, emailVerified, photoURL } = user
                 dispatch({
-                    user: {
-                        email, displayName, emailVerified, photoURL
-                    },
+                    user,
                     type: "USER_CHANGE"
                 })
             } else {

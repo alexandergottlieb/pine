@@ -13,7 +13,7 @@ class Home extends Component {
   }
 
   addFile(file) {
-    const { actions } = this.props
+    const { actions, user } = this.props
     if (!file) return
     let treebank = new CONLLU()
     treebank.name = file.name.slice(0,-7) //filename without .conllu extension
@@ -24,8 +24,9 @@ class Home extends Component {
       try {
         treebank.parseFile(text)
         if (treebank.multitokens) actions.addMessage(`Multitokens in '${treebank.name}' have been split.`)
-        actions.uploadTreebank(treebank)
+        actions.uploadTreebank(treebank, user)
       } catch (e) {
+        console.error(e)
         actions.addError(`Could not upload file: ${e.message}`)
       }
     }

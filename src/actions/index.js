@@ -26,14 +26,15 @@ export const addMessage = (message, error = false) => {
     }
 }
 
-export const uploadTreebank = treebank => {
+export const uploadTreebank = (treebank, user) => {
     return dispatch => {
         dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
         const sentences = treebank.sentences
         treebank.sentences = treebank.sentences.length
 
-        const treebankRef = database.ref("/treebanks").push()
+        const treebankRef = database.ref(`/treebanks/${user.uid}`).push()
         treebank.id = treebankRef.key
+        treebank.owner = user.uid
         treebankRef.set(treebank).then(() => {
             //Normalise sentences and words at eg. words/:treebankID/:sentenceID
             let sentenceUpdates = {}

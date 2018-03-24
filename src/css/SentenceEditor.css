@@ -20,6 +20,7 @@
 }
 .sentence-editor__word {
   display:inline-block;
+  height:1.625em;
   padding:0.25em 0.5em;
   margin-right:0.5em;
   border-bottom:0.125em solid transparent;

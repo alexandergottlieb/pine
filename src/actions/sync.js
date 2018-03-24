@@ -7,17 +7,18 @@ let watchers = {
     sentences: null
 }
 
-export const syncTreebanks = () => {
+export const syncTreebanks = (user) => {
     return dispatch => {
-        if (!watchers.treebanks) {
-            const ref = database.ref("/treebanks")
+        const endpoint = `/treebanks/${user.uid}`
+        if (watchers.treebanks !== endpoint) {
+            const ref = database.ref(endpoint)
             ref.on("value", snapshot => {
                 dispatch({
                     type: "TREEBANKS_UPDATED",
                     treebanks: snapshot.val()
                 })
             })
-            watchers.treebanks = "/treebanks"
+            watchers.treebanks = endpoint
         }
     }
 }
