@@ -38,7 +38,7 @@ export default class Edit extends Component {
 
   render() {
 
-    const { actions, current, sentences, treebanks } = this.props
+    const { actions, current, sentences, treebanks, user } = this.props
 
     return (
       <div>
@@ -46,7 +46,7 @@ export default class Edit extends Component {
         <main className="main">
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />
-            <Route path="/edit/:treebank/settings" exact component={Settings} />
+            <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} current={current} />} />
             <Route path="/edit/:treebank/:sentence?" exact render={(props) => <Editor {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} />} />
           </Switch>
         </main>

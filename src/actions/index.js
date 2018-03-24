@@ -26,13 +26,14 @@ export const addMessage = (message, error = false) => {
     }
 }
 
-export const uploadTreebank = (treebank, user) => {
-    return dispatch => {
+export const uploadTreebank = (treebank) => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
         const sentences = treebank.sentences
         treebank.sentences = treebank.sentences.length
 
-        const treebankRef = database.ref(`/treebanks/${user.uid}`).push()
+        const treebankRef = database.ref(`/user/${user.uid}/treebanks`).push()
         treebank.id = treebankRef.key
         treebank.owner = user.uid
         treebankRef.set(treebank).then(() => {
@@ -40,9 +41,9 @@ export const uploadTreebank = (treebank, user) => {
             let sentenceUpdates = {}
             let wordUpdates = {}
             sentences.forEach( sentence => {
-                const sentenceKey = database.ref(`/sentences/${treebankRef.key}`).push().key
+                const sentenceKey = database.ref(`/user/${user.uid}/sentences/${treebankRef.key}`).push().key
                 sentence.words.forEach( word => {
-                    const wordKey = database.ref(`/words/${treebankRef.key}/${sentenceKey}`).push().key
+                    const wordKey = database.ref(`/user/${user.uid}/words/${treebankRef.key}/${sentenceKey}`).push().key
                     word.id = wordKey
                     wordUpdates[`${sentenceKey}/${wordKey}`] = word
                 })
@@ -51,18 +52,19 @@ export const uploadTreebank = (treebank, user) => {
                 sentenceUpdates[sentenceKey] = sentence
             })
             //Batch requests
-            database.ref(`/sentences/${treebankRef.key}`).update(sentenceUpdates)
-            database.ref(`/words/${treebankRef.key}`).update(wordUpdates)
+            database.ref(`/user/${user.uid}/sentences/${treebankRef.key}`).update(sentenceUpdates)
+            database.ref(`/user/${user.uid}/words/${treebankRef.key}`).update(wordUpdates)
         })
     }
 }
 
-export const deleteTreebank = id => {
-    return dispatch => {
+export const deleteTreebank = (id) => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({ type: "TREEBANK_DELETE_STARTED" })
-        database.ref(`/treebanks/${id}`).remove().then(() => {
-            database.ref(`/sentences/${id}`).remove().then(() => {
-                database.ref(`/words/${id}`).remove().then(() => {
+        database.ref(`/user/${user.uid}/treebanks/${id}`).remove().then(() => {
+            database.ref(`/user/${user.uid}/sentences/${id}`).remove().then(() => {
+                database.ref(`/user/${user.uid}/words/${id}`).remove().then(() => {
                     dispatch({ type: "TREEBANK_DELETE_SUCCEEDED", id })
                 })
             })
@@ -112,44 +114,48 @@ export const clearRelations = () => {
 }
 
 export const editSentence = (treebank, sentence, data) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({
             type: "SENTENCE_EDIT",
             treebank, sentence, data
         })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data)
+        database.ref(`/user/${user.uid}/sentences/${treebank}/${sentence}`).update(data)
     }
 }
 
 export const editWord = (treebank, sentence, word, data) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({
             type: "WORD_EDIT",
             treebank, sentence, word, data
         })
-        const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
+        const ref = database.ref(`/user/${user.uid}/words/${treebank}/${sentence}/${word}`)
         ref.update(data)
     }
 }
 
 export const editWords = (treebank, sentence, words) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         let updates = {}
         words.forEach(word => updates[word.id] = word)
         dispatch({
             type: "WORDS_EDIT",
             treebank, sentence, words
         })
-        const ref = database.ref(`/words/${treebank}/${sentence}`)
+        const ref = database.ref(`/user/${user.uid}/words/${treebank}/${sentence}`)
         ref.set(updates)
     }
 }
 
 export const createWord = (treebank, sentence, data) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({type: "WORD_CREATE_STARTED"})
         const key = database.ref(`/words/${treebank}/${sentence}`).ref.push().key
-        database.ref(`/words/${treebank}/${sentence}/${key}`).set({
+        database.ref(`/user/${user.uid}/words/${treebank}/${sentence}/${key}`).set({
             ...data,
             id: key
         }).then(() => {
@@ -159,16 +165,17 @@ export const createWord = (treebank, sentence, data) => {
 }
 
 export const queueExportTreebank = (treebankID) => {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const { user } = getState()
         dispatch({
             type: "EXPORT_TREEBANK_STARTED",
             treebank: treebankID
         })
-        database.ref(`/treebanks/${treebankID}`).once('value', snapshot => {
+        database.ref(`/user/${user.uid}/treebanks/${treebankID}`).once('value', snapshot => {
             let treebank = snapshot.val()
-            database.ref(`/sentences/${treebankID}`).orderByKey().once('value', snapshot => {
+            database.ref(`/user/${user.uid}/sentences/${treebankID}`).orderByKey().once('value', snapshot => {
                 treebank.sentences = snapshot.val()
-                database.ref(`/words/${treebankID}`).orderByKey().once('value', snapshot => {
+                database.ref(`/user/${user.uid}/words/${treebankID}`).orderByKey().once('value', snapshot => {
                     let wordsBySentence = snapshot.val()
                     wordsBySentence.forEach( (words, index) => {
                         treebank.sentences[index].words = words

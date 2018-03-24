@@ -8,8 +8,9 @@ let watchers = {
 }
 
 export const syncTreebanks = (user) => {
-    return dispatch => {
-        const endpoint = `/treebanks/${user.uid}`
+    return (dispatch, getState) => {
+        const { user } = getState()
+        const endpoint = `/user/${user.uid}/treebanks`
         if (watchers.treebanks !== endpoint) {
             const ref = database.ref(endpoint)
             ref.on("value", snapshot => {
@@ -24,8 +25,9 @@ export const syncTreebanks = (user) => {
 }
 
 export const syncSentences = (treebank) => {
-    return dispatch => {
-        const endpoint = `/sentences/${treebank}`
+    return (dispatch, getState) => {
+        const { user } = getState()
+        const endpoint = `/user/${user.uid}/sentences/${treebank}`
         if (watchers.sentences !== endpoint) {
             dispatch({type: "SENTENCES_CHANGED_TREEBANK"})
             //Replace existing watcher
@@ -46,8 +48,9 @@ export const syncSentences = (treebank) => {
 }
 
 export const syncWords = (treebank, sentence) => {
-    return dispatch => {
-        const endpoint = `/words/${treebank}/${sentence}`
+    return (dispatch, getState) => {
+        const { user } = getState()
+        const endpoint = `/user/${user.uid}/words/${treebank}/${sentence}`
         if (watchers.words !== endpoint) {
             //Replace existing watcher
             if (watchers.words) database.ref(watchers.words).off()
