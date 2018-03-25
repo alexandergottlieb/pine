@@ -85,6 +85,14 @@ export default class Word extends Component {
         event.stopPropagation()
     }
 
+    keyUp = event => {
+        const { word, actions } = this.props
+        if (event.keyCode === 13) {
+            actions.setWord()
+            event.target.blur()
+        }
+    }
+
     render() {
         const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
 
@@ -112,7 +120,7 @@ export default class Word extends Component {
         if (current.relations && current.relations.length > 0) classes.push("word--relations-selected")
 
         return (
-            <div className={classes.join(' ')} style={style} onClick={this.click.bind(this)}>
+            <div className={classes.join(' ')} style={style} onClick={this.click.bind(this)} onKeyUp={this.keyUp.bind(this)}>
                 <input className="word__inflection" onChange={this.inflectionChange.bind(this)} value={this.state.inflection} ref={el => this.elements.inflection = el} />
                 <span className="word__pos-tag">{word.uposTag.toUpperCase()}</span>
                 <div className={`word-data word-data--${editable ? "show" : "hide"}`}>

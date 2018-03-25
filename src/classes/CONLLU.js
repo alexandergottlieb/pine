@@ -184,7 +184,7 @@ export default class CONLLU {
             "label": "Auxiliary Verb"
           },
           {
-            "value": "CONJ",
+            "value": "CCONJ",
             "label": "Coordinating Conjunction"
           },
           {
