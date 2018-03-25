@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TreeDrawer from '../classes/TreeDrawer'
-import Sentence from '../classes/Sentence'
 import Word from './Word'
 import Relation from './Relation'
 import Line from './Line'
@@ -136,11 +135,11 @@ class Tree extends Component {
     }
 
     clickRoot() {
-        const { current, actions } = this.props
+        const { current, actions, editWord } = this.props
         try {
             if (current.relations.length > 1) throw "Only one word descends from root."
             current.relations.forEach(childIndex => {
-                this.editWord(childIndex, {
+                editWord(childIndex, {
                     parent: 0
                 })
             })
@@ -149,74 +148,8 @@ class Tree extends Component {
         }
     }
 
-    editWord(wordIndex, data) {
-        const { sentence, current, actions, treebank } = this.props
-        const editedSentence = new Sentence(sentence)
-
-        //If assigning new root, set current root to descend from the new
-        const oldRoot = (data.hasOwnProperty("parent") && data.parent === 0) ? editedSentence.rootWord() : null
-        if (oldRoot) oldRoot.parent = wordIndex
-
-        Object.assign(editedSentence.wordByIndex(wordIndex), data)
-
-        //Validate sentence & update
-        try {
-            editedSentence.validate()
-            const wordID = sentence.wordByIndex(wordIndex).id
-            if (oldRoot) {
-                //Edit old root & word
-                actions.editWords(current.treebank, current.sentence, editedSentence.words)
-            } else {
-                //Edit word
-                actions.editWord(current.treebank, current.sentence, wordID, data)
-            }
-            //Re-string sentence together
-            editedSentence.stringSentenceTogether()
-            actions.editSentence(current.treebank, current.sentence, {
-                sentence: editedSentence.sentence
-            })
-        } catch (errorMessage) {
-            if (typeof errorMessage === "string") {
-                actions.addError(errorMessage)
-            } else { //Unexpected error
-                throw errorMessage
-            }
-        }
-    }
-
-    deleteWord(word) {
-        const { actions, current, sentence } = this.props
-        let editedSentence = new Sentence(sentence)
-        //Remove word
-        editedSentence.words = editedSentence.words.filter(aWord => aWord.id !== word.id)
-        //Change order & relations
-        let newParent = word.parent > word.index ? word.parent - 1 : word.parent
-        editedSentence.words = editedSentence.words.map(aWord => {
-            //Shift indices of all words after the deleted word down 1
-            if (aWord.index > word.index) aWord.index--
-            if (aWord.parent > word.index) aWord.parent--
-            if (aWord.parent === word.index) {
-                //Only one word can descend from root, so attach to sibling if multiple words
-                if (newParent === 0) {
-                    newParent = aWord.index
-                    aWord.parent = 0
-                } else {
-                    aWord.parent = newParent
-                }
-            }
-            return aWord
-        })
-        //Update words
-        actions.editWords(current.treebank, current.sentence, editedSentence.words)
-        //Update sentence text
-        editedSentence.stringSentenceTogether()
-        actions.editSentence(current.treebank, current.sentence, {
-            sentence: editedSentence.sentence
-        })
-    }
-
     render() {
-        const { actions, current, treebank } = this.props
+        const { actions, current, treebank, editWord, deleteWord } = this.props
         const { nodes, scaling, origin } = this.state
 
         //Generate words
@@ -224,8 +157,8 @@ class Tree extends Component {
             const editable = node.index == current.word ? true : false
             return <Word {...node}
                 scaling={scaling}
-                editWord={this.editWord.bind(this)}
-                deleteWord={this.deleteWord.bind(this)}
+                editWord={editWord}
+                deleteWord={deleteWord}
                 actions={actions}
                 current={current}
                 editable={editable}
@@ -256,7 +189,7 @@ class Tree extends Component {
                 relations.push(<Relation
                     coords={coords}
                     word={child.word}
-                    editWord={this.editWord.bind(this)}
+                    editWord={editWord}
                     actions={actions}
                     active={active} key={child.word.id}
                     relations={treebank.settings.relations}

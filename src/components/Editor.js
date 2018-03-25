@@ -7,9 +7,9 @@ import SentenceEditor from './SentenceEditor'
 
 export default class Editor extends Component {
 
-    moveWord(moved, oldIndex, newIndex) {
-      const { actions, current, sentences } = this.props
-      const sentence = sentences.find(sentence => sentence.id === current.sentence)
+    moveWord = (moved, oldIndex, newIndex) => {
+      const { actions, current, sentence } = this.props
+
       //Update indices in sentence, starting from 1
       let words = moved.map( (word, newPosition) => {
         word.index = newPosition + 1
@@ -33,9 +33,8 @@ export default class Editor extends Component {
       })
     }
 
-    createWord(data) {
-      const { actions, current, sentences } = this.props
-      const sentence = sentences.find(sentence => sentence.id === current.sentence)
+    createWord = (data) => {
+      const { actions, current, sentence } = this.props
 
       let word = new Word()
       //Either parent is the root descendent or artificial root
@@ -55,15 +54,82 @@ export default class Editor extends Component {
       })
     }
 
-    render() {
-        const { actions, current, sentences, treebanks } = this.props
+    editWord = (wordIndex, data) => {
+        const { sentence, current, actions, treebank } = this.props
 
-        const treebank = treebanks[current.treebank]
+        const editedSentence = new Sentence(sentence)
+
+        //If assigning new root, set current root to descend from the new
+        const oldRoot = (data.hasOwnProperty("parent") && data.parent === 0) ? editedSentence.rootWord() : null
+        if (oldRoot) oldRoot.parent = wordIndex
+
+        Object.assign(editedSentence.wordByIndex(wordIndex), data)
+
+        //Validate sentence & update
+        try {
+            editedSentence.validate()
+            const wordID = sentence.wordByIndex(wordIndex).id
+            if (oldRoot) {
+                //Edit old root & word
+                actions.editWords(current.treebank, current.sentence, editedSentence.words)
+            } else {
+                //Edit word
+                actions.editWord(current.treebank, current.sentence, wordID, data)
+            }
+            //Re-string sentence together
+            editedSentence.stringSentenceTogether()
+            actions.editSentence(current.treebank, current.sentence, {
+                sentence: editedSentence.sentence
+            })
+        } catch (errorMessage) {
+            if (typeof errorMessage === "string") {
+                actions.addError(errorMessage)
+            } else { //Unexpected error
+                throw errorMessage
+            }
+        }
+    }
+
+    deleteWord = (word) => {
+        const { actions, current, sentence } = this.props
+
+        let editedSentence = new Sentence(sentence)
+        
+        //Remove word
+        editedSentence.words = editedSentence.words.filter(aWord => aWord.id !== word.id)
+        //Change order & relations
+        let newParent = word.parent > word.index ? word.parent - 1 : word.parent
+        editedSentence.words = editedSentence.words.map(aWord => {
+            //Shift indices of all words after the deleted word down 1
+            if (aWord.index > word.index) aWord.index--
+            if (aWord.parent > word.index) aWord.parent--
+            if (aWord.parent === word.index) {
+                //Only one word can descend from root, so attach to sibling if multiple words
+                if (newParent === 0) {
+                    newParent = aWord.index
+                    aWord.parent = 0
+                } else {
+                    aWord.parent = newParent
+                }
+            }
+            return aWord
+        })
+        //Update words
+        actions.editWords(current.treebank, current.sentence, editedSentence.words)
+        //Update sentence text
+        editedSentence.stringSentenceTogether()
+        actions.editSentence(current.treebank, current.sentence, {
+            sentence: editedSentence.sentence
+        })
+    }
+
+    render() {
+        const { actions, current, sentence, treebank } = this.props
+
         let contents = null
-        let sentence = sentences.find(sentence => sentence.id === current.sentence)
-        if (sentence !== undefined) {
+        if (sentence) {
           contents = sentence.words.length > 0
-            ? <Tree actions={actions} sentence={sentence} current={current} treebank={treebank} />
+            ? <Tree actions={actions} sentence={sentence} current={current} treebank={treebank} editWord={this.editWord} deleteWord={this.deleteWord} />
             : null
         } else {
           contents = (
