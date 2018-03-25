@@ -44,6 +44,9 @@ h5 {
 p {
   margin:0 0 1em 0;
 }
+small {
+  font-size:0.825rem;
+}
 /* Links */
 a {
     text-decoration:none;
@@ -79,7 +82,8 @@ body,
 .relation__label .Select-option.is-focused,
 .relation__label .Select-option.is-selected,
 .tree__root,
-.button--primary {
+.button--primary,
+.button--circle {
   background-color:#F2F6FF;
 }
 /* Accent - yellow */
@@ -104,9 +108,10 @@ body,
 .main,
 .upload-treebank,
 .sentence-editor__word,
-.sentence-editor .sentence-editor__button:hover,
+.create-word__button:hover,
 .tree__root,
-.button--primary {
+.button--primary,
+.button--circle:hover {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -134,7 +139,9 @@ body,
 .breadcrumbs__breadcrumb--current,
 .sentences__sentence,
 .create-word__button,
-.tree__root {
+.tree__root,
+.button--circle,
+.editor__toolbar {
   color:#758AA8;
 }
 /* Red */

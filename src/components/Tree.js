@@ -149,7 +149,7 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, current, treebank, editWord, deleteWord } = this.props
+        const { actions, current, treebank, editWord, deleteWord, zoom } = this.props
         const { nodes, scaling, origin } = this.state
 
         //Generate words
@@ -213,15 +213,20 @@ class Tree extends Component {
             this.cancelAnimation()
         }
 
+        //Scale and translate so that zoom aligns left
+        const translateToLeft = - ( ( (1 - zoom) / 2 ) / zoom ) * 100
+        const magnifierStyle = {transform: `scale(${zoom}) translateX(${translateToLeft}%)`}
 
         return (
             <div className={treeClasses.join(' ')} onClick={this.deselect.bind(this)} ref={element => this.element = element}>
-                <svg id="lines" className="lines">{lines}</svg>
-                <div className="relations">
-                    {relations}
-                    <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>
+                <div className="tree__magnifier" style={magnifierStyle}>
+                    <svg id="lines" className="lines">{lines}</svg>
+                    <div className="relations">
+                        {relations}
+                        <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>
+                    </div>
+                    {words}
                 </div>
-                {words}
             </div>
         )
     }
