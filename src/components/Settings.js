@@ -3,11 +3,10 @@ import Button from './Button'
 import '../css/Settings.css'
 
 const Settings = props => {
-    const { current, treebanks, actions } = props
-    const treebank = treebanks[current.treebank] || {name: ''}
+    const { current, treebank, actions } = props
 
     const deleteClick = () => {
-        actions.deleteTreebank(current.treebank)
+        if (window.confirm(`Delete Treebank\n\n'${treebank.name}' will be permanently removed.`)) actions.deleteTreebank(current.treebank)
     }
 
     return (

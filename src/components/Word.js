@@ -63,7 +63,7 @@ export default class Word extends Component {
     deleteClicked = event => {
         const { deleteWord, word } = this.props
         event.stopPropagation();
-        deleteWord(word)
+        if (window.confirm(`Delete Word\n\n'${word.inflection}' will be removed from the sentence and annotation data will be lost.`)) deleteWord(word)
     }
 
     click = event => {
