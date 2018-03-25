@@ -209,7 +209,13 @@ export const createSentence = sentence => {
         const { user, current } = getState()
         const sentenceID = database.ref(`/user/${user.uid}/sentences/${current.treebank}`).push().key
         database.ref(`/user/${user.uid}/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null})
-        database.ref(`/user/${user.uid}/words/${current.treebank}/${sentenceID}`).set(sentence.words)
+        let words = {}
+        sentence.words.forEach( word => {
+            const wordID = database.ref(`/user/${user.uid}/words/${current.treebank}/${sentenceID}`).push().key
+            word.id = wordID
+            words[wordID] = word
+        })
+        database.ref(`/user/${user.uid}/words/${current.treebank}/${sentenceID}`).set(words)
         dispatch({
             type: "SENTENCE_CREATED"
         })

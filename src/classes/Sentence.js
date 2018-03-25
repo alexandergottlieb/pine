@@ -18,7 +18,9 @@ export default class Sentence {
     }
 
     wordByIndex(index) {
-        return this.words.find(word => word && word.index === index)
+        const word = this.words.find(word => word && word.index === index)
+        if (word === undefined) throw new Error(`Could not find word at index ${index}`)
+        return word
     }
 
     rootWord() {
