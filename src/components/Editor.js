@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import debounce from 'debounce'
 import Sentence from '../classes/Sentence'
 import Word from '../classes/Word'
 import Tree from './Tree'
@@ -11,7 +12,8 @@ export default class Editor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      zoom: 1.0
+      zoom: 1.0,
+      recentlyZoomed: false
     }
   }
 
@@ -136,8 +138,10 @@ export default class Editor extends Component {
     let newZoom = this.state.zoom + 0.25
     if (newZoom > 2) newZoom = 2
     this.setState({
-      zoom: newZoom
+      zoom: newZoom,
+      recentlyZoomed: true
     })
+    this.clearZoom()
   }
 
   zoomOut = () => {
@@ -145,9 +149,17 @@ export default class Editor extends Component {
     let newZoom = this.state.zoom - 0.25
     if (newZoom < 0.25) newZoom = 0.25
     this.setState({
-      zoom: newZoom
+      zoom: newZoom,
+      recentlyZoomed: true
     })
+    this.clearZoom()
   }
+
+  clearZoom = debounce(() => {
+    this.setState({
+      recentlyZoomed: false
+    })
+  }, 600)
 
   render() {
     const { actions, current, sentence, treebank } = this.props
@@ -165,8 +177,9 @@ export default class Editor extends Component {
           zoom={this.state.zoom}
         />
         <div className="editor__toolbar">
-          <Button className="editor__toolbar-button" onClick={this.zoomOut} title={Math.round(this.state.zoom * 100, 0)+"%"} icon="fa-search-minus" type="circle" />
-          <Button className="editor__toolbar-button" onClick={this.zoomIn} title={Math.round(this.state.zoom * 100, 0)+"%"} icon="fa-search-plus" type="circle" />
+          <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>
+          <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" />
+          <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" />
         </div>
       </div>
     } else {

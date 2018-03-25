@@ -31,6 +31,19 @@
   margin-left:0.5rem;
   box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
 }
+.editor__zoom {
+  position:absolute;
+  top:-1.75rem; right:1.5rem;
+  padding:0.125rem 0.25rem;
+  border-radius:3px;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
+}
+.editor__zoom--hide {
+  opacity:0;
+}
+.editor__zoom--show {
+  transform:translateY(-20%);
+}
 
 /* Messages */
 .messages {

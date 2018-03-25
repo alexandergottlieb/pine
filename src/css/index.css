@@ -83,7 +83,8 @@ body,
 .relation__label .Select-option.is-selected,
 .tree__root,
 .button--primary,
-.button--circle {
+.button--circle,
+.editor__zoom {
   background-color:#F2F6FF;
 }
 /* Accent - yellow */
@@ -154,7 +155,9 @@ body,
 
 /**** Transitions ****/
 .word,
-.button {
+.button,
+.editor__zoom,
+.tree__magnifier {
   transition:0.2s ease-out;
 }
 .word__inflection,
