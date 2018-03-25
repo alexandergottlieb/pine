@@ -28,6 +28,9 @@
   box-shadow:0 1px 2px 0 rgba(0,0,0,0.16);
   cursor:move;
 }
+.sentence-editor__word.sentence-editor__word--highlight {
+  background-color:rgba(0,0,0,0.1);
+}
 
 /* Create Word */
 .create-word {

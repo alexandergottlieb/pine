@@ -154,7 +154,8 @@ body,
 .relation__label .Select-value-label,
 .relation__label .Select-option,
 .sentences__sentence,
-.word__delete {
+.word__delete,
+.sentence-editor__word {
   transition: 0.15s ease-out;
 }
 .word__pos-tag {

@@ -32,11 +32,11 @@ export default class SentenceEditor extends Component {
   }
 
   render() {
-    const { sentence, createWord } = this.props
+    const { sentence, createWord, currentWord } = this.props
     if (!sentence) return null
     return (
       <div className="sentence-editor">
-        <Sentence words={this.state.words} sentenceIndex={sentence.index} onSortEnd={this.onSortEnd} axis="x" />
+        <Sentence words={this.state.words} sentenceIndex={sentence.index} currentWord={currentWord} onSortEnd={this.onSortEnd} axis="x" />
         <CreateWord onCreate={createWord} />
       </div>
     )
@@ -44,21 +44,22 @@ export default class SentenceEditor extends Component {
 
 }
 
-const Sentence = SortableContainer( ({ words, sentenceIndex }) => {
+const Sentence = SortableContainer( ({ words, sentenceIndex, currentWord }) => {
   return (
     <ul className="sentence-editor__sentence">
-      {words.map( (word, index) => (
-        <Word key={`${sentenceIndex}_${index}`} index={Number(index)} word={word} />
-      ))}
+      {words.map( (word, index) => {
+        return <Word key={`${sentenceIndex}_${index}`} index={Number(index)} word={word} highlight={word.index === currentWord} />
+      })}
     </ul>
   )
 })
 
 
-const Word = SortableElement( ({word}) => {
+const Word = SortableElement( ({word, highlight}) => {
     const { inflection, uposTag } = word
     const classes = ["sentence-editor__word"]
     if (uposTag) classes.push(`sentence-editor__word--${uposTag.toLowerCase()}`)
+    if (highlight) classes.push("sentence-editor__word--highlight")
     return <li className={classes.join(" ")}>{inflection}</li>
 })
 

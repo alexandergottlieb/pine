@@ -76,7 +76,7 @@ export default class Editor extends Component {
 
         return (
             <div className="editor">
-                <SentenceEditor sentence={sentence} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
+                <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
                 {contents}
                 <Messages messages={current.messages} />
             </div>
