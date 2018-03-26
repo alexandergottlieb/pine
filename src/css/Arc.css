@@ -7,8 +7,26 @@
 .arc__magnifier {
     transform-origin:top left;
 }
-.arc__arrows {
+.arc__arrows,
+.arc__relation-labels {
   position:absolute;
   top:4rem; right:2rem; bottom:2rem; left:2rem;
   overflow:visible;
+}
+.arc__relation-label {
+  position:absolute;
+  padding:0.25em 0.5em;
+  border-radius:2px;
+  font-size:0.75rem;
+  line-height:1em;
+  cursor:default;
+}
+.arc__relation-label--left {
+  transform:translate(-100%, -175%);
+}
+.arc__relation-label--right {
+  transform:translate(0%, -175%);
+}
+.arc__relation-label:hover {
+  opacity:0;
 }

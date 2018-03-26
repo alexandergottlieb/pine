@@ -63,7 +63,8 @@ a:hover {
 .relation__label .is-focused .Select-input,
 .relation__label .Select-value-label,
 .upload-treebank,
-.sentence-editor__word {
+.sentence-editor__word,
+.arc__relation-label {
   background-color:white;
 }
 body,
@@ -142,7 +143,8 @@ body,
 .create-word__button,
 .tree__root,
 .button--circle,
-.editor__toolbar {
+.editor__toolbar,
+.arc__relation-label {
   color:#758AA8;
 }
 /* Red */
@@ -169,7 +171,8 @@ body,
 .sentences__sentence:hover,
 .word__delete,
 .sentence-editor__word,
-.relation__grab {
+.relation__grab,
+.arc__relation-label {
   transition: 0.15s ease-out;
 }
 .word__pos-tag {
