@@ -197,13 +197,11 @@ export default class Editor extends Component {
       if (sentence.words.length > 0) {
         if (this.state.treeView) {
           contents = <Tree sentence={sentence} treebank={treebank} current={current} actions={actions}
-            editWord={this.editWord} deleteWord={this.deleteWord} deselect={this.deselect}
-            scaling={this.state.scaling} zoom={this.state.zoom}
+            editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
           />
         } else {
           contents = <Arc sentence={sentence} treebank={treebank} current={current} actions={actions}
-            editWord={this.editWord} deleteWord={this.deleteWord} deselect={this.deselect}
-            scaling={this.state.scaling} zoom={this.state.zoom}
+            editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
           />
         }
       }
@@ -217,11 +215,11 @@ export default class Editor extends Component {
     }
 
     return (
-      <div className="editor">
+      <div className="editor" onClick={this.deselect}>
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
         {contents}
         <div className="editor__toolbar">
-          <Button className="editor__toolbar-button" onClick={this.toggleView} icon="fa-toggle-on" type="circle" />
+          <Button className="editor__toolbar-button" onClick={this.toggleView} icon={`fa-toggle-${this.state.treeView ? "on" : "off"}`} type="circle" />
           <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" />
           <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" />
           <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>

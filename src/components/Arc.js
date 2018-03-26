@@ -10,10 +10,21 @@ class Arc extends Component {
     }
 
     render() {
-        const { actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
-        const { nodes, origin } = this.state
+        const { sentence, actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
 
-        let words = []
+        let words = sentence.words.map( word => {
+            const editable = word.index == current.word ? true : false
+            return <Word word={word}
+                x={word.index-1} y="0"
+                scaling={scaling}
+                editWord={editWord}
+                deleteWord={deleteWord}
+                actions={actions}
+                current={current}
+                editable={editable}
+                key={word.id}
+            />
+        })
 
         //Scale and translate so that zoom aligns left
         const translateToLeft = - ( ( (1 - zoom) / 2 ) / zoom ) * 100

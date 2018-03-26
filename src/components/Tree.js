@@ -117,7 +117,7 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
+        const { actions, current, treebank, editWord, deleteWord, zoom, scaling } = this.props
         const { nodes } = this.state
 
         //Generate words
@@ -185,7 +185,7 @@ class Tree extends Component {
         const magnifierStyle = {transform: `scale(${zoom}) translateX(${translateToLeft}%)`}
 
         return (
-            <div className={treeClasses.join(' ')} onClick={deselect} ref={element => this.element = element}>
+            <div className={treeClasses.join(' ')} ref={element => this.element = element}>
                 <div className="tree__magnifier" style={magnifierStyle}>
                     <svg id="lines" className="lines">{lines}</svg>
                     <div className="relations">

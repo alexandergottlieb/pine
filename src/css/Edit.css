@@ -8,7 +8,8 @@
 
 /* Editor */
 .editor {
-
+  width:100%;
+  height:100%;
 }
 .editor__default {
   padding:2rem;
