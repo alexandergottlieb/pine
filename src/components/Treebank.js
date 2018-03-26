@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from './Button'
-import '../css/Treebank.css'
 
 const Treebank = props => {
 
@@ -14,12 +13,14 @@ const Treebank = props => {
 
     return (
         <aside className="treebank">
-            <Link to={`/edit/${id}`}><h1>{name}</h1></Link>
+            <Link to={`/edit/${id}`}><h1 className="treebank__name">{name}</h1></Link>
             <p>
                 <small>{treebank.sentences} sentences</small>
             </p>
-            {exportButton}
-            <Button type="primary" icon="fa-pencil-alt" link={`/edit/${id}`}>Edit</Button>
+            <div class="treebank__buttons">
+                {exportButton}
+                <Button type="primary" icon="fa-pencil-alt" link={`/edit/${id}`}>Edit</Button>
+            </div>
         </aside>
     )
 

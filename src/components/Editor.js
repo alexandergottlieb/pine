@@ -219,7 +219,7 @@ export default class Editor extends Component {
         {contents}
         <div className="editor__toolbar">
           <div className="editor__toolbar-left">
-            <Button className="editor__toolbar-button" onClick={this.toggleView} type="circle" title={`View as ${this.state.treeView ? "arrows" : "tree"}`}>
+            <Button className="editor__toolbar-button" onClick={this.toggleView} circle type="primary" title={`View as ${this.state.treeView ? "arrows" : "tree"}`}>
               <div className={`view-mode view-mode--${this.state.treeView ? "arrows" : "tree"}`}>
                 <div className="view-mode__icon"></div>
                 <div className="view-mode__icon"></div>
@@ -228,8 +228,8 @@ export default class Editor extends Component {
             </Button>
           </div>
           <div className="editor__toolbar-right">
-            <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" title="Zoom out" />
-            <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" title="Zoom in" />
+            <Button className="editor__toolbar-button" onClick={this.zoomOut} circle icon="fa-minus" type="secondary" title="Zoom out" />
+            <Button className="editor__toolbar-button" onClick={this.zoomIn} circle icon="fa-plus" type="secondary" title="Zoom in" />
             <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>
           </div>
         </div>

@@ -47,14 +47,21 @@ class Home extends Component {
     return (
       <div className="home">
         <Header current={current} user={user} actions={actions} />
-        <h1>Treebanks</h1>
-        <div className="treebanks">
-          {treebanksList}
-        </div>
-        <label className="upload-treebank" title="Add a treebank in .conllu format">
-          <span className="fas fa-cloud-upload-alt"></span> Upload
-          <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
-        </label>
+        <main className="home__main">
+          <h2>Treebanks</h2>
+          <div className="treebanks">
+            {treebanksList}
+          </div>
+          <div style={{textAlign:"center", marginTop:"2rem"}}>
+            <p>
+            <label className="upload-treebank" title="Add a treebank in .conllu format">
+              <span className="fas fa-cloud-upload-alt"></span> Upload
+              <input type="file" onChange={(event) => this.addFile(event.target.files[0])} accept=".conllu" />
+            </label>
+            </p>
+            <p><small>Add a new treebank in .conllu format</small></p>
+          </div>
+        </main>
         <Messages messages={current.messages} />
       </div>
     )

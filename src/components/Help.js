@@ -7,6 +7,11 @@ const Help = props => {
     return (
         <div className="help">
             <h2>Help</h2>
+            <h3>Interface</h3>
+            <p>Select sentences using the list on the left.</p>
+            <p>Along the bottom of the editor are a number of buttons. The <span className="fas fa-plus"></span> and <span className="fas fa-minus"></span> zoom in and out.</p>
+            <p>Here, you can also choose how to display the current sentence; either as a tree or with dependency arrows drawn above the words. Relations can only be edited while viewing as a tree.</p>
+            <p>To go back and to select a different Treebank, click <em>Treebanks</em> in the top left.</p>
             <h3>How to Edit...</h3>
             <h4>Words</h4>
             <p>Clicking a word in the tree reveals its grammatical information which can be edited in place.</p>

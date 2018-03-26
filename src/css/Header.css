@@ -1,0 +1,18 @@
+.header {
+    padding:1rem 2rem;
+    border-bottom:1px solid;
+    box-shadow:0 1px 0 4px rgba(0,0,0,0.16);
+}
+.header__title {
+    display:inline-block;
+}
+.header__meta {
+    float:right;
+    text-align:right;
+}
+.header__username {
+    margin-bottom:0;
+}
+.header__logout {
+    font-size:0.825rem;
+}
