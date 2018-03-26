@@ -12,7 +12,16 @@ class Arc extends Component {
     render() {
         const { sentence, actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
 
-        let words = sentence.words.map( word => {
+        const arrows = sentence.words.map( word => {
+            let { index, parent } = word
+            //Shift indices to start at 0
+            index--
+            parent--
+            const distance = Math.abs(parent - index)
+            
+        })
+
+        const words = sentence.words.map( word => {
             const editable = word.index == current.word ? true : false
             return <Word word={word}
                 x={word.index-1} y="0"
@@ -33,7 +42,7 @@ class Arc extends Component {
         return (
             <div className="arc" onClick={deselect} ref={element => this.element = element}>
                 <div className="arc__magnifier" style={magnifierStyle}>
-                    <svg className="arc__arrows"></svg>
+                    <svg className="arc__arrows">{arrows}</svg>
                     {words}
                 </div>
             </div>

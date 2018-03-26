@@ -56,21 +56,25 @@ class Tree extends Component {
     //Active relation line should follow mouse
     animate() {
         const self = this
-        const { scaling } = this.props
+        const { scaling, zoom } = this.props
         const { relations } = this.props.current
 
         const container = this.element
         const rect = container.getBoundingClientRect()
-        //Add padding
-        rect.x += scaling.margin.x
-        rect.y += scaling.margin.y
+        //Origin is element offset + simulated padding, accounting for zoom
+        const origin = {
+            x: rect.x + (scaling.margin.x * zoom),
+            y: rect.y + (scaling.margin.y * zoom)
+        }
         const lines = this.children.lines.filter((line, index) => relations.indexOf(index) !== -1)
 
         lines.forEach((line, index) => {
             //Define animation
             const frame = () => {
-                line.element.setAttribute('x1', self.mouse.x + container.scrollLeft - rect.x)
-                line.element.setAttribute('y1', self.mouse.y + container.scrollTop - rect.y)
+                const x = (self.mouse.x + container.scrollLeft - origin.x) / zoom
+                const y = (self.mouse.y + container.scrollTop - origin.y) / zoom
+                line.element.setAttribute('x1', x)
+                line.element.setAttribute('y1', y)
                 self.animations[index] = window.requestAnimationFrame(frame)
             }
             //Clear any existing animation
@@ -89,7 +93,7 @@ class Tree extends Component {
         document.body.addEventListener('mousemove', this.trackMouse.bind(this))
     }
 
-    trackMouse(event) {
+    trackMouse = event => {
         this.mouse.x = event.clientX
         this.mouse.y = event.clientY
     }
@@ -180,14 +184,13 @@ class Tree extends Component {
             this.cancelAnimation()
         }
 
-        //Scale and translate so that zoom aligns left
-        const translateToLeft = - ( ( (1 - zoom) / 2 ) / zoom ) * 100
-        const magnifierStyle = {transform: `scale(${zoom}) translateX(${translateToLeft}%)`}
+        //Zoom
+        const magnifierStyle = {transform: `scale(${zoom})`}
 
         return (
             <div className={treeClasses.join(' ')} ref={element => this.element = element}>
                 <div className="tree__magnifier" style={magnifierStyle}>
-                    <svg id="lines" className="lines">{lines}</svg>
+                    <svg className="lines">{lines}</svg>
                     <div className="relations">
                         {relations}
                         <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>

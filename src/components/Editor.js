@@ -155,7 +155,8 @@ export default class Editor extends Component {
     if (current.word) actions.setWord()
   }
 
-  zoomIn = () => {
+  zoomIn = (event) => {
+    event.stopPropagation()
     //Max 300%
     let newZoom = this.state.zoom + 0.25
     if (newZoom > 2) newZoom = 2
@@ -166,7 +167,8 @@ export default class Editor extends Component {
     this.clearZoom()
   }
 
-  zoomOut = () => {
+  zoomOut = (event) => {
+    event.stopPropagation()
     //Min 10%
     let newZoom = this.state.zoom - 0.25
     if (newZoom < 0.25) newZoom = 0.25

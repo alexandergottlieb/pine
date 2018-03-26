@@ -4,6 +4,9 @@
   z-index:0;
   overflow:scroll;
 }
+.tree__magnifier {
+    transform-origin:top left;
+}
 .lines,
 .relations {
   position:absolute;
