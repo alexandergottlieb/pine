@@ -154,16 +154,19 @@ body,
 }
 
 /**** Transitions ****/
+.editor__zoom--hide {
+  transition:0.5s ease-out;
+}
 .word,
 .button,
-.editor__zoom,
+.editor__zoom--show,
 .tree__magnifier {
   transition:0.2s ease-out;
 }
 .word__inflection,
 .relation__label .Select-value-label,
 .relation__label .Select-option,
-.sentences__sentence,
+.sentences__sentence:hover,
 .word__delete,
 .sentence-editor__word {
   transition: 0.15s ease-out;

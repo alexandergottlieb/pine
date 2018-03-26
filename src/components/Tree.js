@@ -10,16 +10,8 @@ class Tree extends Component {
     constructor(props) {
         super(props)
 
-        const rem = parseFloat(window.getComputedStyle(document.body).getPropertyValue('font-size'))
-
         this.state = {
-            nodes: [],
-            scaling: {
-                rem,
-                units: {x: 0, y: 10*rem},
-                wordWidth: 0
-            },
-            origin: {x: 0, y: 0}
+            nodes: []
         }
 
         this.children = {
@@ -49,41 +41,29 @@ class Tree extends Component {
 
     //Calculate co-ordinates
     layout(props) {
-        const { actions, current, sentence } = props
-        const { rem } = this.state.scaling
-
-        //Scale x unit to longest word
-        let longestWord = 0
-        sentence.words.forEach( word => {
-          if (word.inflection.length > longestWord) longestWord = word.inflection.length
-        })
-        const wordWidth = 10 * rem //Math.max(longestWord * rem * 0.7, 10 * rem) //At least 10rem
-        const xUnit = wordWidth * 1.4 //Extra padding
+        const { sentence } = props
 
         //Calculate node positions
         let tree = new TreeDrawer(sentence)
         tree.positionNodes()
         const nodes = tree.nodes
 
-        this.setState(prevState => {
-            let newState = Object.assign({}, prevState)
-            newState.nodes = nodes
-            newState.scaling.units.x = xUnit
-            newState.scaling.wordWidth = wordWidth
-            return newState
+        this.setState({
+            nodes: nodes
         })
     }
 
     //Active relation line should follow mouse
     animate() {
         const self = this
+        const { scaling } = this.props
         const { relations } = this.props.current
 
         const container = this.element
         const rect = container.getBoundingClientRect()
         //Add padding
-        rect.x += 2 * this.state.scaling.rem
-        rect.y += 4 * this.state.scaling.rem
+        rect.x += scaling.margin.x
+        rect.y += scaling.margin.y
         const lines = this.children.lines.filter((line, index) => relations.indexOf(index) !== -1)
 
         lines.forEach((line, index) => {
@@ -137,8 +117,8 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, current, treebank, editWord, deleteWord, deselect, zoom } = this.props
-        const { nodes, scaling, origin } = this.state
+        const { actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
+        const { nodes } = this.state
 
         //Generate words
         const words = nodes.map(node => {

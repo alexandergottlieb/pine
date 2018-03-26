@@ -103,6 +103,7 @@ export default class Word extends Component {
             top: realY+'px',
             left: realX+'px',
             width: scaling.wordWidth+'px',
+            margin: `${scaling.margin.y}px ${scaling.margin.x}px`
         }
 
         const uposTags = CONLLU.uposTags()
