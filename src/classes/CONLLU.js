@@ -4,14 +4,11 @@ import Word from './Word'
 
 export default class CONLLU {
 
-    constructor(name = '', sentences = []) {
-        this.name = name
-        this.sentences = sentences
+    constructor(treebank = {name: '', sentences: [], settings: {xpos: {}, relations: {}}}) {
+        this.name = treebank.name
+        this.sentences = treebank.sentences
         this.multitokens = false
-        this.settings = {
-            xpos: {},
-            relations: {}
-        }
+        this.settings = treebank.settings
     }
 
     //Parse CoNLL-U text
@@ -141,8 +138,8 @@ export default class CONLLU {
             data[3] = word.uposTag || "_"
             data[4] = word.xposTag || "_"
             data[5] = stringifyList(word.features)
-            data[6] = word.parent || "_"
-            data[7] = word.relation || "_"
+            data[6] = word.parent === 0 ? 0 : word.parent || "_"
+            data[7] = this.settings.relations[word.relation] || "_"
             data[8] = word.dependencies || "_"
             data[9] = stringifyList(word.misc)
             return data.join("\t")

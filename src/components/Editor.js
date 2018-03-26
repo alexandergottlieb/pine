@@ -133,6 +133,13 @@ export default class Editor extends Component {
     })
   }
 
+  //Deselect when user clicks outside subelements
+  deselect = () => {
+    const { actions, current } = this.props
+    if (current.relations) actions.clearRelations()
+    if (current.word) actions.setWord()
+  }
+
   zoomIn = () => {
     //Max 300%
     let newZoom = this.state.zoom + 0.25
@@ -167,15 +174,7 @@ export default class Editor extends Component {
     let contents = null
     if (sentence && sentence.words.length > 0) {
       contents = <div>
-        <Tree
-          actions={actions}
-          sentence={sentence}
-          current={current}
-          treebank={treebank}
-          editWord={this.editWord}
-          deleteWord={this.deleteWord}
-          zoom={this.state.zoom}
-        />
+        <Tree sentence={sentence}  treebank={treebank} zoom={this.state.zoom} editWord={this.editWord} deleteWord={this.deleteWord} deselect={this.deselect} current={current} actions={actions} />
         <div className="editor__toolbar">
           <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>
           <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" />

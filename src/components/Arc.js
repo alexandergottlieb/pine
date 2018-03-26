@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import TreeDrawer from '../classes/TreeDrawer'
 import Word from './Word'
 import Relation from './Relation'
-import Line from './Line'
-import '../css/Tree.css'
+import '../css/Arc.css'
 
-class Tree extends Component {
+class Arc extends Component {
 
     constructor(props) {
         super(props)
@@ -23,7 +21,8 @@ class Tree extends Component {
         }
 
         this.children = {
-            lines: []
+            lines: [],
+            relations: []
         }
 
         this.animations = []
@@ -122,91 +121,21 @@ class Tree extends Component {
         this.children.lines[childIndex] = element
     }
 
-    clickRoot() {
-        const { current, actions, editWord } = this.props
-        try {
-            if (current.relations.length > 1) throw "Only one word descends from root."
-            current.relations.forEach(childIndex => {
-                editWord(childIndex, {
-                    parent: 0
-                })
-            })
-        } catch (errorMessage) {
-            actions.addError(errorMessage)
-        }
+    registerRelation(element, childIndex) {
+        this.children.relations[childIndex] = element
     }
 
     render() {
         const { actions, current, treebank, editWord, deleteWord, deselect, zoom } = this.props
         const { nodes, scaling, origin } = this.state
 
-        //Generate words
-        const words = nodes.map(node => {
-            const editable = node.index == current.word ? true : false
-            return <Word {...node}
-                scaling={scaling}
-                editWord={editWord}
-                deleteWord={deleteWord}
-                actions={actions}
-                current={current}
-                editable={editable}
-                key={node.word.id}
-            />
-        })
-
-        //Generate lines & relations
-        let lines = []
-        let relations = []
-        nodes.forEach(node => {
-            //Draw lines from parent to child
-            node.children.forEach(child => {
-                //Active if user is moving relation line of current child
-                const active = current.relations.indexOf(child.index) !== -1
-
-                //Line
-                let coords = {};
-                //Line start co-ordinate
-                coords.x1 = node.x * scaling.units.x + (scaling.wordWidth/2)
-                coords.y1 = node.y * scaling.units.y + scaling.rem
-                //Line end co-ordinate
-                coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
-                coords.y2 = child.y * scaling.units.y + scaling.rem
-                lines.push(<Line {...coords} active={active} key={child.word.id} ref={element => this.registerLine(element, child.index)} />)
-
-                //Relation
-                relations.push(<Relation
-                    coords={coords}
-                    word={child.word}
-                    editWord={editWord}
-                    actions={actions}
-                    active={active} key={child.word.id}
-                    relations={treebank.settings.relations}
-                />)
-            })
-        })
-
-        const rootNode = nodes.find(node => node && node.parent === 0)
-        const rootStyle = rootNode ? {
-            top: rootNode.y * scaling.units.y + "px",
-            left: rootNode.x * scaling.units.x + scaling.wordWidth/2 + "px"
-        } : {top: "0px", left: "0px"};
-
-        const treeClasses = ["tree"]
-
-        if (current.relations && current.relations.length > 0) {
-            this.animate()
-            treeClasses.push("tree--with-relations")
-        } else {
-            this.cancelAnimation()
-        }
-
         //Scale and translate so that zoom aligns left
         const translateToLeft = - ( ( (1 - zoom) / 2 ) / zoom ) * 100
         const magnifierStyle = {transform: `scale(${zoom}) translateX(${translateToLeft}%)`}
 
         return (
-            <div className={treeClasses.join(' ')} onClick={deselect} ref={element => this.element = element}>
-                <div className="tree__magnifier" style={magnifierStyle}>
+            <div className="arc" onClick={deselect} ref={element => this.element = element}>
+                <div className="arc__magnifier" style={magnifierStyle}>
                     <svg id="lines" className="lines">{lines}</svg>
                     <div className="relations">
                         {relations}
@@ -220,4 +149,4 @@ class Tree extends Component {
 
 }
 
-export default Tree;
+export default Arc;

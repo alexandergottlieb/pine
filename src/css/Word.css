@@ -32,6 +32,9 @@
     opacity:1;
     transform:scale(1);
   }
+  .word--relations-selected .word__delete {
+      display:none;
+  }
   /* Inflection */
   .word__inflection {
     width:100%;

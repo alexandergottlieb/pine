@@ -172,13 +172,16 @@ export const queueExportTreebank = (treebankID) => {
         database.ref(`/user/${user.uid}/treebanks/${treebankID}`).once('value', snapshot => {
             let treebank = snapshot.val()
             database.ref(`/user/${user.uid}/sentences/${treebankID}`).orderByKey().once('value', snapshot => {
-                treebank.sentences = snapshot.val()
+                //Array-ify
+                treebank.sentences = Object.values(snapshot.val())
                 database.ref(`/user/${user.uid}/words/${treebankID}`).orderByKey().once('value', snapshot => {
-                    let wordsBySentence = snapshot.val()
-                    wordsBySentence.forEach( (words, index) => {
-                        treebank.sentences[index].words = words
+                    //Array-ify
+                    let i = 0
+                    snapshot.forEach( wordsBySentence => {
+                        treebank.sentences[i].words = Object.values(wordsBySentence.val())
+                        i++
                     })
-                    const conllu = new CONLLU(treebank.name, treebank.sentences)
+                    const conllu = new CONLLU(treebank)
                     const text = conllu.export()
                     const blob = new Blob([text])
                     const filename = `${treebank.name}.conllu`

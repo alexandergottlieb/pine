@@ -27,9 +27,13 @@
     bottom:1.25rem; right:1.5rem;
     text-align:right;
 }
-.editor__toolbar .editor__toolbar-button {
+.editor__toolbar-button {
   margin-left:0.5rem;
   box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
+}
+.editor__toolbar-button:hover {
+  margin-left:0.5rem;
+  box-shadow:0 2px 8px 0 rgba(0,0,0,0.32);
 }
 .editor__zoom {
   position:absolute;
