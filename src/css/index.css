@@ -104,7 +104,8 @@ a,
 /* Dark */
 body,
 .sidebar,
-.sidebar__footer {
+.sidebar__footer,
+.editor__toolbar-button:hover .view-mode__icon {
   background-color:#13161F;
 }
 .main,

@@ -10,8 +10,13 @@ class Tree extends Component {
     constructor(props) {
         super(props)
 
+        const { scaling } = props
+
         this.state = {
-            nodes: []
+            nodes: [],
+            units: {
+                x: 14*scaling.rem, y: 10*scaling.rem
+            }
         }
 
         this.children = {
@@ -26,7 +31,13 @@ class Tree extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const { scaling } = nextProps
         this.layout(nextProps)
+        this.setState({
+            units: {
+                x: 14*scaling.rem, y: 10*scaling.rem
+            }
+        })
     }
 
     componentDidMount() {
@@ -127,8 +138,8 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            const realX = node.x * scaling.units.x
-            const realY = node.y * scaling.units.y
+            const realX = node.x * this.state.units.x
+            const realY = node.y * this.state.units.y
             return <Word {...node} x={realX} y={realY}
                 scaling={scaling}
                 editWord={editWord}
@@ -152,11 +163,11 @@ class Tree extends Component {
                 //Line
                 let coords = {};
                 //Line start co-ordinate
-                coords.x1 = node.x * scaling.units.x + (scaling.wordWidth/2)
-                coords.y1 = node.y * scaling.units.y + scaling.rem
+                coords.x1 = node.x * this.state.units.x + (scaling.wordWidth/2)
+                coords.y1 = node.y * this.state.units.y + scaling.rem
                 //Line end co-ordinate
-                coords.x2 = child.x * scaling.units.x + (scaling.wordWidth/2)
-                coords.y2 = child.y * scaling.units.y + scaling.rem
+                coords.x2 = child.x * this.state.units.x + (scaling.wordWidth/2)
+                coords.y2 = child.y * this.state.units.y + scaling.rem
                 lines.push(<Line {...coords} active={active} key={child.word.id} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
@@ -173,8 +184,8 @@ class Tree extends Component {
 
         const rootNode = nodes.find(node => node && node.parent === 0)
         const rootStyle = rootNode ? {
-            top: rootNode.y * scaling.units.y + "px",
-            left: rootNode.x * scaling.units.x + scaling.wordWidth/2 + "px"
+            top: rootNode.y * this.state.units.y + "px",
+            left: rootNode.x * this.state.units.x + scaling.wordWidth/2 + "px"
         } : {top: "0px", left: "0px"};
 
         const treeClasses = ["tree"]

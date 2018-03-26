@@ -29,16 +29,20 @@
     text-align:right;
     pointer-events:none;
 }
+.editor__toolbar-left {
+  float:left;
+}
+.editor__toolbar-right {
+  float:right;
+}
 .editor__toolbar-button {
-  margin-left:0.5rem;
   box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
   pointer-events:all;
 }
-.editor__toolbar-button:first-child {
-  float:left;
+.editor__toolbar-button + .editor__toolbar-button {
+  margin-left:0.5rem;
 }
 .editor__toolbar-button:hover {
-  margin-left:0.5rem;
   box-shadow:0 2px 8px 0 rgba(0,0,0,0.32);
 }
 .editor__zoom {
@@ -58,42 +62,41 @@
   /* View Mode Icon */
   .view-mode {
     position:relative;
-    width:1em;
-    height:1em;
-    transform:scale(1.125);
+    width:1.25em;
+    height:1.125em;
   }
   .view-mode__icon {
     display:block;
     content:'';
     position:absolute;
-    width:0.45em;
-    height:0.2em;
+    width:46%;
+    height:20%;
     border-radius:1px;
   }
-  .view-mode--tree .view-mode__icon {
-    top:0.4em;
-    left:0;
-  }
-  .view-mode--tree .view-mode__icon:first-child {
-    top:0.4em;
-    left:0.55em;
-  }
-  .view-mode--tree .view-mode__icon:last-child {
-    top:-0.1em;
-    left:0.275em;
-    opacity:0;
-  }
   .view-mode--arrows .view-mode__icon {
-    top:0.6em;
+    top:40%;
     left:0;
   }
   .view-mode--arrows .view-mode__icon:first-child {
-    top:0.6em;
-    left:0.55em;
+    top:40%;
+    left:56%;
   }
   .view-mode--arrows .view-mode__icon:last-child {
-    top:0.2em;
-    left:0.275em;
+    top:-10%;
+    left:28%;
+    opacity:0;
+  }
+  .view-mode--tree .view-mode__icon {
+    top:60%;
+    left:0;
+  }
+  .view-mode--tree .view-mode__icon:first-child {
+    top:60%;
+    left:56%;
+  }
+  .view-mode--tree .view-mode__icon:last-child {
+    top:20%;
+    left:28%;
   }
 
 /* Messages */

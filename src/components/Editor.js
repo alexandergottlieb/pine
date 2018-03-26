@@ -21,9 +21,6 @@ export default class Editor extends Component {
       recentlyZoomed: false,
       scaling: {
         rem,
-        units: {
-          x: 14*rem, y: 10*rem
-        },
         wordWidth: 10*rem,
         margin: {
           x: 2*rem, y: 4*rem
@@ -221,16 +218,20 @@ export default class Editor extends Component {
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
         {contents}
         <div className="editor__toolbar">
-          <Button className="editor__toolbar-button" onClick={this.toggleView} type="circle">
-            <div className={`view-mode view-mode--${this.state.treeView ? "tree" : "arrows"}`}>
-              <div className="view-mode__icon"></div>
-              <div className="view-mode__icon"></div>
-              <div className="view-mode__icon"></div>
-            </div>
-          </Button>
-          <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" />
-          <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" />
-          <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>
+          <div className="editor__toolbar-left">
+            <Button className="editor__toolbar-button" onClick={this.toggleView} type="circle" title={`View as ${this.state.treeView ? "arrows" : "tree"}`}>
+              <div className={`view-mode view-mode--${this.state.treeView ? "arrows" : "tree"}`}>
+                <div className="view-mode__icon"></div>
+                <div className="view-mode__icon"></div>
+                <div className="view-mode__icon"></div>
+              </div>
+            </Button>
+          </div>
+          <div className="editor__toolbar-right">
+            <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" title="Zoom out" />
+            <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" title="Zoom in" />
+            <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>
+          </div>
         </div>
         <Messages messages={current.messages} />
       </div>

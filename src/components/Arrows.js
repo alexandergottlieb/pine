@@ -8,7 +8,9 @@ class Arrows extends Component {
     render() {
         const { sentence, actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
 
-        const yUnit = 4 * scaling.rem
+        const units = {
+            x: scaling.wordWidth + 1*scaling.rem, y: 4*scaling.rem
+        }
 
         //Draw deep enough that relation arrows can be seen
         let depth = 2
@@ -18,7 +20,7 @@ class Arrows extends Component {
             if (distance > depth) depth = distance
         })
         if (depth > 5) depth = 5
-        const y = depth * yUnit
+        const y = depth * units.y
 
         //Draw arrows & labels
         let relationLabels = []
@@ -32,8 +34,8 @@ class Arrows extends Component {
             //Distance defines curve height and which side of each word to start/end the line
             const distance = parent - index
             //Start on current word, end on parent
-            let x1 = index * scaling.units.x
-            let x2 = parent * scaling.units.x + 0.5 * scaling.wordWidth
+            let x1 = index * units.x
+            let x2 = parent * units.x + 0.5 * scaling.wordWidth
             //Finish on the parent side closest to child word
             let labelPosition = ''
             if (distance > 0) {
@@ -53,13 +55,13 @@ class Arrows extends Component {
             }
             //Calculate curve contorl point
             const cX = x1 + (0.5 * distance * scaling.wordWidth)
-            let cY = Math.max(depth - Math.abs(distance), - depth/2) * yUnit
+            let cY = Math.max(depth - Math.abs(distance), - depth/2) * units.y
             return <path d={`M${x1} ${y} Q${cX} ${cY} ${x2} ${y}`} key={word.id} strokeWidth="2" stroke="#758AA8" opacity="0.6" fill="transparent" markerStart="url(#arrow)" />
         })
 
         const words = sentence.words.map( word => {
             const editable = word.index == current.word ? true : false
-            const x = (word.index-1) * scaling.units.x
+            const x = (word.index-1) * units.x
             return <Word word={word}
                 x={x} y={y}
                 scaling={scaling}
