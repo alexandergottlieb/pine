@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Word from './Word'
 import Relation from './Relation'
-import '../css/Arc.css'
+import '../css/Arrows.css'
 
 class Arrows extends Component {
 

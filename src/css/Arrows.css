@@ -22,10 +22,10 @@
   cursor:default;
 }
 .arc__relation-label--left {
-  transform:translate(-100%, -175%);
+  transform:translate(calc(-100% - 1rem), -133%);
 }
 .arc__relation-label--right {
-  transform:translate(0%, -175%);
+  transform:translate(1rem, -133%);
 }
 .arc__relation-label:hover {
   opacity:0;
