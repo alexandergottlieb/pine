@@ -3,7 +3,7 @@ import Word from './Word'
 import Relation from './Relation'
 import '../css/Arc.css'
 
-class Arc extends Component {
+class Arrows extends Component {
 
     render() {
         const { sentence, actions, current, treebank, editWord, deleteWord, deselect, zoom, scaling } = this.props
@@ -44,15 +44,17 @@ class Arc extends Component {
                 x1 += 0.33 * scaling.wordWidth
             }
             //Add label
-            const labelStyle = {
-                top: `${y}px`,
-                left: `${x1}px`,
+            if (word.relation) {
+                const labelStyle = {
+                    top: `${y}px`,
+                    left: `${x1}px`,
+                }
+                relationLabels .push(<span className={`arc__relation-label arc__relation-label--${labelPosition}`} style={labelStyle}>{treebank.settings.relations[word.relation]}</span>)
             }
-            relationLabels .push(<span className={`arc__relation-label arc__relation-label--${labelPosition}`} style={labelStyle}>{treebank.settings.relations[word.relation]}</span>)
             //Calculate curve contorl point
             const cX = x1 + (0.5 * distance * scaling.wordWidth)
             let cY = Math.max(depth - Math.abs(distance), - depth/2) * yUnit
-            return <path d={`M${x1} ${y} Q${cX} ${cY} ${x2} ${y}`} key={word.id} strokeWidth="2" stroke="#758AA8" opacity="0.5" fill="transparent" markerStart="url(#arrow)" />
+            return <path d={`M${x1} ${y} Q${cX} ${cY} ${x2} ${y}`} key={word.id} strokeWidth="2" stroke="#758AA8" opacity="0.6" fill="transparent" markerStart="url(#arrow)" />
         })
 
         const words = sentence.words.map( word => {
@@ -92,4 +94,4 @@ class Arc extends Component {
 
 }
 
-export default Arc;
+export default Arrows;

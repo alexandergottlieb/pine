@@ -25,12 +25,17 @@
 /* Toolbar */
 .editor__toolbar {
     position:absolute;
-    bottom:1.25rem; right:1.5rem;
+    bottom:1.25rem; right:1.5rem; left:1.5rem;
     text-align:right;
+    pointer-events:none;
 }
 .editor__toolbar-button {
   margin-left:0.5rem;
   box-shadow:0 1px 4px 0 rgba(0,0,0,0.16);
+  pointer-events:all;
+}
+.editor__toolbar-button:first-child {
+  float:left;
 }
 .editor__toolbar-button:hover {
   margin-left:0.5rem;
@@ -50,6 +55,46 @@
 .editor__zoom--show {
   transform:translateY(-20%);
 }
+  /* View Mode Icon */
+  .view-mode {
+    position:relative;
+    width:1em;
+    height:1em;
+    transform:scale(1.125);
+  }
+  .view-mode__icon {
+    display:block;
+    content:'';
+    position:absolute;
+    width:0.45em;
+    height:0.2em;
+    border-radius:1px;
+  }
+  .view-mode--tree .view-mode__icon {
+    top:0.4em;
+    left:0;
+  }
+  .view-mode--tree .view-mode__icon:first-child {
+    top:0.4em;
+    left:0.55em;
+  }
+  .view-mode--tree .view-mode__icon:last-child {
+    top:-0.1em;
+    left:0.275em;
+    opacity:0;
+  }
+  .view-mode--arrows .view-mode__icon {
+    top:0.6em;
+    left:0;
+  }
+  .view-mode--arrows .view-mode__icon:first-child {
+    top:0.6em;
+    left:0.55em;
+  }
+  .view-mode--arrows .view-mode__icon:last-child {
+    top:0.2em;
+    left:0.275em;
+  }
 
 /* Messages */
 .messages {

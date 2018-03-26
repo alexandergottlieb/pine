@@ -6,7 +6,7 @@ import Tree from './Tree'
 import Messages from './Messages'
 import Button from './Button'
 import SentenceEditor from './SentenceEditor'
-import Arc from './Arc'
+import Arrows from './Arrows'
 
 export default class Editor extends Component {
 
@@ -202,7 +202,7 @@ export default class Editor extends Component {
             editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
           />
         } else {
-          contents = <Arc sentence={sentence} treebank={treebank} current={current} actions={actions}
+          contents = <Arrows sentence={sentence} treebank={treebank} current={current} actions={actions}
             editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
           />
         }
@@ -221,7 +221,13 @@ export default class Editor extends Component {
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
         {contents}
         <div className="editor__toolbar">
-          <Button className="editor__toolbar-button" onClick={this.toggleView} icon={`fa-toggle-${this.state.treeView ? "on" : "off"}`} type="circle" />
+          <Button className="editor__toolbar-button" onClick={this.toggleView} type="circle">
+            <div className={`view-mode view-mode--${this.state.treeView ? "tree" : "arrows"}`}>
+              <div className="view-mode__icon"></div>
+              <div className="view-mode__icon"></div>
+              <div className="view-mode__icon"></div>
+            </div>
+          </Button>
           <Button className="editor__toolbar-button" onClick={this.zoomOut} icon="fa-minus" type="circle" />
           <Button className="editor__toolbar-button" onClick={this.zoomIn} icon="fa-plus" type="circle" />
           <small className={`editor__zoom editor__zoom--${this.state.recentlyZoomed ? "show" : "hide"}`}>{Math.round(this.state.zoom * 100, 0)+"%"}</small>

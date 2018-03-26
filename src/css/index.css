@@ -134,7 +134,8 @@ body,
 /* Grey */
 .tree__root:after,
 .word__delete,
-.button--primary:hover {
+.button--primary:hover,
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
   background-color:#758AA8;
 }
 .editor__default,
@@ -162,7 +163,8 @@ body,
 .word,
 .button,
 .editor__zoom--show,
-.tree__magnifier {
+.tree__magnifier,
+.view-mode__icon {
   transition:0.2s ease-out;
 }
 .word__inflection,
