@@ -96,12 +96,9 @@ export default class Word extends Component {
     render() {
         const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
 
-        const realX = x * scaling.units.x
-        const realY = y * scaling.units.y
-
         const style = {
-            top: realY+'px',
-            left: realX+'px',
+            top: y+'px',
+            left: x+'px',
             width: scaling.wordWidth+'px',
             margin: `${scaling.margin.y}px ${scaling.margin.x}px`
         }

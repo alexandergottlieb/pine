@@ -127,7 +127,9 @@ class Tree extends Component {
         //Generate words
         const words = nodes.map(node => {
             const editable = node.index == current.word ? true : false
-            return <Word {...node}
+            const realX = node.x * scaling.units.x
+            const realY = node.y * scaling.units.y
+            return <Word {...node} x={realX} y={realY}
                 scaling={scaling}
                 editWord={editWord}
                 deleteWord={deleteWord}
@@ -184,12 +186,9 @@ class Tree extends Component {
             this.cancelAnimation()
         }
 
-        //Zoom
-        const magnifierStyle = {transform: `scale(${zoom})`}
-
         return (
             <div className={treeClasses.join(' ')} ref={element => this.element = element}>
-                <div className="tree__magnifier" style={magnifierStyle}>
+                <div className="tree__magnifier" style={{transform: `scale(${zoom})`}}>
                     <svg className="lines">{lines}</svg>
                     <div className="relations">
                         {relations}
