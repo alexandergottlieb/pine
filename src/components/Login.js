@@ -51,7 +51,6 @@ export default class Login extends Component {
     register() {
         const { actions } = this.props
         const { email, password, name } = this.state
-        console.log('register clicked', email, password, name)
         //TODO - validation
         if (email.length > 0 && password.length > 0 && name.length > 0) actions.register(email, password, name)
     }

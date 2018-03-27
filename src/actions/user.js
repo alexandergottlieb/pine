@@ -13,7 +13,14 @@ export const login = (email, password) => {
 export const register = (email, password, displayName) => {
     return dispatch => {
         auth.createUserWithEmailAndPassword(email, password).then(user => {
-            user.updateProfile({ displayName })
+            user.updateProfile({ displayName }).then(
+                dispatch({
+                    type: "USER_PROFILE_UPDATED",
+                    user: {
+                        displayName
+                    }
+                })
+            )
         }).catch(error => {
             console.error(error)
             dispatch(addError(error.message))
@@ -45,8 +52,11 @@ export const syncAuth = () => {
     return dispatch => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
             if (user) {
+                const { displayName, email, uid, photoURL, emailVerified, isAnonymous } = user
                 dispatch({
-                    user,
+                    user: {
+                        displayName, email, uid, photoURL, emailVerified, isAnonymous
+                    },
                     type: "USER_CHANGE"
                 })
             } else {
