@@ -1,6 +1,7 @@
 import { database } from "../firebaseApp"
 import FileSaver from "file-saver"
 import CONLLU from "../classes/CONLLU"
+import Sentence from "../classes/Sentence"
 
 import { syncTreebanks, syncSentences, syncWords } from "./sync"
 export * from "./sync"
@@ -183,13 +184,14 @@ export const queueExportTreebank = (treebankID) => {
                 //Array-ify
                 treebank.sentences = Object.values(snapshot.val())
                 database.ref(`/user/${user.uid}/words/${treebankID}`).orderByKey().once('value', snapshot => {
+                    const wordsBySentence = snapshot.val()
                     //Array-ify
-                    let i = 0
-                    snapshot.forEach( wordsBySentence => {
-                        treebank.sentences[i].words = Object.values(wordsBySentence.val())
-                        i++
+                    treebank.sentences = treebank.sentences.map(data => {
+                        data.words = Object.values(wordsBySentence[data.id])
+                        return new Sentence(data)
                     })
                     const conllu = new CONLLU(treebank)
+                    console.log('conllu', conllu)
                     const text = conllu.export()
                     const blob = new Blob([text])
                     const filename = `${treebank.name}.conllu`

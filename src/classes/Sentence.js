@@ -5,7 +5,7 @@ export default class Sentence {
         this.words = []
         if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push({...word}) )
         this.comments = []
-        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push({...comment}) )
+        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push(comment) )
         if (!this.sentence) this.stringSentenceTogether()
     }
 

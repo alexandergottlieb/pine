@@ -10,6 +10,8 @@ const logger = store => next => action => {
 }
 
 
-const middleware = applyMiddleware(thunk, logger);
+const middleware = process.env.NODE_ENV !== 'production'
+    ? applyMiddleware(thunk, logger)
+    : applyMiddleware(thunk)
 
 export default createStore(reducer, middleware);

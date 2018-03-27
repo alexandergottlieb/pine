@@ -70,8 +70,6 @@ export default class Login extends Component {
         const { email, password, name } = this.state
         actions.clearMessages()
         try {
-            //Validate name
-            if (name.length <= 0) throw new Error("Please enter your name.")
             //Validate email
             if (email.length === 0) throw new Error("Please enter your email.")
             if (!EmailValidator.validate(email)) throw new Error("That email doesn't look right.")
@@ -120,6 +118,8 @@ export default class Login extends Component {
                 feedback += "."
                 throw new Error(feedback)
             }
+            //Validate name
+            if (name.length <= 0) throw new Error("Please enter your name.")
             //Register
             actions.register(email, password, name)
         } catch (e) {

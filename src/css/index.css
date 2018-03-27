@@ -62,7 +62,8 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after,
+.button--primary {
   background-color:white;
 }
 body,
@@ -74,7 +75,8 @@ body,
 .sentences__sentence:hover,
 .treebank__name,
 .breadcrumbs__breadcrumb,
-.login .messages .message {
+.login .messages .message,
+.button--primary {
   color:white;
 }
 /* Light */
@@ -92,20 +94,22 @@ body,
   color:#F2F6FF;
 }
 /* Accent - yellow */
-.sidebar__create-sentence .button {
+.button--secondary:hover,
+.sidebar__create-sentence .button,
+.treebank__name:hover,
+.breadcrumbs__breadcrumb:hover {
   color:#FFFF82;
 }
-/* Accent - blue */
 .upload-treebank:hover,
-.button--circle.button--primary, .button--circle.button--primary:hover,
-.button--primary {
+.button--primary:hover {
+  background-color:#FFFF82;
+}
+/* Accent - blue */
+.button--circle.button--primary, .button--circle.button--primary:hover {
   background-color:#48BEFF;
 }
 a,
-.button--secondary:hover,
-.sidebar__create-sentence .button:hover,
-.treebank__name:hover,
-.breadcrumbs__breadcrumb:hover {
+.sidebar__create-sentence .button:hover {
   color:#48BEFF;
 }
 /* Dark */
@@ -144,8 +148,7 @@ body,
 .tree__root:after,
 .word__delete,
 .button--circle.button--secondary,
-.login .messages .message,
-.button--primary:hover {
+.login .messages .message {
   background-color:#758AA8;
 }
 .editor__default,
