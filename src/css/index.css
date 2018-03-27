@@ -62,7 +62,6 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.button--primary,
 .view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
   background-color:white;
 }
@@ -74,7 +73,8 @@ body,
 .sentences__sentence.sentences__sentence--active,
 .sentences__sentence:hover,
 .treebank__name,
-.breadcrumbs__breadcrumb {
+.breadcrumbs__breadcrumb,
+.login .messages .message {
   color:white;
 }
 /* Light */
@@ -97,13 +97,13 @@ body,
 }
 /* Accent - blue */
 .upload-treebank:hover,
-.button--circle.button--primary {
+.button--circle.button--primary, .button--circle.button--primary:hover,
+.button--primary {
   background-color:#48BEFF;
 }
 a,
 .button--secondary:hover,
 .sidebar__create-sentence .button:hover,
-.button--primary:hover,
 .treebank__name:hover,
 .breadcrumbs__breadcrumb:hover {
   color:#48BEFF;
@@ -143,7 +143,9 @@ body,
 /* Grey */
 .tree__root:after,
 .word__delete,
-.button--circle.button--secondary {
+.button--circle.button--secondary,
+.login .messages .message,
+.button--primary:hover {
   background-color:#758AA8;
 }
 .editor__default,

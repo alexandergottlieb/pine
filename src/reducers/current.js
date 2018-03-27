@@ -56,6 +56,9 @@ const current = (state = defaultState, action) => {
                 messages: state.messages.slice(1)
             })
         }
+        case "CLEAR_MESSAGES": {
+            return {...state, messages: []}
+        }
         case "EXPORT_TREEBANK_STARTED": {
             let newState = Object.assign({}, state)
             if (newState.exports.downloading.indexOf(action.treebank === -1)) newState.exports.downloading.push(action.treebank)

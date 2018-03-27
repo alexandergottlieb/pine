@@ -6,23 +6,31 @@ import { syncTreebanks, syncSentences, syncWords } from "./sync"
 export * from "./sync"
 export * from "./user.js"
 
-export const addError = message => {
+export const addError = (message, autoDismiss = true) => {
     return dispatch => {
-        dispatch(addMessage(message, true))
+        dispatch(addMessage(message, true, autoDismiss))
     }
 }
 
-export const addMessage = (message, error = false) => {
+export const addMessage = (message, error = false, autoDismiss = true) => {
     return dispatch => {
         //Automatically remove message later
-        setTimeout(() => dispatch({
-            type: "REMOVE_MESSAGE"
-        }), 3000)
+        if (autoDismiss) {
+            setTimeout(() => dispatch({
+                type: "REMOVE_MESSAGE"
+            }), 3000)
+        }
         dispatch({
             type: "ADD_MESSAGE",
             message,
             status: error ? "ERROR" : "NORMAL"
         })
+    }
+}
+
+export const clearMessages = () => {
+    return {
+        type: "CLEAR_MESSAGES"
     }
 }
 

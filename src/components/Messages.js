@@ -1,4 +1,5 @@
 import React from 'react';
+import "../css/Messages.css"
 
 const Messages = props => {
     let { messages } = props
