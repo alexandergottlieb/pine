@@ -17,7 +17,7 @@ const Treebank = props => {
             <p>
                 <small>{treebank.sentences} sentences</small>
             </p>
-            <div class="treebank__buttons">
+            <div className="treebank__buttons">
                 {exportButton}
                 <Button type="primary" icon="fa-pencil-alt" link={`/edit/${id}`}>Edit</Button>
             </div>
