@@ -62,8 +62,7 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after,
-.button--primary {
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
   background-color:white;
 }
 body,
@@ -101,7 +100,7 @@ body,
   color:#FFFF82;
 }
 .upload-treebank:hover,
-.button--primary:hover {
+.button--primary {
   background-color:#FFFF82;
 }
 /* Accent - blue */
