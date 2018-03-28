@@ -28,7 +28,7 @@ class Home extends Component {
         actions.uploadTreebank(treebank, user)
       } catch (e) {
         console.error(e)
-        actions.addError(`Could not upload '${treebank.name}'. ${e.message}`, false)
+        actions.addError(`Error uploading treebank '${treebank.name}'. ${e.message}`, false)
       }
     }
 

@@ -3,7 +3,7 @@ import { version } from "../../package.json"
 
 const Version = (props) => {
     return (
-        <div class="version">
+        <div className="version">
             <small>Treebanker v{version}</small>
         </div>
     )

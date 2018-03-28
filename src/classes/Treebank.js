@@ -43,7 +43,9 @@ export default class Treebank {
                     self.sentences[current].words.push(word)
                 }
             } catch (e) {
-                throw new Error(`On line ${lineNumber}: ${e.message}`)
+                let word = self.sentences[current].words.length
+                if (word === 0) word = 1
+                throw new Error(`Sentence ${current+1}, word ${word} ${e.message}`)
             }
         })
         self.sentences.forEach( (sentence) => {
@@ -71,7 +73,8 @@ export default class Treebank {
         //Clean up
         data = data.map(datum => String(datum).trim())
         if (data[0] === undefined || !data[0].match(/^\d/)) { //Words must have an index
-            throw new Error("a word's index is missing")
+            console.error("a word does not have a valid position", data[0])
+            throw new Error("does not have a valid position")
         }
         if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
         if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
@@ -97,7 +100,8 @@ export default class Treebank {
         try {
             if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(String(data[5]))
         } catch (e) {
-            throw new Error("a word's features are not formatted correctly")
+            console.error("a word has badly formatted features", data[5])
+            throw new Error("has badly formatted features")
         }
         if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
         if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase())
@@ -105,7 +109,10 @@ export default class Treebank {
         if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(String(data[9]))
         //Validate
         //Words cannot be related to themselves
-        if (word.index === word.parent) throw new Error("a word is related to itself")
+        if (word.index === word.parent) {
+            console.error("a word is related to itself", word)
+            throw new Error("is related to itself")
+        }
         return word
     }
 
