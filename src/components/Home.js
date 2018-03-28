@@ -27,7 +27,7 @@ class Home extends Component {
         actions.uploadTreebank(treebank, user)
       } catch (e) {
         console.error(e)
-        actions.addError(`Could not upload file. ${e.message}`)
+        actions.addError(`Could not upload '${treebank.name}'. ${e.message}`, false)
       }
     }
 
@@ -48,6 +48,7 @@ class Home extends Component {
       <div className="home">
         <Header current={current} user={user} actions={actions} />
         <main className="home__main">
+          <Messages messages={current.messages} />
           <h2>Treebanks</h2>
           <div className="treebanks">
             {treebanksList}
@@ -62,7 +63,6 @@ class Home extends Component {
             <p><small>Add a new treebank in .conllu format</small></p>
           </div>
         </main>
-        <Messages messages={current.messages} />
       </div>
     )
   }

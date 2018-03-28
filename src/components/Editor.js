@@ -195,7 +195,7 @@ export default class Editor extends Component {
     if (sentence) {
       if (sentence.words.length > 0) {
         if (this.state.treeView) {
-          contents = <Tree sentence={sentence} treebank={treebank} current={current} actions={actions}
+          contents = <Tree sentence={sentence} treebank={treebank} relations={current.relations} actions={actions}
             editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
           />
         } else {

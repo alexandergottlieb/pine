@@ -67,10 +67,10 @@ export default class Word extends Component {
     }
 
     click = event => {
-        const { current, actions, editWord, word, index, editable } = this.props
-        if (current.relations && current.relations.length > 0) {
+        const { actions, relations, editWord, word, index, editable } = this.props
+        if (relations && relations.length > 0) {
             //Set all relations to point to this word
-            current.relations.forEach(childIndex => {
+            relations.forEach(childIndex => {
                 editWord(childIndex, {
                     parent: index
                 })
@@ -94,7 +94,7 @@ export default class Word extends Component {
     }
 
     render() {
-        const { index, word, x, y, scaling, current, editable, editWord, actions} = this.props
+        const { index, word, x, y, scaling, editable, editWord, actions, relations } = this.props
 
         const style = {
             top: y+'px',
@@ -115,7 +115,7 @@ export default class Word extends Component {
         let classes = ["word"]
         classes.push(`word--${word.uposTag.toLowerCase()}`)
         if (editable) classes.push("word--editable")
-        if (current.relations && current.relations.length > 0) classes.push("word--relations-selected")
+        if (relations && relations.length > 0) classes.push("word--relations-selected")
 
         return (
             <div className={classes.join(' ')} style={style} onClick={this.click.bind(this)} onKeyUp={this.keyUp.bind(this)}>

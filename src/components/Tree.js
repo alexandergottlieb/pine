@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import TreeDrawer from '../classes/TreeDrawer'
-import Word from './Word'
-import Relation from './Relation'
-import Line from './Line'
-import '../css/Tree.css'
+import React, { Component } from "react";
+import equal from "equals"
+import TreeDrawer from "../classes/TreeDrawer"
+import Word from "./Word"
+import Relation from "./Relation"
+import Line from "./Line"
+import "../css/Tree.css"
 
 class Tree extends Component {
 
@@ -31,8 +32,8 @@ class Tree extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { scaling } = nextProps
-        this.layout(nextProps)
+        const { scaling, sentence } = nextProps
+        if (!equal(sentence.words, this.props.sentence.words)) this.layout(nextProps)
         this.setState({
             units: {
                 x: 14*scaling.rem, y: 10*scaling.rem
@@ -52,23 +53,28 @@ class Tree extends Component {
 
     //Calculate co-ordinates
     layout(props) {
-        const { sentence } = props
+        const { sentence, actions } = props
+        try {
+            //Calculate node positions
+            let tree = new TreeDrawer(sentence)
+            tree.positionNodes()
+            const nodes = tree.nodes
 
-        //Calculate node positions
-        let tree = new TreeDrawer(sentence)
-        tree.positionNodes()
-        const nodes = tree.nodes
-
-        this.setState({
-            nodes: nodes
-        })
+            this.setState({
+                nodes: nodes
+            })
+        } catch (e) {
+            actions.addError(`Error drawing tree: ${e.message}`)
+            this.setState({
+                nodes: []
+            })
+        }
     }
 
     //Active relation line should follow mouse
     animate() {
         const self = this
-        const { scaling, zoom } = this.props
-        const { relations } = this.props.current
+        const { scaling, zoom, relations } = this.props
 
         const container = this.element
         const rect = container.getBoundingClientRect()
@@ -118,10 +124,10 @@ class Tree extends Component {
     }
 
     clickRoot() {
-        const { current, actions, editWord } = this.props
+        const { relations, actions, editWord } = this.props
         try {
-            if (current.relations.length > 1) throw "Only one word descends from root."
-            current.relations.forEach(childIndex => {
+            if (relations.length > 1) throw "Only one word descends from root."
+            relations.forEach(childIndex => {
                 editWord(childIndex, {
                     parent: 0
                 })
@@ -132,12 +138,12 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, current, treebank, editWord, deleteWord, zoom, scaling } = this.props
+        const { actions, currentWord, treebank, editWord, deleteWord, zoom, scaling } = this.props
         const { nodes } = this.state
 
         //Generate words
         const words = nodes.map(node => {
-            const editable = node.index == current.word ? true : false
+            const editable = node.index == currentWord ? true : false
             const realX = node.x * this.state.units.x
             const realY = node.y * this.state.units.y
             return <Word {...node} x={realX} y={realY}
@@ -145,7 +151,7 @@ class Tree extends Component {
                 editWord={editWord}
                 deleteWord={deleteWord}
                 actions={actions}
-                current={current}
+                relations={relations}
                 editable={editable}
                 key={node.word.id}
             />
@@ -158,7 +164,7 @@ class Tree extends Component {
             //Draw lines from parent to child
             node.children.forEach(child => {
                 //Active if user is moving relation line of current child
-                const active = current.relations.indexOf(child.index) !== -1
+                const active = relations.indexOf(child.index) !== -1
 
                 //Line
                 let coords = {};
@@ -190,7 +196,7 @@ class Tree extends Component {
 
         const treeClasses = ["tree"]
 
-        if (current.relations && current.relations.length > 0) {
+        if (relations && relations.length > 0) {
             this.animate()
             treeClasses.push("tree--with-relations")
         } else {

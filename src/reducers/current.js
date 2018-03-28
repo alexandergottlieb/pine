@@ -14,17 +14,20 @@ const current = (state = defaultState, action) => {
     switch (action.type) {
         case "SET_CURRENT_TREEBANK": {
             return Object.assign({}, state, {
-               treebank: action.id
+               treebank: action.id,
+               messages: []
             })
         }
         case "SET_CURRENT_SENTENCE": {
             return Object.assign({}, state, {
-               sentence: action.id
+               sentence: action.id,
+               messages: []
             })
         }
         case "SET_CURRENT_PAGE": {
             return Object.assign({}, state, {
-               page: action.page
+               page: action.page,
+               messages: []
             })
         }
         case "SET_CURRENT_WORD": {
@@ -43,12 +46,11 @@ const current = (state = defaultState, action) => {
             })
         }
         case "ADD_MESSAGE": {
-            let newState = Object.assign({}, state)
-            newState.messages.push({
-                message: action.message,
-                status: action.status
-            })
-            return newState
+            const { message, status } = action
+            //Add message and only keep the latest 3
+            let messages = state.messages.slice(-2)
+            messages.push({ message, status })
+            return { ...state, messages }
         }
         case "REMOVE_MESSAGE": {
             //Remove oldest message (FIFO)

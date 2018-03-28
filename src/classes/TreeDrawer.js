@@ -3,10 +3,13 @@ import Node from './Node.js';
 export default class TreeDrawer {
 
     constructor(sentence) {
-        this.nodes = [];
-        let self = this;
+        this.nodes = []
+        this.root = null
+        let self = this
 
         sentence.words.forEach( word => {
+            if (word.index <= 0) throw new Error(`word '${word.inflection}' does not have a position in the sentence`)
+            if (word.index === word.parent) throw new Error(`word '${word.inflection}' is related to itself`)
             if (word) createNode(word.index);
         })
 
@@ -18,6 +21,7 @@ export default class TreeDrawer {
             node.index = index;
             node.word = sentence.words.find(word => word.index === index)
             if (node.word.parent === 0) { //is root
+                if (self.root) throw new Error("more than one word descends from root")
                 node.parent = 0;
                 node.depth = 0;
                 self.root = node;

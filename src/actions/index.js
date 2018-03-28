@@ -40,8 +40,6 @@ export const uploadTreebank = (treebank) => {
         const { user } = getState()
         dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
         const sentences = treebank.sentences
-        console.log('treebank', treebank)
-        console.log('sentences', sentences)
         treebank.sentences = treebank.sentences.length
 
         const treebankRef = database.ref(`/user/${user.uid}/treebanks`).push()

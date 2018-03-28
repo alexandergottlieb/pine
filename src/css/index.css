@@ -75,6 +75,7 @@ body,
 .treebank__name,
 .breadcrumbs__breadcrumb,
 .login .messages .message,
+.home .messages .message,
 .button--primary {
   color:white;
 }
@@ -147,7 +148,8 @@ body,
 .tree__root:after,
 .word__delete,
 .button--circle.button--secondary,
-.login .messages .message {
+.login .messages .message,
+.home .messages .message {
   background-color:#758AA8;
 }
 .editor__default,
