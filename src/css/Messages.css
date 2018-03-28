@@ -18,28 +18,25 @@
   border-radius:6px;
 }
 
-/* Home */
+/* Login, Home */
+.login .messages,
 .home .messages {
   padding:0;
-  margin:1rem 0 0.5rem 0;
+  margin:0;
   pointer-events:none;
 }
+.login .message,
 .home .message {
   display:block;
   margin:0 0 0.5rem 0;
   padding:0.5rem 0.75rem;
   border-radius:3px;
 }
-
-/* Login */
-.login .messages {
-  padding:0;
-  margin:1rem 0 0.5rem 0;
-  pointer-events:none;
+.login .message:first-child,
+.home .message:first-child {
+  margin-top:1rem;
 }
-.login .message {
-  display:block;
-  margin:0 0 0.5rem 0;
-  padding:0.5rem 0.75rem;
-  border-radius:3px;
+.login .message:last-child,
+.home .message:last-child {
+  margin-bottom:1rem;
 }

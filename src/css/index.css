@@ -159,7 +159,8 @@ body,
 .tree__root,
 .editor__toolbar,
 .arc__relation-label
-.editor__zoom {
+.editor__zoom,
+.version {
   color:#758AA8;
 }
 /* Red */

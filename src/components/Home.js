@@ -3,6 +3,7 @@ import Treebank from '../classes/Treebank'
 import TreebankComponent from './Treebank'
 import Messages from './Messages'
 import Header from './Header'
+import Version from "./Version"
 import '../css/Home.css'
 
 class Home extends Component {
@@ -48,8 +49,8 @@ class Home extends Component {
       <div className="home">
         <Header current={current} user={user} actions={actions} />
         <main className="home__main">
-          <Messages messages={current.messages} />
           <h2>Treebanks</h2>
+          <Messages messages={current.messages} />
           <div className="treebanks">
             {treebanksList}
           </div>
@@ -62,6 +63,7 @@ class Home extends Component {
             </p>
             <p><small>Add a new treebank in .conllu format</small></p>
           </div>
+          <Version />
         </main>
       </div>
     )

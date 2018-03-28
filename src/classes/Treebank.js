@@ -43,7 +43,7 @@ export default class Treebank {
                     self.sentences[current].words.push(word)
                 }
             } catch (e) {
-                throw new Error(`Error on line ${lineNumber}: ${e.message}`)
+                throw new Error(`On line ${lineNumber}: ${e.message}`)
             }
         })
         self.sentences.forEach( (sentence) => {
@@ -71,7 +71,7 @@ export default class Treebank {
         //Clean up
         data = data.map(datum => String(datum).trim())
         if (data[0] === undefined || !data[0].match(/^\d/)) { //Words must have an index
-            throw new Error("word index is missing")
+            throw new Error("a word's index is missing")
         }
         if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
         if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
@@ -97,7 +97,7 @@ export default class Treebank {
         try {
             if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(String(data[5]))
         } catch (e) {
-            throw new Error("word features are not formatted correctly")
+            throw new Error("a word's features are not formatted correctly")
         }
         if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
         if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase())
@@ -105,7 +105,7 @@ export default class Treebank {
         if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(String(data[9]))
         //Validate
         //Words cannot be related to themselves
-        if (word.index === word.parent) throw new Error("word is related to itself")
+        if (word.index === word.parent) throw new Error("a word is related to itself")
         return word
     }
 

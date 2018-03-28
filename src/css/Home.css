@@ -37,3 +37,8 @@
 .upload-treebank input {
     display:none;
 }
+
+.version {
+  margin-top:4rem;
+  text-align:right;
+}

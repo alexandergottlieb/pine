@@ -4,6 +4,7 @@ import PasswordValidator from "password-validator"
 import Input from "./Input"
 import Button from "./Button"
 import Messages from "./Messages"
+import Version from "./Version"
 import "../css/Login.css"
 
 export default class Login extends Component {
@@ -170,6 +171,7 @@ export default class Login extends Component {
                          }
                     </div>
                 </div>
+                <Version />
             </div>
         )
     }
