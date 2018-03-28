@@ -1,6 +1,6 @@
 import { database } from "../firebaseApp"
 import FileSaver from "file-saver"
-import CONLLU from "../classes/CONLLU"
+import Treebank from "../classes/Treebank"
 import Sentence from "../classes/Sentence"
 
 import { syncTreebanks, syncSentences, syncWords } from "./sync"
@@ -40,6 +40,8 @@ export const uploadTreebank = (treebank) => {
         const { user } = getState()
         dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
         const sentences = treebank.sentences
+        console.log('treebank', treebank)
+        console.log('sentences', sentences)
         treebank.sentences = treebank.sentences.length
 
         const treebankRef = database.ref(`/user/${user.uid}/treebanks`).push()
@@ -98,7 +100,7 @@ export const queueExportTreebank = (treebankID) => {
                         data.words = Object.values(wordsBySentence[data.id])
                         return new Sentence(data)
                     })
-                    const conllu = new CONLLU(treebank)
+                    const conllu = new Treebank(treebank)
                     console.log('conllu', conllu)
                     const text = conllu.export()
                     const blob = new Blob([text])

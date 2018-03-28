@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Select from "react-select";
 import Button from "./Button"
 import "../css/Word.css"
-import CONLLU from "../classes/CONLLU"
+import Treebank from "../classes/Treebank"
 
 export default class Word extends Component {
 
@@ -103,7 +103,7 @@ export default class Word extends Component {
             margin: `${scaling.margin.y}px ${scaling.margin.x}px`
         }
 
-        const uposTags = CONLLU.uposTags()
+        const uposTags = Treebank.uposTags()
         const uposTag = uposTags.find(tag => tag.value === word.uposTag)
         const uposTagValue = word.uposTag
             ? {

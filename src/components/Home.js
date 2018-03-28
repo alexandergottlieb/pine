@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import CONLLU from '../classes/CONLLU'
-import Treebank from './Treebank'
+import Treebank from '../classes/Treebank'
+import TreebankComponent from './Treebank'
 import Messages from './Messages'
 import Header from './Header'
 import '../css/Home.css'
@@ -15,7 +15,7 @@ class Home extends Component {
   addFile(file) {
     const { actions, user } = this.props
     if (!file) return
-    let treebank = new CONLLU()
+    let treebank = new Treebank()
     treebank.name = file.name.slice(0,-7) //filename without .conllu extension
 
     let reader = new FileReader()
@@ -27,7 +27,7 @@ class Home extends Component {
         actions.uploadTreebank(treebank, user)
       } catch (e) {
         console.error(e)
-        actions.addError(`Could not upload file: ${e.message}`)
+        actions.addError(`Could not upload file. ${e.message}`)
       }
     }
 
@@ -41,7 +41,7 @@ class Home extends Component {
     for (let id in this.props.treebanks) {
       let treebank = this.props.treebanks[id]
       const exporting = current.exports.downloading.indexOf(id) !== -1
-      treebanksList.push(<Treebank treebank={treebank} key={treebank.id} actions={actions} exporting={exporting} />)
+      treebanksList.push(<TreebankComponent treebank={treebank} key={treebank.id} actions={actions} exporting={exporting} />)
     }
 
     return (

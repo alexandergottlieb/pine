@@ -2,13 +2,15 @@ import uniqid from 'uniqid'
 import Sentence from './Sentence'
 import Word from './Word'
 
-export default class CONLLU {
+export default class Treebank {
 
-    constructor(treebank = {name: '', sentences: [], settings: {xpos: {}, relations: {}}}) {
-        this.name = treebank.name
-        this.sentences = treebank.sentences
-        this.multitokens = false
-        this.settings = treebank.settings
+    constructor(treebank = {}) {
+        this.name = treebank.name || ""
+        this.sentences = treebank.sentences || []
+        this.multitokens = treebank.multitokens || false
+        this.settings = treebank.settings || {xpos: {}, relations: {}}
+        this.id = treebank.id || ""
+        this.owner = treebank.owner || ""
     }
 
     //Parse CoNLL-U text
@@ -26,18 +28,22 @@ export default class CONLLU {
         }
 
         //Parse sentences
-        lines.forEach(line => {
-            if (line.indexOf('#') === 0) { //Comment
-                self.sentences[current].comments.push(line)
-            } else if (line.length === 0) { //New sentence
-                self.sentences.push(new Sentence())
-                current++
-            } else if (line.match(/^\d+[-.]/)) { //Multitoken
-                //Skip
-                self.multitokens = true
-            } else { //Word
-                let word = self.parseWord(line)
-                self.sentences[current].words.push(word)
+        lines.forEach( (line, lineNumber) => {
+            try {
+                if (line.indexOf('#') === 0) { //Comment
+                    self.sentences[current].comments.push(line)
+                } else if (line.length === 0) { //New sentence
+                    self.sentences.push(new Sentence())
+                    current++
+                } else if (line.match(/^\d+[-.]/)) { //Multitoken
+                    //Skip
+                    self.multitokens = true
+                } else { //Word
+                    let word = self.parseWord(line)
+                    self.sentences[current].words.push(word)
+                }
+            } catch (e) {
+                throw new Error(`On line ${lineNumber}: ${e.message}`)
             }
         })
         self.sentences.forEach( (sentence) => {
@@ -67,15 +73,15 @@ export default class CONLLU {
         if (data[0] === undefined || !data[0].match(/^\d/)) {
             throw new Error("some words are missing indices")
         }
-        if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
-        if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
-        if (data[2] !== undefined && data[2] !== '_') word.lemma = String(data[2])
+        if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0].trim())
+        if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1]).trim()
+        if (data[2] !== undefined && data[2] !== '_') word.lemma = String(data[2]).trim()
         //Part of Speech
         let xposTag = null
         if (data[3] !== undefined && data[3] !== '_') {
             //Validate UPOS
-            const uposTag = String(data[3]).toUpperCase()
-            if (CONLLU.uposTags().find(tag => tag.value == uposTag) !== undefined) {
+            const uposTag = String(data[3]).toUpperCase().trim()
+            if (Treebank.uposTags().find(tag => tag.value == uposTag) !== undefined) {
                 word.uposTag = uposTag
             } else {
                 //Populate XPOS with the non-standard UPOS
@@ -83,16 +89,20 @@ export default class CONLLU {
             }
         }
         if (data[4] !== undefined && data[4] !== '_') {
-            word.xposTag = String(data[4]).toUpperCase()
+            word.xposTag = String(data[4]).trim().toUpperCase()
         } else if (xposTag !== null) {
             //Default to non-standard UPOS
             word.xposTag = xposTag
         }
-        if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(data[5])
-        if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6])
-        if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase())
-        if (data[8] !== undefined && data[8] !== '_') word.dependencies = data[8]
-        if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(data[9])
+        try {
+            if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(String(data[5]).trim())
+        } catch (e) {
+            throw new Error("Word features are not formatted correctly")
+        }
+        if (data[6] !== undefined && data[6] !== '_') word.parent = Number(data[6].trim())
+        if (data[7] !== undefined && data[7] !== '_') word.relation = this.relationKeyByValue(String(data[7]).toLowerCase().trim())
+        if (data[8] !== undefined && data[8] !== '_') word.dependencies = String(data[8]).trim()
+        if (data[9] !== undefined && data[9] !== '_') word.misc = this.parseList(String(data[9]).trim())
         return word
     }
 
@@ -111,10 +121,11 @@ export default class CONLLU {
     parseList(list) {
         let object = {}
         list = list.split("|")
-        list.forEach(keyValue => {
-            keyValue = keyValue.split("=")
-            const key = keyValue[0].trim()
-            const value = keyValue[1].trim()
+        list.forEach(pair => {
+            pair = pair.split("=")
+            if (!0 in pair) throw new Error("Invalid list format")
+            const key = pair[0].trim()
+            const value = (1 in pair) ? pair[1].trim() : ''
             object[key] = value
         })
         return object
@@ -128,6 +139,7 @@ export default class CONLLU {
                 for (const key in object) {
                     pairs.push(`${key}=${object[key]}`)
                 }
+                pairs.sort()
                 let string = pairs.join("|")
                 return string ? string : "_"
             }

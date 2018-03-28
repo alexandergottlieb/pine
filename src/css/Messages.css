@@ -1,5 +1,4 @@
-/* Editor */
-.editor .messages {
+.messages {
   position:absolute;
   bottom:2rem;
   width:100%;
@@ -8,7 +7,7 @@
   text-align:center;
   pointer-events:none;
 }
-.editor .message {
+.message {
   display:block;
   width:33%;
   margin:auto;
