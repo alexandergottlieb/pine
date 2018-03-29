@@ -156,7 +156,7 @@ export const fetchTreebanks = (userID) => {
 
 export const setCurrent = (treebank, sentence = null, page = null) => {
     return dispatch => {
-        if (treebank) syncTreebank(treebank)
+        if (treebank) dispatch(syncTreebank(treebank))
         dispatch({
             type: "SET_CURRENT_TREEBANK",
             id: treebank

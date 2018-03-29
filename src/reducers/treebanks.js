@@ -14,7 +14,7 @@ const treebanks = (state = initial, action) => {
             }
             return treebanks
         }
-        case "TREEBANK_UPDATED": {
+        case "TREEBANK__SYNC_UPDATE": {
             const { treebank } = action
             let newState = {...state}
             newState[treebank.id] = treebank

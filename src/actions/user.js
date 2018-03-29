@@ -55,7 +55,7 @@ export const syncAuth = () => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
             if (user) {
                 const { displayName, email, uid, photoURL, emailVerified, isAnonymous } = user
-                fetchTreebanks(uid)
+                dispatch(fetchTreebanks(uid))
                 dispatch({
                     user: {
                         displayName, email, uid, photoURL, emailVerified, isAnonymous
