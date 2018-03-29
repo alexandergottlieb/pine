@@ -41,9 +41,10 @@
 .create-word .create-word__input {
   transition:0.2s ease-out;
 }
-.create-word .create-word__button {
+.create-word .button.create-word__button {
   padding:0.375em 0 0.125em 0;
   transform:translateX(-6rem);
+  background-color:transparent;
 }
 .create-word--expanded .create-word__button {
   transform:translateX(0.5rem) rotate(45deg);

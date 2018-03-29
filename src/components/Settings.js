@@ -12,6 +12,12 @@ const Settings = props => {
     return (
         <div className="settings">
             <h2>Settings</h2>
+            <h3>Sharing</h3>
+            <h4>People</h4>
+            <ul>
+                <li>Alexander Gottlieb</li>
+            </ul>
+            <input type="email" placeholder="Enter email address to share"/><Button type="primary" icon="fa fa-user-plus">Share</Button>
             <h3>Delete Treebank</h3>
             <p>Delete '{treebank.name}' and all its data. This cannot be undone.</p>
             <Button type="warning" onClick={deleteClick} icon="fa-trash">Delete</Button>

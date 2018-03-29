@@ -195,8 +195,9 @@ export default class Editor extends Component {
     if (sentence) {
       if (sentence.words.length > 0) {
         if (this.state.treeView) {
-          contents = <Tree sentence={sentence} treebank={treebank} relations={current.relations} actions={actions}
-            editWord={this.editWord} deleteWord={this.deleteWord} scaling={this.state.scaling} zoom={this.state.zoom}
+          contents = <Tree sentence={sentence} treebank={treebank} relations={current.relations} currentWord={current.word}
+            actions={actions} editWord={this.editWord} deleteWord={this.deleteWord}
+            scaling={this.state.scaling} zoom={this.state.zoom}
           />
         } else {
           contents = <Arrows sentence={sentence} treebank={treebank} current={current} actions={actions}
@@ -212,7 +213,6 @@ export default class Editor extends Component {
         </div>
       )
     }
-
     return (
       <div className="editor" onClick={this.deselect}>
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />

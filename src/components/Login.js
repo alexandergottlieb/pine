@@ -150,7 +150,7 @@ export default class Login extends Component {
         const { current } = this.props
         const { register } = this.state
         return (
-            <div className="login">
+            <div className="login background-dark">
                 <div className="login__form" onKeyUp={this.keyUp.bind(this)}>
                     <h1>{register ? "Register" : "Sign In"}</h1>
                     <small>or <a onClick={this.toggleRegister.bind(this)}>{register ? "Sign In" : "Register"}</a></small>
@@ -163,10 +163,10 @@ export default class Login extends Component {
                     }
                     <div className="login__buttons">
                         {register
-                            ? <Button type="primary" onClick={this.register.bind(this)}>Register</Button>
+                            ? <Button type="primary" icon="fa-arrow-alt-circle-right" onClick={this.register.bind(this)}>Register</Button>
                             : <div>
                                 <a className="login__forgot" onClick={this.forgotPassword.bind(this)}>Forgot password?</a>
-                                <Button type="primary" onClick={this.login.bind(this)}>Sign In</Button>
+                                <Button type="primary" icon="fa-arrow-alt-circle-right" onClick={this.login.bind(this)}>Sign In</Button>
                             </div>
                          }
                     </div>

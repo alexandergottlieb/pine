@@ -146,7 +146,7 @@ class Tree extends Component {
             const editable = node.index == currentWord ? true : false
             const realX = node.x * this.state.units.x
             const realY = node.y * this.state.units.y
-            return <Word {...node} x={realX} y={realY}
+            return <Word word={node.word} x={realX} y={realY}
                 scaling={scaling}
                 editWord={editWord}
                 deleteWord={deleteWord}

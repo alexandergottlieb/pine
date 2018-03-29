@@ -41,7 +41,7 @@ const Sidebar = props => {
   })
 
   return (
-    <div className="sidebar">
+    <div className="sidebar background-dark">
       <header className="sidebar__header">
         <nav className="breadcrumbs">
           <Link className="breadcrumbs__breadcrumb" to="/">Treebanks</Link>

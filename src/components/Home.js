@@ -46,7 +46,7 @@ class Home extends Component {
     }
 
     return (
-      <div className="home">
+      <div className="home background-dark">
         <Header current={current} user={user} actions={actions} />
         <main className="home__main">
           <h2>Treebanks</h2>

@@ -62,18 +62,16 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after,
-.button--primary:hover {
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
   background-color:white;
 }
 body,
-.button--warning,
+.background-light .button,
 .sidebar,
 .tree__root,
 .word .word__delete:hover,
 .sentences__sentence.sentences__sentence--active,
 .sentences__sentence:hover,
-.treebank__name,
 .breadcrumbs__breadcrumb,
 .login .messages .message,
 .home .messages .message {
@@ -89,27 +87,17 @@ body,
 .editor__zoom {
   background-color:#F2F6FF;
 }
-.button--circle.button--secondary,
-.button--circle.button--secondary:hover {
-  color:#F2F6FF;
-}
 /* Accent - yellow */
-.button--secondary:hover,
-.sidebar__create-sentence .button,
-.treebank__name:hover,
-.breadcrumbs__breadcrumb:hover {
+.background-dark .button--primary {
   color:#FFFF82;
 }
-.upload-treebank:hover,
-.button--primary {
-  background-color:#FFFF82;
-}
 /* Accent - blue */
-.button--circle.button--primary, .button--circle.button--primary:hover {
+.background-light .button--primary {
   background-color:#48BEFF;
 }
 a,
-.sidebar__create-sentence .button:hover {
+a:hover,
+.background-dark .button:hover {
   color:#48BEFF;
 }
 /* Dark */
@@ -121,9 +109,7 @@ body,
 .main,
 .upload-treebank,
 .sentence-editor__word,
-.create-word__button:hover,
-.tree__root,
-.button--primary {
+.tree__root {
   color:#13161F;
 }
 /* Dark Highlight */
@@ -150,15 +136,15 @@ body,
 /* Grey */
 .tree__root:after,
 .word__delete,
-.button--circle.button--secondary,
 .login .messages .message,
-.home .messages .message {
+.home .messages .message,
+.background-light .button--secondary {
   background-color:#758AA8;
 }
 .editor__default,
 .breadcrumbs__breadcrumb--current,
 .sentences__sentence,
-.create-word__button,
+.background-light .create-word .create-word__button,
 .tree__root,
 .editor__toolbar,
 .arc__relation-label
@@ -168,9 +154,7 @@ body,
   color:#758AA8;
 }
 /* Red */
-.button--warning {
-  color:#DF2935;
-}
+.background-light .button--warning,
 .word__delete:hover {
   background-color:#DF2935;
 }
@@ -181,12 +165,12 @@ body,
 }
 .word,
 .button,
-.upload-treebank,
 .editor__zoom--show,
 .tree__magnifier,
 .view-mode__icon {
   transition:0.2s ease-out;
 }
+a,
 .word__inflection,
 .relation__label .Select-value-label,
 .relation__label .Select-option,
@@ -195,7 +179,6 @@ body,
 .sentence-editor__word,
 .relation__grab,
 .arc__relation-label,
-.treebank__name,
 .breadcrumbs__breadcrumb {
   transition: 0.15s ease-out;
 }

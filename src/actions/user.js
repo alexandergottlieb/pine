@@ -1,4 +1,4 @@
-import { auth } from "../firebaseApp"
+import { auth, database } from "../firebaseApp"
 import { addMessage, addError } from "./index.js"
 
 export const login = (email, password) => {
@@ -21,6 +21,8 @@ export const register = (email, password, displayName) => {
                     }
                 })
             )
+            //Store in database for lookup by other users
+            database.ref(`/users/${user.uid}`).set({email, displayName})
         }).catch(error => {
             console.error(error)
             dispatch(addError(error.message))
