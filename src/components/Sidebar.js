@@ -7,9 +7,7 @@ import '../css/Sidebar.css'
 
 const Sidebar = props => {
 
-  const { current, sentences, treebanks, actions } = props
-
-  const treebank = treebanks[current.treebank] || {name: "", sentences: ""}
+  const { current, sentences, treebank, actions } = props
 
   const newSentenceClicked = () => {
     const sentenceText = prompt("Type a new sentence")

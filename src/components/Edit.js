@@ -46,7 +46,7 @@ export default class Edit extends Component {
 
     return (
       <div>
-        <Sidebar current={current} sentences={sentences} treebanks={treebanks} actions={actions} />
+        <Sidebar current={current} sentences={sentences} treebank={currentTreebank} actions={actions} />
         <main className="main background-light">
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />

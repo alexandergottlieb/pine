@@ -7,7 +7,8 @@ const defaultState = {
     exports: {
         downloading: [],
         ready: []
-    }
+    },
+    sharedWith: []
 }
 
 const current = (state = defaultState, action) => {
@@ -15,7 +16,8 @@ const current = (state = defaultState, action) => {
         case "SET_CURRENT_TREEBANK": {
             return Object.assign({}, state, {
                treebank: action.id,
-               messages: []
+               messages: [],
+               users: {}
             })
         }
         case "SET_CURRENT_SENTENCE": {
@@ -71,6 +73,12 @@ const current = (state = defaultState, action) => {
             //treebank no longer downloading
             newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
             return newState
+        }
+        case "SHARING_USERS_FETCH_COMPLETE": {
+            return {...state, sharedWith: action.users}
+        }
+        case "SHARE_TREEBANK_COMPLETE": {
+            return {...state, sharedWith: state.sharedWith.push(action.shareUser)}
         }
         default:
             return state

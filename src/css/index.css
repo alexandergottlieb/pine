@@ -73,8 +73,8 @@ body,
 .sentences__sentence.sentences__sentence--active,
 .sentences__sentence:hover,
 .breadcrumbs__breadcrumb,
-.login .messages .message,
-.home .messages .message {
+.messages .message,
+.messages .message {
   color:white;
 }
 /* Light */
@@ -136,8 +136,8 @@ body,
 /* Grey */
 .tree__root:after,
 .word__delete,
-.login .messages .message,
-.home .messages .message,
+.background-dark .messages .message,
+.background-dark .messages .message,
 .background-light .button--secondary {
   background-color:#758AA8;
 }

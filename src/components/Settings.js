@@ -1,28 +1,31 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Button from './Button'
+import Share from "./Share"
+import Messages from "./Messages"
 import '../css/Settings.css'
 
-const Settings = props => {
-    const { current, treebank, actions } = props
+export default class Settings extends Component {
 
-    const deleteClick = () => {
-        if (window.confirm(`Delete Treebank\n\n'${treebank.name}' will be permanently removed.`)) actions.deleteTreebank(current.treebank)
+    deleteClick = () => {
+        const { actions, treebank } = this.props
+        if (window.confirm(`Delete Treebank\n\n'${treebank.name}' will be permanently removed.`)) actions.deleteTreebank(treebank.id)
     }
 
-    return (
-        <div className="settings">
-            <h2>Settings</h2>
-            <h3>Sharing</h3>
-            <h4>People</h4>
-            <ul>
-                <li>Alexander Gottlieb</li>
-            </ul>
-            <input type="email" placeholder="Enter email address to share"/><Button type="primary" icon="fa fa-user-plus">Share</Button>
-            <h3>Delete Treebank</h3>
-            <p>Delete '{treebank.name}' and all its data. This cannot be undone.</p>
-            <Button type="warning" onClick={deleteClick} icon="fa-trash">Delete</Button>
-        </div>
-    )
-}
+    render() {
+        const { current, treebank, actions } = this.props
+        const { sharedWith } = current
 
-export default Settings
+        return (
+            <div className="settings">
+                <h2>Settings</h2>
+                <Messages messages={current.messages} />
+                <h3>Sharing</h3>
+                <Share sharedWith={sharedWith} actions={actions} />
+                <h3>Delete Treebank</h3>
+                <p>Delete '{treebank.name}' and all its data. This cannot be undone.</p>
+                <Button type="warning" onClick={this.deleteClick} icon="fa-trash">Delete</Button>
+            </div>
+        )
+    }
+
+}
