@@ -1,7 +1,7 @@
 import { database } from "../firebaseApp"
 import { addError, addMessage } from "./index.js"
 
-export const fetchSharingUsers = (treebank) => {
+export const fetchSharingUsers = () => {
     return (dispatch, getState) => {
         const { current } = getState()
         const { treebank } = current
@@ -9,20 +9,23 @@ export const fetchSharingUsers = (treebank) => {
             type: "SHARING_USERS_FETCH_START",
             treebank
         })
-        //Fetch individual records asynchronously
-        //TODO
-        let fetched = []
-        const userPromises = Object.keys(users).map(uid => {
-            return database.ref(`/users/${uid}`).once("value", snapshot => {
-                let user = snapshot.val()
-                fetched.push({...user, uid})
+        //Get users with permissions on the current treebank
+        database.ref(`/permissions/treebank/${treebank.id}/users`).once("value", snapshot => {
+            //Fetch individual user data asynchronously
+            const userPermissions = snapshot.val()
+            let fetched = []
+            const userPromises = Object.keys(userPermissions).map(uid => {
+                return database.ref(`/users/${uid}`).once("value", snapshot => {
+                    let user = snapshot.val()
+                    fetched.push({...user, uid})
+                })
             })
-        })
-        //Once requests complete
-        Promise.all(userPromises).then(promise => {
-            dispatch({
-                type: "SHARING_USERS_FETCH_COMPLETE",
-                users: fetched
+            //Once requests complete
+            Promise.all(userPromises).then(() => {
+                dispatch({
+                    type: "SHARING_USERS_FETCH_COMPLETE",
+                    users: fetched
+                })
             })
         })
     }

@@ -160,7 +160,9 @@ body,
 }
 
 /**** Transitions ****/
-.editor__zoom--hide {
+.editor__zoom--hide,
+.upload-treebank,
+.background-light .button {
   transition:0.5s ease-out;
 }
 .word,

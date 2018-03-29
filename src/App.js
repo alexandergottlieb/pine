@@ -15,11 +15,6 @@ class App extends Component {
     actions.syncAuth()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { user, actions } = nextProps
-    if (user.loggedIn) actions.syncTreebanks(user)
-  }
-
   render() {
     const { user, actions, current, treebanks, sentences } = this.props
 

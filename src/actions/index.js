@@ -3,7 +3,7 @@ import FileSaver from "file-saver"
 import Treebank from "../classes/Treebank"
 import Sentence from "../classes/Sentence"
 
-import { syncTreebanks, syncSentences, syncWords } from "./sync"
+import { syncTreebank, syncSentences, syncWords } from "./sync"
 export * from "./sync"
 export * from "./user.js"
 export * from "./sharing.js"
@@ -39,47 +39,58 @@ export const clearMessages = () => {
 export const uploadTreebank = (treebank) => {
     return (dispatch, getState) => {
         const { user } = getState()
-        dispatch({ type: "UPLOAD_TREEBANK_STARTED" })
+        dispatch({ type: "UPLOAD_TREEBANK_START" })
         const sentences = treebank.sentences
         treebank.sentences = treebank.sentences.length
 
         const treebankRef = database.ref(`/treebanks`).push()
         const treebankID = treebankRef.key
         treebank.id = treebankID
-        treebank.owner = user.uid
-        treebankRef.set(treebank).then(() => {
-            //Add treebank to user's collection
-            database.ref(`/permissions/${user.uid}/treebanks/${treebankID}`).set(true)
-            //Normalise sentences and words at eg. words/:treebankID/:sentenceID
-            let sentenceUpdates = {}
-            let wordUpdates = {}
-            sentences.forEach( sentence => {
-                const sentenceID = database.ref(`/sentences/${treebankID}`).push().key
-                sentence.words.forEach( word => {
-                    const wordID = database.ref(`/words/${treebankID}/${sentenceID}`).push().key
-                    word.id = wordID
-                    wordUpdates[`${sentenceID}/${wordID}`] = word
-                })
-                sentenceUpdates[sentenceID] = {...sentence, id: sentenceID, words: null}
+        let requestPromises = []
+        //Set treebank meta
+        requestPromises.push(treebankRef.set(treebank))
+        //Set permissions
+        requestPromises.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebankID}`).set('owner'))
+        requestPromises.push(database.ref(`/permissions/treebank/${treebankID}/users/${user.uid}`).set('owner'))
+        //Normalise sentences and words at eg. words/:treebankID/:sentenceID
+        let sentenceUpdates = {}
+        let wordUpdates = {}
+        sentences.forEach( sentence => {
+            const sentenceID = database.ref(`/sentences/${treebankID}`).push().key
+            sentence.words.forEach( word => {
+                const wordID = database.ref(`/words/${treebankID}/${sentenceID}`).push().key
+                word.id = wordID
+                wordUpdates[`${sentenceID}/${wordID}`] = word
             })
-            //Batch requests
-            database.ref(`/sentences/${treebankID}`).update(sentenceUpdates)
-            database.ref(`/words/${treebankID}`).update(wordUpdates)
+            sentenceUpdates[sentenceID] = {...sentence, id: sentenceID, words: null}
+        })
+        //Upload all sentences and words in the same request
+        requestPromises.push(database.ref(`/sentences/${treebankID}`).update(sentenceUpdates))
+        requestPromises.push(database.ref(`/words/${treebankID}`).update(wordUpdates))
+        //Once everything has uploaded
+        Promise.all(requestPromises).then(() => {
+            dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
+            fetchTreebanks(user.uid)
         })
     }
 }
 
-export const deleteTreebank = (id) => {
+export const deleteTreebank = (treebankID) => {
     return (dispatch, getState) => {
         const { user } = getState()
         dispatch({ type: "TREEBANK_DELETE_STARTED" })
-        database.ref(`/treebanks/${id}`).remove().then(() => {
-            database.ref(`/sentences/${id}`).remove().then(() => {
-                database.ref(`/words/${id}`).remove().then(() => {
-                    database.ref(`/permissions/${user.uid}/treebanks/${id}`).remove().then(() => {
-                        dispatch({ type: "TREEBANK_DELETE_SUCCEEDED", id })
-                    })
-                })
+        //Asynchronously delete across the normalised database
+        const deletePromises = []
+        deletePromises.push(database.ref(`/treebanks/${treebankID}`).remove())
+        deletePromises.push(database.ref(`/sentences/${treebankID}`).remove())
+        deletePromises.push(database.ref(`/words/${treebankID}`).remove())
+        deletePromises.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebankID}`).remove())
+        deletePromises.push(database.ref(`/permissions/treebank/${treebankID}/users/${user.uid}`).remove())
+        //Once requests complete
+        Promise.all(deletePromises).then(() => {
+            dispatch({
+                type: "TREEBANK_DELETE_SUCCEEDED",
+                id: treebankID
             })
         })
     }
@@ -119,8 +130,33 @@ export const queueExportTreebank = (treebankID) => {
     }
 }
 
+export const fetchTreebanks = (userID) => {
+    return (dispatch) => {
+        database.ref(`/permissions/user/${userID}/treebanks`).once('value', snapshot => {
+            dispatch({
+                type: "FETCH_TREEBANKS_START"
+            })
+            const treebankPermissions = snapshot.val()
+            let requestPromises = []
+            let treebanks = {}
+            for (const treebankID in treebankPermissions) {
+                requestPromises.push(database.ref(`/treebanks/${treebankID}`).once("value", snapshot => {
+                    treebanks[treebankID] = snapshot.val()
+                }))
+            }
+            Promise.all(requestPromises).then(() => {
+                dispatch({
+                    type: "FETCH_TREEBANKS_COMPLETE",
+                    treebanks
+                })
+            })
+        })
+    }
+}
+
 export const setCurrent = (treebank, sentence = null, page = null) => {
     return dispatch => {
+        if (treebank) syncTreebank(treebank)
         dispatch({
             type: "SET_CURRENT_TREEBANK",
             id: treebank

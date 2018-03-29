@@ -1,5 +1,5 @@
 import { auth, database } from "../firebaseApp"
-import { addMessage, addError } from "./index.js"
+import { addMessage, addError, fetchTreebanks } from "./index.js"
 
 export const login = (email, password) => {
     return dispatch => {
@@ -55,6 +55,7 @@ export const syncAuth = () => {
         if (!syncingAuth) auth.onAuthStateChanged(user => {
             if (user) {
                 const { displayName, email, uid, photoURL, emailVerified, isAnonymous } = user
+                fetchTreebanks(uid)
                 dispatch({
                     user: {
                         displayName, email, uid, photoURL, emailVerified, isAnonymous

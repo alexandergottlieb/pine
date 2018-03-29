@@ -10,7 +10,6 @@ export default class Treebank {
         this.multitokens = treebank.multitokens || false
         this.settings = treebank.settings || {xpos: {}, relations: {}}
         this.id = treebank.id || ""
-        this.owner = treebank.owner || ""
     }
 
     //Parse CoNLL-U text
