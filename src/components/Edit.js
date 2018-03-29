@@ -4,6 +4,7 @@ import Sidebar from './Sidebar'
 import Editor from './Editor'
 import Settings from './Settings'
 import Help from './Help'
+import NotFound from "./NotFound"
 import '../css/Edit.css'
 
 export default class Edit extends Component {
@@ -32,15 +33,16 @@ export default class Edit extends Component {
       actions.setCurrent(treebankID, sentenceID, page)
       actions.setWord()
       actions.clearRelations()
-      return null
     }
   }
 
   render() {
 
     const { actions, current, sentences, treebanks, user } = this.props
-    const currentTreebank = treebanks[current.treebank] || {name: ''}
+    const currentTreebank = treebanks[current.treebank]
     const currentSentence = sentences.find(sentence => sentence.id === current.sentence)
+
+    if (!currentTreebank) return <NotFound />
 
     return (
       <div>
@@ -49,7 +51,12 @@ export default class Edit extends Component {
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />
             <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} current={current} treebank={currentTreebank} />} />
-            <Route path="/edit/:treebank/:sentence?" exact render={(props) => <Editor {...props} actions={actions} current={current} sentence={currentSentence} treebank={currentTreebank} />} />
+            <Route path="/edit/:treebank/:sentence?" exact render={(props) => {
+              return currentSentence
+                ? <Editor {...props} actions={actions} current={current} sentence={currentSentence} treebank={currentTreebank} />
+                : null
+            }} />
+            <Route component={NotFound} />
           </Switch>
         </main>
       </div>

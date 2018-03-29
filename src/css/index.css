@@ -62,7 +62,8 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after,
+.button--primary:hover {
   background-color:white;
 }
 body,
@@ -75,8 +76,7 @@ body,
 .treebank__name,
 .breadcrumbs__breadcrumb,
 .login .messages .message,
-.home .messages .message,
-.button--primary {
+.home .messages .message {
   color:white;
 }
 /* Light */
@@ -136,6 +136,9 @@ body,
 .sidebar__header {
   border-color:#404655;
 }
+.treebank__buttons {
+  background-color:#404655;
+}
 /* Less Dark */
 .treebank,
 .sidebar__footer,
@@ -160,7 +163,8 @@ body,
 .editor__toolbar,
 .arc__relation-label
 .editor__zoom,
-.version {
+.version,
+.not-found__code {
   color:#758AA8;
 }
 /* Red */

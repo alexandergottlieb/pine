@@ -138,7 +138,7 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, currentWord, treebank, editWord, deleteWord, zoom, scaling } = this.props
+        const { actions, currentWord, relations, treebank, editWord, deleteWord, zoom, scaling } = this.props
         const { nodes } = this.state
 
         //Generate words
@@ -159,7 +159,7 @@ class Tree extends Component {
 
         //Generate lines & relations
         let lines = []
-        let relations = []
+        let relationComponents = []
         nodes.forEach(node => {
             //Draw lines from parent to child
             node.children.forEach(child => {
@@ -177,7 +177,7 @@ class Tree extends Component {
                 lines.push(<Line {...coords} active={active} key={child.word.id} ref={element => this.registerLine(element, child.index)} />)
 
                 //Relation
-                relations.push(<Relation
+                relationComponents.push(<Relation
                     coords={coords}
                     word={child.word}
                     editWord={editWord}
@@ -208,7 +208,7 @@ class Tree extends Component {
                 <div className="tree__magnifier" style={{transform: `scale(${zoom})`}}>
                     <svg className="lines">{lines}</svg>
                     <div className="relations">
-                        {relations}
+                        {relationComponents}
                         <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>
                     </div>
                     {words}

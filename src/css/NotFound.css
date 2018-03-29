@@ -1,0 +1,20 @@
+.not-found {
+    text-align:center;
+}
+.not-found__inner {
+    max-width:300px;
+    margin:4rem auto;
+}
+.not-found__title {
+    margin:1rem 0;
+}
+.not-found__code {
+    position:fixed;
+    bottom:1rem; left:0;
+    width:100%;
+    text-align:center;
+    z-index:-1;
+}
+.not-found .button {
+    margin-top:1rem;
+}

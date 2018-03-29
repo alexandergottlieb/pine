@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionCreators from "./actions";
 import Edit from './components/Edit'
 import Home from './components/Home'
 import Login from './components/Login'
+import NotFound from "./components/NotFound"
 
 class App extends Component {
 
@@ -26,8 +27,11 @@ class App extends Component {
       return (
         <BrowserRouter>
           <div className="app">
-            <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} user={user} />} />
-            <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} user={user} />} />
+            <Switch>
+                <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} user={user} />} />
+                <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} user={user} />} />
+                <Route component={NotFound} />
+            </Switch>
           </div>
         </BrowserRouter>
       )
