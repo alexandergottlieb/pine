@@ -16,7 +16,7 @@ class App extends Component {
   }
 
   render() {
-    const { user, actions, current, treebanks, sentences } = this.props
+    const { user, actions, current, treebanks, sentences, permissions } = this.props
 
     if (user.loggedIn) {
       return (
@@ -24,7 +24,7 @@ class App extends Component {
           <div className="app">
             <Switch>
                 <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} user={user} />} />
-                <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} user={user} />} />
+                <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} user={user} permissions={permissions} />} />
                 <Route component={NotFound} />
             </Switch>
           </div>

@@ -13,8 +13,8 @@ export default class Share extends Component {
     }
 
     componentDidMount = () => {
-        const { actions } = this.props
-        actions.fetchSharingUsers()
+        const { actions, treebank } = this.props
+        actions.fetchPermissions(treebank.id)
     }
 
     changeEmail = (event) => {
@@ -24,12 +24,12 @@ export default class Share extends Component {
     }
 
     share = () => {
-        const { actions, treebank, sharedWith } = this.props
+        const { actions, treebank, permissions } = this.props
         try {
             //Validate email
             if (!EmailValidator.validate(this.state.email)) throw new Error("That email doesn't look right.")
             //Check user is not already added
-            sharedWith.forEach(user => {
+            permissions.forEach(user => {
                 if (user.email === this.state.email) throw new Error(`This treebank is already shared with ${this.state.email}'`)
             })
             actions.shareTreebank(treebank, this.state.email)
@@ -38,11 +38,22 @@ export default class Share extends Component {
         }
     }
 
-    render = () => {
-        const { sharedWith } = this.props
+    unshare = (user) => {
+        const { actions, treebank } = this.props
+        actions.removePermissions(treebank, user)
+    }
 
-        const people = sharedWith.map(user => {
-            return <li key={user.uid}>{user.displayName} <small>{user.email}</small></li>
+    render = () => {
+        const { permissions } = this.props
+
+        const people = permissions.map(user => {
+            return (
+                <li className={`user user--role-${user.role.toLowerCase()}`} key={user.uid}>
+                    <span className="user__name">{user.displayName}</span>
+                    <span className="user__email">{user.email}</span>
+                    <Button onClick={() => this.unshare(user)} icon="fa-times-circle"></Button>
+                </li>
+            )
         })
 
         return (

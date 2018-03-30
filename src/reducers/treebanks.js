@@ -25,6 +25,9 @@ const treebanks = (state = initial, action) => {
             delete newState[action.id]
             return newState
         }
+        case "USER_LOGOUT": {
+            return initial
+        }
         default:
             return state
     }

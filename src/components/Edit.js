@@ -38,7 +38,7 @@ export default class Edit extends Component {
 
   render() {
 
-    const { actions, current, sentences, treebanks, user } = this.props
+    const { actions, current, sentences, treebanks, user, permissions } = this.props
     const currentTreebank = treebanks[current.treebank]
     const currentSentence = sentences.find(sentence => sentence.id === current.sentence)
 
@@ -50,7 +50,7 @@ export default class Edit extends Component {
         <main className="main background-light">
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />
-            <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} current={current} treebank={currentTreebank} />} />
+            <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} current={current} treebank={currentTreebank} permissions={permissions} />} />
             <Route path="/edit/:treebank/:sentence?" exact render={(props) => {
               return currentSentence
                 ? <Editor {...props} actions={actions} current={current} sentence={currentSentence} treebank={currentTreebank} />

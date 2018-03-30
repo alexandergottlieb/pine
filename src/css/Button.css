@@ -12,10 +12,12 @@
 .background-light .button {
     padding:0.5em 0.75em;
 }
-.background-light .button:hover {
-    box-shadow:0 2px 8px 0 rgba(0,0,0,0.32), inset 0 4rem 0 0 rgba(0,0,0,0.15);
+.background-light .button--primary:hover,
+.background-light .button--circle:hover,
+.background-light .button--warning:hover {
+    box-shadow:0 2px 8px 0 rgba(0,0,0,0.32), inset 0 1rem 4rem 0 rgba(0,0,0,0.15);
 }
-.button--secondary {
+.background-dark .button--secondary {
     color:inherit;
 }
 .button.button--circle {

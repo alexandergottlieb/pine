@@ -74,7 +74,8 @@ body,
 .sentences__sentence:hover,
 .breadcrumbs__breadcrumb,
 .messages .message,
-.messages .message {
+.messages .message,
+.background-light .button--circle.button--secondary {
   color:white;
 }
 /* Light */
@@ -97,7 +98,8 @@ body,
 }
 a,
 a:hover,
-.background-dark .button:hover {
+.background-dark .button:hover,
+.background-light .button--secondary:hover {
   color:#48BEFF;
 }
 /* Dark */
@@ -138,7 +140,7 @@ body,
 .word__delete,
 .background-dark .messages .message,
 .background-dark .messages .message,
-.background-light .button--secondary {
+.background-light .button--circle.button--secondary {
   background-color:#758AA8;
 }
 .editor__default,
@@ -150,7 +152,8 @@ body,
 .arc__relation-label
 .editor__zoom,
 .version,
-.not-found__code {
+.not-found__code,
+.background-light .button--secondary {
   color:#758AA8;
 }
 /* Red */

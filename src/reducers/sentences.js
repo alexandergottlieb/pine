@@ -1,7 +1,9 @@
 import Sentence from "../classes/Sentence"
 import Word from "../classes/Word"
 
-const sentences = (state = [], action) => {
+const initial = []
+
+const sentences = (state = initial, action) => {
     switch (action.type) {
         case "SENTENCES_CHANGED_TREEBANK": {
             return []
@@ -60,6 +62,9 @@ const sentences = (state = [], action) => {
                 })
                 return newSentence
             })
+        }
+        case "USER_LOGOUT": {
+            return initial
         }
         default:
             return state
