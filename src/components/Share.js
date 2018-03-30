@@ -65,7 +65,7 @@ export default class Share extends Component {
         return (
             <div className="share">
                 <table className="share__users">
-                    {people}
+                    <tbody>{people}</tbody>
                 </table>
                 <input className="share__add-email" onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email to share..." type="email" />
                 <Button onClick={this.share} type="primary" icon="fa fa-user-plus">Share</Button>
