@@ -2,7 +2,7 @@ import { database } from "../firebaseApp"
 
 //Track listeners on firebase endpoints to aviod duplication
 let watchers = {
-    treebanks: null,
+    treebank: null,
     words: null,
     sentences: null
 }
@@ -10,18 +10,25 @@ let watchers = {
 export const syncTreebank = (treebankID) => {
     return dispatch => {
         dispatch({
-            type: "TREEBANK__SYNC_START",
+            type: "TREEBANK_SYNC_START",
             treebank: treebankID
         })
         const endpoint = `/treebanks/${treebankID}`
-        if (watchers.treebanks !== endpoint) {
+        if (watchers.treebank !== endpoint) {
             database.ref(endpoint).on("value", snapshot => {
-                dispatch({
-                    type: "TREEBANK__SYNC_UPDATE",
-                    treebank: snapshot.val()
-                })
+                const treebank = snapshot.val()
+                if (treebank) {
+                    dispatch({
+                        type: "TREEBANK_SYNC_UPDATE",
+                        treebank: snapshot.val()
+                    })
+                } else {
+                    //Treebank deleted
+                    database.ref(endpoint).off("value")
+                    watchers.treebank = null
+                }
             })
-            watchers.treebanks = endpoint
+            watchers.treebank = endpoint
         }
     }
 }

@@ -1,7 +1,9 @@
 .button {
     display:inline-block;
-    padding:0.5em 0;
+    vertical-align:top;
+    padding:0;
     font-size:inherit;
+    line-height:100%;
     border:0px;
     border-radius:3px;
     background-color:transparent;
@@ -9,15 +11,18 @@
     cursor:pointer;
     outline:0 !important;
 }
-.background-light .button {
+.background-light .button--primary,
+.background-light .button--warning {
     padding:0.5em 0.75em;
+    border:1px solid transparent;
 }
 .background-light .button--primary:hover,
 .background-light .button--circle:hover,
 .background-light .button--warning:hover {
     box-shadow:0 2px 8px 0 rgba(0,0,0,0.32), inset 0 1rem 4rem 0 rgba(0,0,0,0.15);
 }
-.background-dark .button--secondary {
+.background-dark .button {
+    padding:0.5rem 0;
     color:inherit;
 }
 .button.button--circle {

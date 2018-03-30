@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import Button from './Button'
 import * as EmailValidator from "email-validator"
+import "../css/Share.css"
 
 export default class Share extends Component {
 
@@ -40,29 +41,32 @@ export default class Share extends Component {
 
     unshare = (user) => {
         const { actions, treebank } = this.props
-        actions.removePermissions(treebank, user)
+        actions.unshareTreebank(treebank, user)
     }
 
     render = () => {
         const { permissions } = this.props
 
         const people = permissions.map(user => {
+            const remove = user.role !== 'owner' ? <Button onClick={() => this.unshare(user)} icon="fa-times-circle"></Button> : null
             return (
-                <li className={`user user--role-${user.role.toLowerCase()}`} key={user.uid}>
-                    <span className="user__name">{user.displayName}</span>
-                    <span className="user__email">{user.email}</span>
-                    <Button onClick={() => this.unshare(user)} icon="fa-times-circle"></Button>
-                </li>
+                <tr className={`share__user share__user--role-${user.role.toLowerCase()}`} key={user.uid}>
+                    <td>
+                        <span className="share__user-name">{user.displayName}</span>
+                        <span className="share__user-email">{user.email}</span>
+                    </td>
+                    <td className="share__user-role">{user.role}</td>
+                    <td className="share__user-remove">{remove}</td>
+                </tr>
             )
         })
 
         return (
             <div className="share">
-                <h4>People</h4>
-                <ul>
+                <table className="share__users">
                     {people}
-                </ul>
-                <input onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email address to share" type="email" />
+                </table>
+                <input className="share__add-email" onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email to share..." type="email" />
                 <Button onClick={this.share} type="primary" icon="fa fa-user-plus">Share</Button>
             </div>
         )

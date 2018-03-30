@@ -21,6 +21,7 @@ export const fetchPermissions = (treebankID) => {
             }
             //Once requests complete
             Promise.all(userPromises).then(() => {
+                console.log('fetched permissions', users)
                 dispatch({
                     type: "PERMISSIONS_FETCH_COMPLETE",
                     permissions: users
@@ -67,19 +68,24 @@ export const shareTreebank = (treebank, email, role = "viewer") => {
     }
 }
 
-export const removePermissions = (treebank, user) => {
+export const unshareTreebank = (treebank, user) => {
     return (dispatch) => {
-        let requests = []
-        //Add user to treebank
-        requests.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebank.id}`).remove())
-        //Add treebank to user
-        requests.push(database.ref(`/permissions/treebank/${treebank.id}/users/${user.uid}`).remove())
-        Promise.all(requests).then(() => {
-            dispatch(addMessage(`${user.email} is no longer sharing '${treebank.name}'.`))
-            dispatch({
-                type: "PERMISSIONS_REMOVE_COMPLETE",
-                user
+        try {
+            if (user.role === 'owner') throw new Error("You cannot remove the treebank owner.")
+            let requests = []
+            //Add user to treebank
+            requests.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebank.id}`).remove())
+            //Add treebank to user
+            requests.push(database.ref(`/permissions/treebank/${treebank.id}/users/${user.uid}`).remove())
+            Promise.all(requests).then(() => {
+                dispatch(addMessage(`${user.email} is no longer sharing '${treebank.name}'.`))
+                dispatch({
+                    type: "PERMISSIONS_UNSHARE_COMPLETE",
+                    user
+                })
             })
-        })
+        } catch (e) {
+            dispatch(addError(e.message))
+        }
     }
 }

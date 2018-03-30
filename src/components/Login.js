@@ -52,7 +52,7 @@ export default class Login extends Component {
             //Validate email
             if (!EmailValidator.validate(email)) throw new Error("That email doesn't look right.")
             //Attempt login
-            actions.login(email, password)
+            actions.login(email.toLowerCase(), password)
         } catch (e) {
             actions.addError(e.message)
         }

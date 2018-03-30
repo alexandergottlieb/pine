@@ -10,7 +10,7 @@ const permissions = (state = initial, action) => {
             newState.push(action.user)
             return newState
         }
-        case "PERMISSIONS_REMOVE_COMPLETE": {
+        case "PERMISSIONS_UNSHARE_COMPLETE": {
             return state.filter(user => user.uid !== action.user.uid)
         }
         case "USER_LOGOUT": {
