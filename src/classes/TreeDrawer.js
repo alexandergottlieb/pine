@@ -7,8 +7,10 @@ export default class TreeDrawer {
         this.root = null
         let self = this
 
+        //Create a node for each word
         sentence.words.forEach( word => {
-            if (word.index <= 0) throw new Error(`word '${word.inflection}' does not have a position in the sentence`)
+            //Prevent infinite loops
+            if (word.index <= 0) throw new Error(`word${word.inflection ? ` '${word.inflection}'` : ''} does not have a position in the sentence`)
             if (word.index === word.parent) throw new Error(`word '${word.inflection}' is related to itself`)
             if (word) createNode(word.index);
         })

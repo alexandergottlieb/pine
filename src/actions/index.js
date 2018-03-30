@@ -20,7 +20,7 @@ export const addMessage = (message, error = false, autoDismiss = true) => {
         if (autoDismiss) {
             setTimeout(() => dispatch({
                 type: "REMOVE_MESSAGE"
-            }), 3000)
+            }), 4000)
         }
         dispatch({
             type: "ADD_MESSAGE",
@@ -70,7 +70,7 @@ export const uploadTreebank = (treebank) => {
         //Once everything has uploaded
         Promise.all(requestPromises).then(() => {
             dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
-            fetchTreebanks(user.uid)
+            dispatch(fetchTreebanks(user.uid))
         })
     }
 }
@@ -115,7 +115,6 @@ export const queueExportTreebank = (treebankID) => {
                         return new Sentence(data)
                     })
                     const conllu = new Treebank(treebank)
-                    console.log('conllu', conllu)
                     const text = conllu.export()
                     const blob = new Blob([text])
                     const filename = `${treebank.name}.conllu`

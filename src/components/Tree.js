@@ -64,6 +64,7 @@ class Tree extends Component {
                 nodes: nodes
             })
         } catch (e) {
+            console.error(e)
             actions.addError(`Error drawing tree: ${e.message}`)
             this.setState({
                 nodes: []

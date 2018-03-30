@@ -51,7 +51,7 @@ class Arrows extends Component {
                     top: `${y}px`,
                     left: `${x1}px`,
                 }
-                relationLabels .push(<span className={`arc__relation-label arc__relation-label--${labelPosition}`} style={labelStyle}>{treebank.settings.relations[word.relation]}</span>)
+                relationLabels .push(<span className={`arc__relation-label arc__relation-label--${labelPosition}`} style={labelStyle} key={word.id}>{treebank.settings.relations[word.relation]}</span>)
             }
             //Calculate curve contorl point
             const cX = x1 + (0.5 * distance * scaling.wordWidth)

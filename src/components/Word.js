@@ -67,12 +67,12 @@ export default class Word extends Component {
     }
 
     click = event => {
-        const { actions, relations, editWord, word, index, editable } = this.props
+        const { actions, relations, editWord, word, editable } = this.props
         if (relations && relations.length > 0) {
             //Set all relations to point to this word
             relations.forEach(childIndex => {
                 editWord(childIndex, {
-                    parent: index
+                    parent: word.index
                 })
             })
             actions.clearRelations()
@@ -94,7 +94,7 @@ export default class Word extends Component {
     }
 
     render() {
-        const { index, word, x, y, scaling, editable, editWord, actions, relations } = this.props
+        const { word, x, y, scaling, editable, editWord, actions, relations } = this.props
 
         const style = {
             top: y+'px',

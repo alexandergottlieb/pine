@@ -13,6 +13,11 @@ class Home extends Component {
     this.state = {}
   }
 
+  componentDidMount() {
+    const { actions, user } = this.props
+    actions.fetchTreebanks(user.uid)
+  }
+
   addFile(file) {
     const { actions, user } = this.props
     if (!file) return

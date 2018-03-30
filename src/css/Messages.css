@@ -15,9 +15,9 @@
 }
 .editor .message,
 .settings .message {
-  display:inline-block;
+  display:block;
   width:33%;
-  margin:auto;
+  margin:0.5rem auto 0 auto;
   padding:0.75rem 1.5rem;
   color:white;
   border-radius:6px;

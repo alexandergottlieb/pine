@@ -1,4 +1,6 @@
 import Sentence from "../classes/Sentence"
+import Word from "../classes/Word"
+
 const sentences = (state = [], action) => {
     switch (action.type) {
         case "SENTENCES_CHANGED_TREEBANK": {
@@ -15,10 +17,10 @@ const sentences = (state = [], action) => {
             if (!state[action.sentence]) state[action.sentence] = new Sentence()
             return state.map( sentence => {
                 if (action.sentence === sentence.id) {
-                    const words = action.words
-                    return Object.assign(new Sentence(), sentence, { words })
+                    return new Sentence({ ...sentence, words: action.words.map(word => new Word(word)) })
+                } else {
+                    return new Sentence(sentence)
                 }
-                return new Sentence(sentence)
             })
         }
         case "SENTENCE_EDIT": {

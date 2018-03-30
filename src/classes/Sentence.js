@@ -1,9 +1,11 @@
+import Word from "./Word"
+
 export default class Sentence {
 
     constructor(sentence = {sentence: ""}) {
         Object.assign(this, sentence)
         this.words = []
-        if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push({...word}) )
+        if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push(new Word(word)) )
         this.comments = []
         if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push(comment) )
         if (!this.sentence) this.stringSentenceTogether()
@@ -35,21 +37,21 @@ export default class Sentence {
         return count
     }
 
-    //Throw if sentence violates dependency grammar rules
     validate() {
+        //Validate word data
+        this.words.forEach(word => word.validate())
+
+        //Dependency grammar validation
         let words = []
         this.words.forEach(word => words[word.index] = Object.assign({}, word))
+        //Set children array on parents
         words = words.map(word => { return {...word, children: []} })
-
-        //Basic validation
         words.forEach(word => {
             const { parent, index } = word
-            if (parent < 0) throw "Something is very wrong."
-            if (parent == word.index) throw "A word cannot be related to itself."
-            if (parent != 0) words[parent].children.push(index)
+            if (parent != 0) words[parent].children.push(index) //Execpt artificial root
         })
 
-        //Check every node is reachable from root => no cycles
+        //check every node is reachable from root => no cycles
         let unvisited = [words.find(word => word && word.parent == 0)]
         let visited = []
         let current = null
