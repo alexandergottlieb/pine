@@ -201,7 +201,12 @@ export const editSentence = (treebank, sentence, data) => {
             type: "SENTENCE_EDIT",
             treebank, sentence, data
         })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data)
+        database.ref(`/sentences/${treebank}/${sentence}`).update(data).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not edit sentence. ${message}`))
+        })
     }
 }
 
@@ -212,7 +217,12 @@ export const editWord = (treebank, sentence, word, data) => {
             treebank, sentence, word, data
         })
         const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
-        ref.update(data)
+        ref.update(data).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not edit word. ${message}`))
+        })
     }
 }
 
@@ -225,7 +235,12 @@ export const editWords = (treebank, sentence, words) => {
             treebank, sentence, words
         })
         const ref = database.ref(`/words/${treebank}/${sentence}`)
-        ref.set(updates)
+        ref.set(updates).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not edit words. ${message}`))
+        })
     }
 }
 
@@ -238,6 +253,11 @@ export const createWord = (treebank, sentence, data) => {
             id: key
         }).then(() => {
             dispatch({type: "WORD_CREATE_COMPLETED"})
+        }).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not create word. ${message}`))
         })
     }
 }
@@ -249,6 +269,11 @@ export const createRelationLabel = (label, value) => {
             dispatch({
                 type: "RELATION_LABEL_CREATED"
             })
+        }).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not create relation label. ${message}`))
         })
     }
 }
@@ -257,14 +282,24 @@ export const createSentence = sentence => {
     return (dispatch, getState) => {
         const { current } = getState()
         const sentenceID = database.ref(`/sentences/${current.treebank}`).push().key
-        database.ref(`/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null})
+        database.ref(`/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null}).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not create sentence. ${message}`))
+        })
         let words = {}
         sentence.words.forEach( word => {
             const wordID = database.ref(`/words/${current.treebank}/${sentenceID}`).push().key
             word.id = wordID
             words[wordID] = word
         })
-        database.ref(`/words/${current.treebank}/${sentenceID}`).set(words)
+        database.ref(`/words/${current.treebank}/${sentenceID}`).set(words).catch((e) => {
+            //Separate error ID from error message
+            const split = e.message.split(":")
+            const message = split[1] ? split[1] : e.message
+            dispatch(addError(`Could not create sentence. ${message}`))
+        })
         dispatch({
             type: "SENTENCE_CREATED"
         })

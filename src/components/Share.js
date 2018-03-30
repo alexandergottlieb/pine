@@ -28,6 +28,7 @@ export default class Share extends Component {
         const { actions, treebank, permissions } = this.props
         try {
             //Validate email
+            if (!this.state.email) throw new Error("Please enter an email")
             if (!EmailValidator.validate(this.state.email)) throw new Error("That email doesn't look right.")
             //Check user is not already added
             permissions.forEach(user => {

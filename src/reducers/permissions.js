@@ -7,7 +7,7 @@ const permissions = (state = initial, action) => {
         }
         case "PERMISSIONS_SHARE_COMPLETE": {
             let newState = state.map(user => user)
-            newState.push(action.user)
+            if (newState.find(user => user.uid === action.user.uid) === undefined) newState.push(action.user)
             return newState
         }
         case "PERMISSIONS_UNSHARE_COMPLETE": {
