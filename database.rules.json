@@ -4,13 +4,13 @@
       "$treebankID": {
         //Authenticated users are allowed to create new treebanks
         //Once created, only the owner can update
-        ".write": "auth !== null && (!data.exists() || root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner')",
+        ".write": "auth !== null && !data.exists() || root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
         ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
       }
     },
     "sentences": {
       "$treebankID": {
-        ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
+        ".write": "auth !== null && !root.child('permissions').child('treebank').child($treebankID).exists() || root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
         ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
       }
     },
@@ -19,7 +19,7 @@
         "$sentenceID": {
           ".indexOn": ["index"]
         },
-        ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
+        ".write": "auth !== null && !root.child('permissions').child('treebank').child($treebankID).exists() || root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
         ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
       }
     },
@@ -39,7 +39,7 @@
           "treebanks": {
             "$treebankID": {
               //Only the treebank owner can write permissions, unless creating for the first time
-              ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner' || (!data.parent().parent().exists() && auth !== null)"
+              ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner' || (!data.exists() && auth !== null)"
             }
           }
         }

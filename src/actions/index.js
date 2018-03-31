@@ -53,32 +53,28 @@ export const uploadTreebank = (treebank) => {
         const treebankRef = database.ref(`/treebanks`).push()
         const treebankID = treebankRef.key
         treebank.id = treebankID
-        let requestPromises = []
+        let updates = {}
         //Set treebank meta
-        requestPromises.push(treebankRef.set(treebank))
+        updates[`/treebanks/${treebankID}`] = treebank
         //Set permissions
-        requestPromises.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebankID}`).set('owner'))
-        requestPromises.push(database.ref(`/permissions/treebank/${treebankID}/users/${user.uid}`).set('owner'))
+        updates[`/permissions/user/${user.uid}/treebanks/${treebankID}`] = "owner"
+        updates[`/permissions/treebank/${treebankID}/users/${user.uid}`] = "owner"
         //Normalise sentences and words at eg. words/:treebankID/:sentenceID
-        let sentenceUpdates = {}
-        let wordUpdates = {}
         sentences.forEach( sentence => {
             const sentenceID = database.ref(`/sentences/${treebankID}`).push().key
             sentence.words.forEach( word => {
                 const wordID = database.ref(`/words/${treebankID}/${sentenceID}`).push().key
                 word.id = wordID
-                wordUpdates[`${sentenceID}/${wordID}`] = word
+                updates[`/words/${treebankID}/${sentenceID}/${wordID}`] = word
             })
-            sentenceUpdates[sentenceID] = {...sentence, id: sentenceID, words: null}
+            updates[`/sentences/${treebankID}/${sentenceID}`] = {...sentence, id: sentenceID, words: null}
         })
-        //Upload all sentences and words in the same request
-        requestPromises.push(database.ref(`/sentences/${treebankID}`).update(sentenceUpdates))
-        requestPromises.push(database.ref(`/words/${treebankID}`).update(wordUpdates))
-        //Once everything has uploaded
-        Promise.all(requestPromises).then(() => {
+        //Do all updates atomically
+        console.log('updates', updates)
+        database.ref().update(updates).then(() => {
             dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
             dispatch(fetchTreebanks(user.uid))
-        })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 

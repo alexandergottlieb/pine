@@ -47,13 +47,13 @@ export const shareTreebank = (treebank, email, role = "viewer") => {
                 if (matchingUsers.length > 1) throw new Error(`Treebanks cannot currently be shared with ${email}.`)
                 const user = matchingUsers.pop()
 
-                //Update permissions
-                let requests = []
+                //Update permissions atomically
+                let updates = {}
                 //Add user to treebank
-                requests.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebank.id}`).set(role))
+                updates[`permissions/user/${user.uid}/treebanks/${treebank.id}`] = role
                 //Add treebank to user
-                requests.push(database.ref(`/permissions/treebank/${treebank.id}/users/${user.uid}`).set(role))
-                Promise.all(requests).then(() => {
+                updates[`/permissions/treebank/${treebank.id}/users/${user.uid}`] = role
+                database.ref().update(updates).then(() => {
                     dispatch(addMessage(`Treebank '${treebank.name}' is now being shared with ${email}.`))
                     dispatch({
                         type: "PERMISSIONS_SHARE_COMPLETE",
@@ -71,12 +71,13 @@ export const unshareTreebank = (treebank, user) => {
     return (dispatch) => {
         try {
             if (user.role === 'owner') throw new Error("You cannot remove the treebank owner.")
-            let requests = []
-            //Add user to treebank
-            requests.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebank.id}`).remove())
-            //Add treebank to user
-            requests.push(database.ref(`/permissions/treebank/${treebank.id}/users/${user.uid}`).remove())
-            Promise.all(requests).then(() => {
+            //Update atomically
+            let updates = {}
+            //Remove user from treebank
+            updates[`permissions/user/${user.uid}/treebanks/${treebank.id}`] = null
+            //Remove treebank from user
+            updates[`permissions/treebank/${treebank.id}/users/${user.uid}`] = null
+            database.ref().update(updates).then(() => {
                 dispatch(addMessage(`${user.email} is no longer sharing '${treebank.name}'.`))
                 dispatch({
                     type: "PERMISSIONS_UNSHARE_COMPLETE",
