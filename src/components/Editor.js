@@ -216,6 +216,7 @@ export default class Editor extends Component {
     return (
       <div className="editor" onClick={this.deselect}>
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
+        <small className="editor__feedback feedback">{current.feedback || "Changes saved"}</small>
         {contents}
         <div className="editor__toolbar">
           <div className="editor__toolbar-left">

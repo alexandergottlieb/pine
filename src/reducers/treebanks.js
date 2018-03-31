@@ -20,7 +20,7 @@ const treebanks = (state = initial, action) => {
             newState[treebank.id] = treebank
             return newState
         }
-        case "TREEBANK_DELETE_SUCCEEDED": {
+        case "TREEBANK_DELETE_SUCCESS": {
             let newState = {...state}
             delete newState[action.id]
             return newState

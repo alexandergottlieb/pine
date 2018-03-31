@@ -25,7 +25,8 @@ const sentences = (state = initial, action) => {
                 }
             })
         }
-        case "SENTENCE_EDIT": {
+        case "SENTENCE_EDIT_START": {
+            //Optimistic update
             return state.map(sentence => {
                 if (action.sentence === sentence.id) {
                     return new Sentence({
@@ -36,7 +37,8 @@ const sentences = (state = initial, action) => {
                 return new Sentence(sentence)
             })
         }
-        case "WORD_EDIT": {
+        case "WORD_EDIT_START": {
+            //Optimistic update
             return state.map(sentence => {
                 let newSentence = new Sentence(sentence)
                 newSentence.words = newSentence.words.map(word => {
@@ -46,7 +48,7 @@ const sentences = (state = initial, action) => {
                 return newSentence
             })
         }
-        case "WORDS_EDIT": {
+        case "WORDS_EDIT_START": {
             return state.map(sentence => {
                 let newSentence = new Sentence(sentence)
                 newSentence.words = action.words.map(word => word)

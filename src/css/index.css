@@ -154,7 +154,8 @@ body,
 .version,
 .not-found__code,
 .background-light .button--secondary,
-.share__user-email {
+.share__user-email,
+.feedback {
   color:#758AA8;
 }
 /* Red */

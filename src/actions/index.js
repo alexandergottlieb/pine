@@ -46,7 +46,12 @@ export const clearMessages = () => {
 export const uploadTreebank = (treebank) => {
     return (dispatch, getState) => {
         const { user } = getState()
+        let uploaded = false
         dispatch({ type: "UPLOAD_TREEBANK_START" })
+        //Feedback if slow upload
+        setTimeout(() => {
+            if (!uploaded) dispatch({ type: "UPLOAD_TREEBANK_SLOW" })
+        }, 5000)
         const sentences = treebank.sentences
         treebank.sentences = treebank.sentences.length
 
@@ -71,6 +76,7 @@ export const uploadTreebank = (treebank) => {
         })
         //Do all updates atomically
         database.ref().update(updates).then(() => {
+            uploaded = true
             dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
             dispatch(fetchTreebanks(user.uid))
         }).catch(e => firebaseError(e, dispatch))
@@ -80,7 +86,7 @@ export const uploadTreebank = (treebank) => {
 export const deleteTreebank = (treebankID) => {
     return (dispatch, getState) => {
         const { user } = getState()
-        dispatch({ type: "TREEBANK_DELETE_STARTED" })
+        dispatch({ type: "TREEBANK_DELETE_START" })
         //Asynchronously delete across the normalised database
         const updates = {}
         updates[`/treebanks/${treebankID}`] = null
@@ -91,7 +97,7 @@ export const deleteTreebank = (treebankID) => {
         //Once requests complete
         database.ref().update(updates).then(() => {
             dispatch({
-                type: "TREEBANK_DELETE_SUCCEEDED",
+                type: "TREEBANK_DELETE_SUCCESS",
                 id: treebankID
             })
         }).catch(e => firebaseError(e, dispatch))
@@ -101,7 +107,7 @@ export const deleteTreebank = (treebankID) => {
 export const queueExportTreebank = (treebankID) => {
     return (dispatch) => {
         dispatch({
-            type: "EXPORT_TREEBANK_STARTED",
+            type: "EXPORT_TREEBANK_START",
             treebank: treebankID
         })
         database.ref(`/treebanks/${treebankID}`).once('value', snapshot => {
@@ -122,7 +128,7 @@ export const queueExportTreebank = (treebankID) => {
                     const filename = `${treebank.name}.conllu`
                     FileSaver.saveAs(blob, filename)
                     dispatch({
-                        type: "EXPORT_TREEBANK_COMPLETED",
+                        type: "EXPORT_TREEBANK_COMPLETE",
                         treebank: treebank.id
                     })
                 })
@@ -200,21 +206,28 @@ export const clearRelations = () => {
 export const editSentence = (treebank, sentence, data) => {
     return dispatch => {
         dispatch({
-            type: "SENTENCE_EDIT",
+            type: "SENTENCE_EDIT_START",
             treebank, sentence, data
         })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data).catch(e => firebaseError(e, dispatch))
+        database.ref(`/sentences/${treebank}/${sentence}`).update(data).then(() => {
+            dispatch({
+                type: "SENTENCE_EDIT_COMPLETE",
+                feedback: ""
+            })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
 export const editWord = (treebank, sentence, word, data) => {
     return (dispatch) => {
         dispatch({
-            type: "WORD_EDIT",
+            type: "WORD_EDIT_START",
             treebank, sentence, word, data
         })
         const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
-        ref.update(data).catch(e => firebaseError(e, dispatch))
+        ref.update(data).then(() => {
+            dispatch({type: "WORD_EDIT_COMPLETE"})
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -223,23 +236,25 @@ export const editWords = (treebank, sentence, words) => {
         let updates = {}
         words.forEach(word => updates[word.id] = word)
         dispatch({
-            type: "WORDS_EDIT",
+            type: "WORDS_EDIT_START",
             treebank, sentence, words
         })
         const ref = database.ref(`/words/${treebank}/${sentence}`)
-        ref.set(updates).catch(e => firebaseError(e, dispatch))
+        ref.set(updates).then(() => {
+            dispatch({type: "WORDS_EDIT_COMPLETE"})
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
 export const createWord = (treebank, sentence, data) => {
     return (dispatch) => {
-        dispatch({type: "WORD_CREATE_STARTED"})
+        dispatch({type: "WORD_CREATE_START"})
         const key = database.ref(`/words/${treebank}/${sentence}`).ref.push().key
         database.ref(`/words/${treebank}/${sentence}/${key}`).set({
             ...data,
             id: key
         }).then(() => {
-            dispatch({type: "WORD_CREATE_COMPLETED"})
+            dispatch({type: "WORD_CREATE_COMPLETE"})
         }).catch(e => firebaseError(e, dispatch))
     }
 }
@@ -247,10 +262,9 @@ export const createWord = (treebank, sentence, data) => {
 export const createRelationLabel = (label, value) => {
     return (dispatch, getState) => {
         const { current } = getState()
+        dispatch({type: "RELATION_LABEL_CREATE_START"})
         database.ref(`/treebanks/${current.treebank}/settings/relations/${value}`).set(label).then(() => {
-            dispatch({
-                type: "RELATION_LABEL_CREATED"
-            })
+            dispatch({type: "RELATION_LABEL_CREATE_COMPLETE"})
         }).catch(e => firebaseError(e, dispatch))
     }
 }
@@ -258,6 +272,7 @@ export const createRelationLabel = (label, value) => {
 export const createSentence = sentence => {
     return (dispatch, getState) => {
         const { current } = getState()
+        dispatch({type: "SENTENCE_CREATE_START"})
         const sentenceID = database.ref(`/sentences/${current.treebank}`).push().key
         let updates = {}
         updates[`/sentences/${current.treebank}/${sentenceID}`] = {...sentence, id: sentenceID, words: null}
@@ -268,7 +283,7 @@ export const createSentence = sentence => {
         })
         database.ref().update(updates).then(() => {
             dispatch({
-                type: "SENTENCE_CREATED",
+                type: "SENTENCE_CREATE_COMPLETE",
                 id: sentenceID
             })
         }).catch(e => firebaseError(e, dispatch))

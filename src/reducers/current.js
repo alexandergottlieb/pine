@@ -8,7 +8,8 @@ const initial = {
         downloading: [],
         ready: []
     },
-    newSentence: null
+    newSentence: null,
+    feedback: ''
 }
 
 const current = (state = initial, action) => {
@@ -54,19 +55,40 @@ const current = (state = initial, action) => {
         case "CLEAR_MESSAGES": {
             return {...state, messages: []}
         }
-        case "EXPORT_TREEBANK_STARTED": {
+        case "EXPORT_TREEBANK_START": {
             let newState = Object.assign({}, state)
             if (newState.exports.downloading.indexOf(action.treebank === -1)) newState.exports.downloading.push(action.treebank)
+            newState.feedback = "Exporting..."
             return newState
         }
-        case "EXPORT_TREEBANK_COMPLETED": {
+        case "EXPORT_TREEBANK_COMPLETE": {
             let newState = Object.assign({}, state)
             //treebank no longer downloading
             newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
+            newState.feedback = ""
             return newState
         }
-        case "SENTENCE_CREATED": {
+        case "SENTENCE_CREATE_COMPLETE": {
             return {...state, newSentence: action.id}
+        }
+        case "SENTENCE_EDIT_START":
+        case "WORD_EDIT_START":
+        case "WORDS_EDIT_START": {
+            return {...state, feedback: "Saving..."}
+        }
+        case "SENTENCE_EDIT_COMPLETE":
+        case "WORD_EDIT_COMPLETE":
+        case "WORDS_EDIT_COMPLETE": {
+            return {...state, feedback: ""}
+        }
+        case "UPLOAD_TREEBANK_START": {
+            return {...state, feedback: "Uploading..."}
+        }
+        case "UPLOAD_TREEBANK_SLOW": {
+            return {...state, feedback: "Still uploading..."}
+        }
+        case "UPLOAD_TREEBANK_COMPLETE": {
+            return {...state, feedback: ""}
         }
         case "USER_LOGOUT": {
             return initial

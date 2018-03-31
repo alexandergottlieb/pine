@@ -54,7 +54,7 @@ class Home extends Component {
       <div className="home background-dark">
         <Header current={current} user={user} actions={actions} />
         <main className="home__main">
-          <h2>Treebanks</h2>
+          <h2>Treebanks <small className="home__feedback feedback">{current.feedback}</small></h2>
           <Messages messages={current.messages} />
           <div className="treebanks">
             {treebanksList}

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Select from "react-select";
+import Select from "react-select"
 import Button from "./Button"
 import "../css/Word.css"
 import Treebank from "../classes/Treebank"
