@@ -21,7 +21,6 @@ export const fetchPermissions = (treebankID) => {
             }
             //Once requests complete
             Promise.all(userPromises).then(() => {
-                console.log('fetched permissions', users)
                 dispatch({
                     type: "PERMISSIONS_FETCH_COMPLETE",
                     permissions: users

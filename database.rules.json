@@ -1,14 +1,58 @@
 {
   "rules": {
-    "user": {
-      "$user": {
-        ".read": "$user == auth.uid",
-        ".write": "$user == auth.uid",
-        "words": {
-          "$treebank": {
-            ".indexOn": [
-              "index"
-            ]
+    "treebanks": {
+      "$treebankID": {
+        //Authenticated users are allowed to create new treebanks
+        //Once created, only the owner can update
+        ".write": "auth !== null && (!data.exists() || root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner')",
+        ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
+      }
+    },
+    "sentences": {
+      "$treebankID": {
+        ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
+        ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
+      }
+    },
+    "words": {
+      "$treebankID": {
+        "$sentenceID": {
+          ".indexOn": ["index"]
+        },
+        ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner'",
+        ".read": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).exists()"
+      }
+    },
+    "users": {
+      //Any user can look up any other user
+      ".read": "auth !== null",
+    	".indexOn": ["email"],
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "permissions": {
+      "user": {
+        "$uid": {
+          //Each user can view only treebanks they have access to
+          ".read": "$uid === auth.uid",
+          "treebanks": {
+            "$treebankID": {
+              //Only the treebank owner can write permissions, unless creating for the first time
+              ".write": "root.child('permissions').child('treebank').child($treebankID).child('users').child(auth.uid).val() === 'owner' || (!data.parent().parent().exists() && auth !== null)"
+            }
+          }
+        }
+      },
+      "treebank": {
+        "$treebankID": {
+          //Users on each treebank can view each other
+          ".read": "data.child('users').child(auth.uid).exists()",
+          "users": {
+            "$uid": {
+              //Only the treebank owner can write permissions, unless creating for the first time
+              ".write": "data.parent().child(auth.uid).val() === 'owner' || (!data.parent().parent().exists() && auth !== null)"
+            }
           }
         }
       }

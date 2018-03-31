@@ -46,29 +46,48 @@ export default class Share extends Component {
     }
 
     render = () => {
-        const { permissions } = this.props
+        const { permissions, user } = this.props
 
-        const people = permissions.map(user => {
+        if (!permissions || permissions.length <= 0) return null
+        const currentUser = permissions.find(u => u.uid === user.uid)
+
+        //Show people alphabetically but grouped by role
+        let people = []
+        permissions.sort((a, b) => {
+            const nameA = a.displayName.toUpperCase()
+            const nameB = b.displayName.toUpperCase()
+            if (nameA === nameB) return 0
+            return nameA < nameB ? -1 : 1
+        })
+        permissions.forEach(user => {
             const remove = user.role !== 'owner' ? <Button onClick={() => this.unshare(user)} icon="fa-times-circle"></Button> : null
-            return (
+            const markup = (
                 <tr className={`share__user share__user--role-${user.role.toLowerCase()}`} key={user.uid}>
                     <td>
                         <span className="share__user-name">{user.displayName}</span>
                         <span className="share__user-email">{user.email}</span>
                     </td>
                     <td className="share__user-role">{user.role}</td>
-                    <td className="share__user-remove">{remove}</td>
+                    {currentUser.role === "owner" || currentUser.uid === user.uid ? <td className="share__user-remove">{remove}</td> : null}
                 </tr>
             )
+            //Show owners first
+            user.role === "owner" ? people.unshift(markup) : people.push(markup)
         })
+
+        const add = currentUser.role === "owner"
+            ? <div className="share__add">
+                <input className="share__add-email" onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email to share..." type="email" />
+                <Button onClick={this.share} type="primary" icon="fa fa-user-plus">Share</Button>
+              </div>
+            : null
 
         return (
             <div className="share">
                 <table className="share__users">
                     <tbody>{people}</tbody>
                 </table>
-                <input className="share__add-email" onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email to share..." type="email" />
-                <Button onClick={this.share} type="primary" icon="fa fa-user-plus">Share</Button>
+                {add}
             </div>
         )
     }

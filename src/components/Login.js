@@ -79,7 +79,7 @@ export default class Login extends Component {
                 if (password.length === 0) throw new Error("Please enter a password.")
                 const failedRules = this.passwordValidator.validate(password, { list: true })
                 //Generate feedback string
-                let feedback = "Please use a password with "
+                let feedback = "Please enter a password with "
                 let i = 0
                 failedRules.forEach(rule => {
                     //Insert comma or 'and'

@@ -8,6 +8,13 @@ export * from "./sync"
 export * from "./user.js"
 export * from "./sharing.js"
 
+const firebaseError = (e, dispatch) => {
+    //Separate error ID from error message
+    const split = e.message.split(":")
+    const message = split[1] ? split[1] : e.message
+    dispatch(addError(`Error: ${message}`))
+}
+
 export const addError = (message, autoDismiss = true) => {
     return dispatch => {
         dispatch(addMessage(message, true, autoDismiss))
@@ -201,12 +208,7 @@ export const editSentence = (treebank, sentence, data) => {
             type: "SENTENCE_EDIT",
             treebank, sentence, data
         })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not edit sentence. ${message}`))
-        })
+        database.ref(`/sentences/${treebank}/${sentence}`).update(data).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -217,12 +219,7 @@ export const editWord = (treebank, sentence, word, data) => {
             treebank, sentence, word, data
         })
         const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
-        ref.update(data).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not edit word. ${message}`))
-        })
+        ref.update(data).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -235,12 +232,7 @@ export const editWords = (treebank, sentence, words) => {
             treebank, sentence, words
         })
         const ref = database.ref(`/words/${treebank}/${sentence}`)
-        ref.set(updates).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not edit words. ${message}`))
-        })
+        ref.set(updates).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -253,12 +245,7 @@ export const createWord = (treebank, sentence, data) => {
             id: key
         }).then(() => {
             dispatch({type: "WORD_CREATE_COMPLETED"})
-        }).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not create word. ${message}`))
-        })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -269,12 +256,7 @@ export const createRelationLabel = (label, value) => {
             dispatch({
                 type: "RELATION_LABEL_CREATED"
             })
-        }).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not create relation label. ${message}`))
-        })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
@@ -282,24 +264,14 @@ export const createSentence = sentence => {
     return (dispatch, getState) => {
         const { current } = getState()
         const sentenceID = database.ref(`/sentences/${current.treebank}`).push().key
-        database.ref(`/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null}).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not create sentence. ${message}`))
-        })
+        database.ref(`/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null}).catch(e => firebaseError(e, dispatch))
         let words = {}
         sentence.words.forEach( word => {
             const wordID = database.ref(`/words/${current.treebank}/${sentenceID}`).push().key
             word.id = wordID
             words[wordID] = word
         })
-        database.ref(`/words/${current.treebank}/${sentenceID}`).set(words).catch((e) => {
-            //Separate error ID from error message
-            const split = e.message.split(":")
-            const message = split[1] ? split[1] : e.message
-            dispatch(addError(`Could not create sentence. ${message}`))
-        })
+        database.ref(`/words/${current.treebank}/${sentenceID}`).set(words).catch(e => firebaseError(e, dispatch))
         dispatch({
             type: "SENTENCE_CREATED"
         })

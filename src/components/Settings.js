@@ -12,14 +12,14 @@ export default class Settings extends Component {
     }
 
     render() {
-        const { current, treebank, actions, permissions } = this.props
+        const { current, treebank, actions, permissions, user } = this.props
 
         return (
             <div className="settings">
                 <h2>Settings</h2>
                 <Messages messages={current.messages} />
                 <h3>Sharing</h3>
-                <Share permissions={permissions} actions={actions} treebank={treebank} />
+                <Share permissions={permissions} actions={actions} treebank={treebank} user={user} />
                 <h3>Delete Treebank</h3>
                 <p>Delete '{treebank.name}' and all its data. This cannot be undone.</p>
                 <Button type="warning" onClick={this.deleteClick} icon="fa-trash">Delete</Button>
