@@ -259,16 +259,18 @@ export const createSentence = sentence => {
     return (dispatch, getState) => {
         const { current } = getState()
         const sentenceID = database.ref(`/sentences/${current.treebank}`).push().key
-        database.ref(`/sentences/${current.treebank}/${sentenceID}`).set({...sentence, id: sentenceID, words: null}).catch(e => firebaseError(e, dispatch))
-        let words = {}
+        let updates = {}
+        updates[`/sentences/${current.treebank}/${sentenceID}`] = {...sentence, id: sentenceID, words: null}
         sentence.words.forEach( word => {
             const wordID = database.ref(`/words/${current.treebank}/${sentenceID}`).push().key
             word.id = wordID
-            words[wordID] = word
+            updates[`/words/${current.treebank}/${sentenceID}/${wordID}`] = word
         })
-        database.ref(`/words/${current.treebank}/${sentenceID}`).set(words).catch(e => firebaseError(e, dispatch))
-        dispatch({
-            type: "SENTENCE_CREATED"
-        })
+        database.ref().update(updates).then(() => {
+            dispatch({
+                type: "SENTENCE_CREATED",
+                id: sentenceID
+            })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }

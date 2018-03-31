@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Sidebar from './Sidebar'
 import Editor from './Editor'
 import Settings from './Settings'
@@ -37,11 +37,11 @@ export default class Edit extends Component {
   }
 
   render() {
-
     const { actions, current, sentences, treebanks, user, permissions } = this.props
     const currentTreebank = treebanks[current.treebank]
     const currentSentence = sentences.find(sentence => sentence.id === current.sentence)
 
+    if (current.newSentence) return <Redirect to={`/edit/${current.treebank}/${current.newSentence}`} />
     if (!currentTreebank) return <NotFound />
 
     return (

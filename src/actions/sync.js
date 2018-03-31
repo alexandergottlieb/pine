@@ -9,12 +9,12 @@ let watchers = {
 
 export const syncTreebank = (treebankID) => {
     return dispatch => {
-        dispatch({
-            type: "TREEBANK_SYNC_START",
-            treebank: treebankID
-        })
         const endpoint = `/treebanks/${treebankID}`
         if (watchers.treebank !== endpoint) {
+            dispatch({
+                type: "TREEBANK_SYNC_START",
+                treebank: treebankID
+            })
             database.ref(endpoint).on("value", snapshot => {
                 const treebank = snapshot.val()
                 if (treebank) {

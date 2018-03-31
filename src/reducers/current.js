@@ -7,29 +7,21 @@ const initial = {
     exports: {
         downloading: [],
         ready: []
-    }
+    },
+    newSentence: null
 }
 
 const current = (state = initial, action) => {
     switch (action.type) {
         case "SET_CURRENT_TREEBANK": {
-            return Object.assign({}, state, {
-               treebank: action.id,
-               messages: [],
-               users: {}
-            })
+            return {...state, treebank: action.id, messages: []}
         }
         case "SET_CURRENT_SENTENCE": {
-            return Object.assign({}, state, {
-               sentence: action.id,
-               messages: []
-            })
+            let newSentence = action.id === state.newSentence ? null : state.newSentence //Clear new sentence redirect
+            return {...state, sentence: action.id, messages: [], newSentence}
         }
         case "SET_CURRENT_PAGE": {
-            return Object.assign({}, state, {
-               page: action.page,
-               messages: []
-            })
+            return {...state, page: action.page, messages: []}
         }
         case "SET_CURRENT_WORD": {
             return Object.assign({}, state, {
@@ -72,6 +64,9 @@ const current = (state = initial, action) => {
             //treebank no longer downloading
             newState.exports.downloading = newState.exports.downloading.filter(id => action.treebank !== id)
             return newState
+        }
+        case "SENTENCE_CREATED": {
+            return {...state, newSentence: action.id}
         }
         case "USER_LOGOUT": {
             return initial
