@@ -70,7 +70,6 @@ export const uploadTreebank = (treebank) => {
             updates[`/sentences/${treebankID}/${sentenceID}`] = {...sentence, id: sentenceID, words: null}
         })
         //Do all updates atomically
-        console.log('updates', updates)
         database.ref().update(updates).then(() => {
             dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
             dispatch(fetchTreebanks(user.uid))
@@ -83,19 +82,19 @@ export const deleteTreebank = (treebankID) => {
         const { user } = getState()
         dispatch({ type: "TREEBANK_DELETE_STARTED" })
         //Asynchronously delete across the normalised database
-        const deletePromises = []
-        deletePromises.push(database.ref(`/treebanks/${treebankID}`).remove())
-        deletePromises.push(database.ref(`/sentences/${treebankID}`).remove())
-        deletePromises.push(database.ref(`/words/${treebankID}`).remove())
-        deletePromises.push(database.ref(`/permissions/user/${user.uid}/treebanks/${treebankID}`).remove())
-        deletePromises.push(database.ref(`/permissions/treebank/${treebankID}/users/${user.uid}`).remove())
+        const updates = {}
+        updates[`/treebanks/${treebankID}`] = null
+        updates[`/sentences/${treebankID}`] = null
+        updates[`/words/${treebankID}`] = null
+        updates[`/permissions/user/${user.uid}/treebanks/${treebankID}`] = null
+        updates[`/permissions/treebank/${treebankID}/users/${user.uid}`] = null
         //Once requests complete
-        Promise.all(deletePromises).then(() => {
+        database.ref().update(updates).then(() => {
             dispatch({
                 type: "TREEBANK_DELETE_SUCCEEDED",
                 id: treebankID
             })
-        })
+        }).catch(e => firebaseError(e, dispatch))
     }
 }
 
