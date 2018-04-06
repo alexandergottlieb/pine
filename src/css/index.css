@@ -98,8 +98,7 @@ body,
 }
 a,
 a:hover,
-.background-dark .button:hover,
-.background-light .button--secondary:not(.button--circle):hover {
+.background-dark .button:hover {
   color:#48BEFF;
 }
 .share__add-email:focus {
@@ -143,7 +142,7 @@ body,
 .word__delete,
 .background-dark .messages .message,
 .background-dark .messages .message,
-.background-light .button--circle.button--secondary {
+.background-light .button--secondary {
   background-color:#758AA8;
 }
 .editor__default,
@@ -156,7 +155,6 @@ body,
 .editor__zoom,
 .version,
 .not-found__code,
-.background-light .button--secondary,
 .share__user-email,
 .feedback {
   color:#758AA8;
