@@ -102,6 +102,9 @@ a:hover,
 .background-light .button--secondary:not(.button--circle):hover {
   color:#48BEFF;
 }
+.share__add-email:focus {
+    border-color:#48BEFF;
+}
 /* Dark */
 body,
 .sidebar,

@@ -12,6 +12,7 @@ export default class Word {
         this.dependencies = word.dependencies || ''
         this.misc = word.misc || {}
         this.id = word.id || ''
+        this.emptyNodes = word.emptyNodes || []
     }
 
     validate() {

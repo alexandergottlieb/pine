@@ -79,6 +79,7 @@ export default class Share extends Component {
             ? <div className="share__add">
                 <input className="share__add-email" onChange={this.changeEmail} onKeyUp={(e) => { if (e.keyCode === 13) this.share(e) }} placeholder="Enter email to share..." type="email" />
                 <Button onClick={this.share} type="primary" icon="fa fa-user-plus">Share</Button>
+                <p className="share__details"><small>Sharing will allow viewing, but not editing, of the entire treebank.</small></p>
               </div>
             : null
 

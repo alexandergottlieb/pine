@@ -34,9 +34,13 @@ export default class Treebank {
                 } else if (line.length === 0) { //New sentence
                     self.sentences.push(new Sentence())
                     current++
-                } else if (line.match(/^\d+[-.]/)) { //Multitoken
+                } else if (line.match(/^\d+[-]/)) { //Multitoken
                     self.multitokens = true
                     //Skip
+                } else if (line.match(/^\d+[.]/)) { //Empty node
+                    let word = self.parseWord(line)
+                    const prevIndex = self.sentences[current].words.length-1
+                    self.sentences[current].words[self.sentences[current].words.length-1].emptyNodes.push(word)
                 } else { //Word
                     let word = self.parseWord(line)
                     self.sentences[current].words.push(word)
@@ -75,6 +79,7 @@ export default class Treebank {
             console.error("a word does not have a valid position", data[0])
             throw new Error("does not have a valid position")
         }
+        //Index, inflection, lemma
         if (data[0] !== undefined && data[0] !== '_') word.index = Number(data[0])
         if (data[1] !== undefined && data[1] !== '_') word.inflection = String(data[1])
         if (data[2] !== undefined && data[2] !== '_') word.lemma = String(data[2])
@@ -142,7 +147,7 @@ export default class Treebank {
 
     //Save state into CoNLL-U format
     export() {
-        const wordToConll = word => {
+        const wordToConll = (word, indexOverride = null) => {
             const stringifyList = object => {
                 let pairs = []
                 for (const key in object) {
@@ -153,7 +158,7 @@ export default class Treebank {
                 return string ? string : "_"
             }
             let data = [].fill("_", 0, 9)
-            data[0] = word.index || "_"
+            data[0] = indexOverride || word.index || "_"
             data[1] = word.inflection || "_"
             data[2] = word.lemma || "_"
             data[3] = word.uposTag || "_"
@@ -163,7 +168,13 @@ export default class Treebank {
             data[7] = this.settings.relations[word.relation] || "_"
             data[8] = word.dependencies || "_"
             data[9] = stringifyList(word.misc)
-            return data.join("\t")
+            let line = data.join("\t")
+            console.log('word', word)
+            //Add an extra line for each following empty node
+            word.emptyNodes.forEach( (emptyNode, index) => {
+                line = line + "\n" + wordToConll(new Word(emptyNode), `${word.index}.${index+1}`)
+            })
+            return line
         }
 
         let lines = []

@@ -87,7 +87,8 @@ const current = (state = initial, action) => {
         case "UPLOAD_TREEBANK_SLOW": {
             return {...state, feedback: "Still uploading..."}
         }
-        case "UPLOAD_TREEBANK_COMPLETE": {
+        case "UPLOAD_TREEBANK_COMPLETE":
+        case "UPLOAD_TREEBANK_FAIL": {
             return {...state, feedback: ""}
         }
         case "USER_LOGOUT": {

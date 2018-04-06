@@ -5,13 +5,14 @@ export default class Sentence {
     constructor(sentence = {sentence: ""}) {
         Object.assign(this, sentence)
         this.words = []
-        if (Array.isArray(sentence.words)) sentence.words.forEach( word => this.words.push(new Word(word)) )
+        if (Array.isArray(sentence.words)) this.words = sentence.words.map( word => new Word(word))
         this.comments = []
-        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push(comment) )
+        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push(comment))
         if (!this.sentence) this.stringSentenceTogether()
     }
 
     stringSentenceTogether() {
+        //Glue words to form sentence
         this.sentence = ""
         this.words.forEach(word => {
             let glue = (word.uposTag === 'PUNCT' || this.sentence === "") ? '' : ' ' //Add space between words but not punctuation

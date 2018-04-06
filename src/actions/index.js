@@ -76,10 +76,14 @@ export const uploadTreebank = (treebank) => {
         })
         //Do all updates atomically
         database.ref().update(updates).then(() => {
-            uploaded = true
             dispatch({ type: "UPLOAD_TREEBANK_COMPLETE" })
             dispatch(fetchTreebanks(user.uid))
-        }).catch(e => firebaseError(e, dispatch))
+        }).catch(e => {
+            dispatch({ type: "UPLOAD_TREEBANK_FAIL" })
+            firebaseError(e, dispatch)
+        }).finally(() => {
+            uploaded = true
+        })
     }
 }
 
@@ -139,7 +143,7 @@ export const queueExportTreebank = (treebankID) => {
 
 export const fetchTreebanks = (userID) => {
     return (dispatch) => {
-        database.ref(`/permissions/user/${userID}/treebanks`).once('value', snapshot => {
+        database.ref(`/permissions/user/${userID}/treebanks`).orderByKey().once('value', snapshot => {
             dispatch({
                 type: "FETCH_TREEBANKS_START"
             })

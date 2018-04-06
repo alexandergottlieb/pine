@@ -12,7 +12,12 @@ const sentences = (state = initial, action) => {
             return action.sentences.map(sentence => {
                 const existing = state.find(old => old.id === sentence.id)
                 const words = existing ? existing.words : []
-                return new Sentence({...sentence, words})
+                const emptyNodes = sentence.emptyNodes || []
+                return new Sentence({
+                    ...sentence,
+                    words,
+                    emptyNodes: emptyNodes.map(word => new Word(word))
+                })
             })
         }
         case "WORDS_UPDATE": {

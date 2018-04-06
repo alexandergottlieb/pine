@@ -41,7 +41,9 @@ export default class Edit extends Component {
     const currentTreebank = treebanks[current.treebank]
     const currentSentence = sentences.find(sentence => sentence.id === current.sentence)
 
+    //If a new sentence has just been created, redirect there
     if (current.newSentence) return <Redirect to={`/edit/${current.treebank}/${current.newSentence}`} />
+    //If treebank doesn't exist, 404
     if (!currentTreebank) return <NotFound />
 
     return (

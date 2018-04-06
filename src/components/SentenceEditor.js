@@ -36,7 +36,7 @@ export default class SentenceEditor extends Component {
     if (!sentence) return null
     return (
       <div className="sentence-editor">
-        <Sentence words={this.state.words} sentenceIndex={sentence.index} currentWord={currentWord} onSortEnd={this.onSortEnd} axis="x" />
+        <Sentence words={this.state.words} sentenceID={sentence.id} currentWord={currentWord} onSortEnd={this.onSortEnd} axis="x" />
         <CreateWord onCreate={createWord} />
       </div>
     )
@@ -44,11 +44,11 @@ export default class SentenceEditor extends Component {
 
 }
 
-const Sentence = SortableContainer( ({ words, sentenceIndex, currentWord }) => {
+const Sentence = SortableContainer( ({ words, sentenceID, currentWord }) => {
   return (
     <ul className="sentence-editor__sentence">
       {words.map( (word, index) => {
-        return <Word key={`${sentenceIndex}_${index}`} index={Number(index)} word={word} highlight={word.index === currentWord} />
+        return <Word key={`${sentenceID}_${index}`} index={index} word={word} highlight={word.index === currentWord} />
       })}
     </ul>
   )
