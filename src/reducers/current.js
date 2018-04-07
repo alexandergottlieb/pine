@@ -93,10 +93,13 @@ const current = (state = initial, action) => {
         }
         case UndoActionTypes.UNDO:
         case UndoActionTypes.REDO: {
-            return {...state, undoing: true, feedback: "Saving..."}
+            return {...state, undoing: true}
         }
         case "SENTENCE_EDIT_PENDING": {
-            return {...state, undoing: false, editing: false}
+            return {...state, undoing: false, editing: false, feedback: "Saving..."}
+        }
+        case "SENTENCE_EDIT_COMPLETE": {
+            return {...state, feedback: ""}
         }
         case "USER_LOGOUT": {
             return initial

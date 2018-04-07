@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from "redux"
 import thunk from "redux-thunk"
 import reducer from "./reducers"
 import debounce from "debounce"
+import equal from "equals"
 import { database, firebaseError } from "./firebaseApp"
 
 const logger = store => next => action => {
@@ -22,8 +23,12 @@ const syncSentence = debounce((treebank, sentence) => {
   let updates = {}
   updates[`/words/${treebank}/${sentence.id}`] = sentence.words
   updates[`/sentences/${treebank}/${sentence.id}`] = {...sentence, words: null}
-  database.ref().update(updates).catch(e => firebaseError(e, store.dispatch))
+  database.ref().update(updates).then(() => {
+    store.dispatch({type: "SENTENCE_EDIT_COMPLETE"})
+  }).catch(e => firebaseError(e, store.dispatch))
 }, 400)
+//When sentence changes, update
+let oldSentence = null
 store.subscribe(() => {
   const state = store.getState()
   const { treebank, undoing, editing } = state.current
@@ -31,10 +36,11 @@ store.subscribe(() => {
 
   if (!sentence) return
 
-  if (editing || undoing) {
+  if ((editing || undoing) && !equal(sentence, oldSentence)) {
     store.dispatch({type: "SENTENCE_EDIT_PENDING"})
     syncSentence(treebank, sentence)
   }
+  oldSentence = sentence
 })
 
 export default store
