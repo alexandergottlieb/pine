@@ -98,7 +98,8 @@ body,
 }
 a,
 a:hover,
-.background-dark .button:hover {
+.background-dark .button:hover,
+.background-light .button--tertiary:hover {
   color:#48BEFF;
 }
 .share__add-email:focus {
@@ -156,7 +157,8 @@ body,
 .version,
 .not-found__code,
 .share__user-email,
-.feedback {
+.feedback,
+.background-light .button--tertiary {
   color:#758AA8;
 }
 /* Red */

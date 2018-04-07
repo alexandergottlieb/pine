@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as moment from 'moment'
 import debounce from 'debounce'
 import Sentence from '../classes/Sentence'
 import Word from '../classes/Word'
@@ -203,7 +204,9 @@ export default class Editor extends Component {
     return (
       <div className="editor" onClick={this.deselect}>
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
-        <small className="editor__feedback feedback">{current.feedback || "Changes saved"}</small>
+        <small className="editor__feedback feedback">
+          {current.feedback || "Edited "+moment(sentence.lastEdited).fromNow()}
+        </small>
         {contents}
         <div className="editor__toolbar">
           <div className="editor__toolbar-left">

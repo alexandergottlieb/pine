@@ -1,3 +1,5 @@
+import { ActionTypes as UndoActionTypes } from "redux-undo"
+
 const initial = {
     treebank: null,
     sentence: null,
@@ -9,7 +11,8 @@ const initial = {
         ready: []
     },
     newSentence: null,
-    feedback: ''
+    feedback: '',
+    undoing: false
 }
 
 const current = (state = initial, action) => {
@@ -86,6 +89,12 @@ const current = (state = initial, action) => {
         case "UPLOAD_TREEBANK_COMPLETE":
         case "UPLOAD_TREEBANK_FAIL": {
             return {...state, feedback: ""}
+        }
+        case UndoActionTypes.UNDO: {
+            return {...state, undoing: true}
+        }
+        case "SENTENCE_EDIT_UPDATED": {
+            return {...state, undoing: false}
         }
         case "USER_LOGOUT": {
             return initial
