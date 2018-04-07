@@ -12,7 +12,7 @@ const reducer = combineReducers({
     sentence: undoable(sentence, {
         filter: includeAction(["SENTENCE_EDIT"]),
         limit: 20,
-        initTypes: ["SENTENCES_CHANGED_TREEBANK", "SET_CURRENT_SENTENCE", "USER_LOGOUT"]
+        initTypes: ["SENTENCES_CHANGED_TREEBANK", "SET_CURRENT_TREEBANK", "SET_CURRENT_SENTENCE", "SET_CURRENT_PAGE", "USER_LOGOUT"]
     })
 });
 
