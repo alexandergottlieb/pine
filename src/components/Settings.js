@@ -14,11 +14,11 @@ export default class Settings extends Component {
         if (window.confirm(`Delete Treebank\n\n'${treebank.name}' will be permanently removed.`)) actions.deleteTreebank(treebank.id)
     }
 
-    changeRelationLabel = (id, label) => {
-        this.debounceChangeRelationLabel(id, label)
+    changeRelationLabel = (id, label, old) => {
+        this.debounceChangeRelationLabel(id, label, old)
     }
 
-    debounceChangeRelationLabel = debounce((id, label) => {
+    debounceChangeRelationLabel = debounce((id, label, old) => {
         const { treebank, actions } = this.props
         const { relations } = treebank.settings
         try {
@@ -27,10 +27,11 @@ export default class Settings extends Component {
             let editedTreebank = new Treebank(treebank)
             editedTreebank.settings.relations[id] = label
             actions.editTreebank(editedTreebank)
+            actions.addMessage(`Relations updated from '${old}' to '${label}'`)
         } catch (e) {
             actions.addError(e.message)
         }
-    }, 300)
+    }, 500)
 
     render() {
         const { current, treebank, actions, permissions, user } = this.props
@@ -38,7 +39,7 @@ export default class Settings extends Component {
         let relationLabels = []
         for (const id in treebank.settings.relations) {
             const label = treebank.settings.relations[id]
-            relationLabels.push(<Input className="settings__relation" onChange={value => {this.changeRelationLabel(id, value)}} value={label} key={id} type="text" />)
+            relationLabels.push(<Input className="settings__relation" onChange={value => {this.changeRelationLabel(id, value, label)}} value={label} key={id} type="text" />)
         }
 
         return (
