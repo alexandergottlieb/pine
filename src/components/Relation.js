@@ -56,6 +56,11 @@ class Relation extends Component {
             })
             if (word.relation == key) label = relations[key]
         }
+        relationOptions.sort((a, b) => {
+            if (a.label.toUpperCase() < b.label.toUpperCase()) return -1
+            if (a.label.toUpperCase() > b.label.toUpperCase()) return 1
+            return 0
+        })
         relationOptions.push({
             value: "_",
             label: "_"

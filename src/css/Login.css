@@ -10,11 +10,15 @@
     box-shadow:0 4px 8px 0 rgba(0,0,0,0.16);
     text-align:left;
 }
-.login__register {
-
+.login__form .input__input {
+    width:100%;
 }
 .login__buttons {
     text-align:right;
+}
+.login__buttons .button,
+.login__buttons .login__forgot {
+    vertical-align:middle;
 }
 .login .login__forgot {
     margin-right:1rem;

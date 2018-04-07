@@ -137,6 +137,7 @@ export const queueExportTreebank = (treebankID) => {
 
 export const editTreebank = treebank => {
     return dispatch => {
+        dispatch({type: "EDIT_TREEBANK", treebank})
         database.ref(`/treebanks/${treebank.id}`).update(treebank).catch(e => firebaseError(e, dispatch))
     }
 }

@@ -86,7 +86,8 @@ body,
 .relation__label .Select-option.is-selected,
 .tree__root,
 .editor__zoom,
-.background-light .button--circle.button--secondary {
+.background-light .button--circle.button--secondary,
+.input__input {
   background-color:#F2F6FF;
 }
 /* Accent - yellow */
@@ -102,9 +103,6 @@ a:hover,
 .background-dark .button:hover,
 .background-light .button--tertiary:hover {
   color:#48BEFF;
-}
-.share__add-email:focus {
-    border-color:#48BEFF;
 }
 /* Dark */
 body,
@@ -192,7 +190,8 @@ a,
 .relation__grab,
 .arc__relation-label,
 .breadcrumbs__breadcrumb,
-.sidebar__title {
+.sidebar__title,
+.input__input {
   transition: 0.15s ease-out;
 }
 .word__pos-tag {

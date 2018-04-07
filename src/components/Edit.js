@@ -52,11 +52,7 @@ export default class Edit extends Component {
           <Switch>
             <Route path="/edit/:treebank/help" exact component={Help} />
             <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} user={user} current={current} treebank={currentTreebank} permissions={permissions} />} />
-            <Route path="/edit/:treebank/:sentence?" exact render={(props) => {
-              return sentence
-                ? <Editor {...props} actions={actions} current={current} sentence={sentence} treebank={currentTreebank} />
-                : null
-            }} />
+            <Route path="/edit/:treebank/:sentence?" exact render={(props) => <Editor {...props} actions={actions} current={current} sentence={sentence} treebank={currentTreebank} />} />
             <Route component={NotFound} />
           </Switch>
         </main>

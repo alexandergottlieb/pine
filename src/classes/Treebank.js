@@ -6,9 +6,10 @@ export default class Treebank {
 
     constructor(treebank = {}) {
         this.name = treebank.name || ""
-        this.sentences = treebank.sentences || []
+        this.sentences = treebank.sentences || null
         this.multitokens = treebank.multitokens || false
-        this.settings = treebank.settings || {xpos: {}, relations: {}}
+        const { relations } = treebank.settings
+        this.settings = { relations } || { relations: {}}
         this.id = treebank.id || ""
     }
 

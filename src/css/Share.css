@@ -22,7 +22,11 @@
   text-transform:capitalize;
   font-size:0.825rem;
 }
-.share__add-email {
+.share .share__add-email {
+  display:inline-block;
+  margin-right:0.5rem;
+}
+.share .share__add-email .input {
   display:inline-block;
   vertical-align:top;
   min-width:12rem;
@@ -31,10 +35,7 @@
   font-size:0.825rem;
   line-height:1rem;
   border-radius:3px;
-  border:1px solid #ccc;
-}
-.share__add-email:focus {
-  outline:none;
+  border:1px solid transparent;
 }
 .share__details {
     margin-top:0.5rem;

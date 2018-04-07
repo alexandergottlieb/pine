@@ -192,7 +192,16 @@ export default class Editor extends Component {
     const { actions, current, sentence, treebank } = this.props
 
     let contents = null
-    if (sentence) {
+    if (!sentence) {
+      return (
+        <div className="editor">
+          <div className="editor__default">
+            <span className="fas fa-hand-point-left fa-5x"></span>
+            <p>Select a sentence to edit</p>
+          </div>
+        </div>
+      )
+    } else {
       if (sentence.words.length > 0) {
         if (this.state.treeView) {
           contents = <Tree sentence={sentence} treebank={treebank} relations={current.relations} currentWord={current.word}
@@ -205,13 +214,6 @@ export default class Editor extends Component {
           />
         }
       }
-    } else {
-      contents = (
-        <div className="editor__default">
-          <span className="fas fa-hand-point-left fa-5x"></span>
-          <p>Select a sentence to edit</p>
-        </div>
-      )
     }
     return (
       <div className="editor" onClick={this.deselect}>

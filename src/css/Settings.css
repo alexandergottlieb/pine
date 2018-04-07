@@ -1,3 +1,14 @@
 .settings {
     padding:2rem;
 }
+.settings__relations {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  grid-gap:1rem;
+}
+.settings__relation {
+  
+}
+.settings__relation .input__input {
+  margin:0;
+}

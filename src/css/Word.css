@@ -60,9 +60,6 @@
   .word__inflection:focus {
       background-color:rgba(0,0,0,0.2);
   }
-  .word__inflection:focus {
-    outline:none;
-  }
   .word--editable .word__inflection {
     cursor:text;
   }
@@ -106,12 +103,8 @@
     background-color:rgba(0,0,0,0.2);
     color:white;
     font-size:1rem;
-    outline:none;
   }
   /* Select */
-  .word-data .Select {
-    outline:none !important;
-  }
   .word-data .Select-control {
     border:0px;
     background-color:rgba(0,0,0,0.2) !important;

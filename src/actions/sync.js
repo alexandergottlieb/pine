@@ -52,11 +52,13 @@ export const syncSentences = (treebank) => {
                 })
                 //Update the current sentence
                 const currentSentenceID = getState().current.sentence
-                const updatedSentence = sentences.find(sentence => sentence.id === currentSentenceID)
-                dispatch({
-                    type: "CURRENT_SENTENCE_UPDATE",
-                    sentence: updatedSentence
-                })
+                if (currentSentenceID) {
+                    const updatedSentence = sentences.find(sentence => sentence.id === currentSentenceID)
+                    dispatch({
+                        type: "CURRENT_SENTENCE_UPDATE",
+                        sentence: updatedSentence
+                    })
+                }
             })
         }
     }
