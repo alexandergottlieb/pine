@@ -63,18 +63,14 @@ export default class Word extends Component {
     deleteClicked = event => {
         const { deleteWord, word } = this.props
         event.stopPropagation();
-        if (window.confirm(`Delete Word\n\n'${word.inflection}' will be removed from the sentence and annotation data will be lost.`)) deleteWord(word)
+        deleteWord(word)
     }
 
     click = event => {
-        const { actions, relations, editWord, word, editable } = this.props
+        const { actions, relations, editRelations, word, editable } = this.props
         if (relations && relations.length > 0) {
             //Set all relations to point to this word
-            relations.forEach(childIndex => {
-                editWord(childIndex, {
-                    parent: word.index
-                })
-            })
+            editRelations(relations, word.index)
             actions.clearRelations()
         } else {
             if (!editable) {

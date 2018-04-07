@@ -107,6 +107,16 @@ export default class Editor extends Component {
       }
       return aWord
     })
+    actions.addMessage(`Word deleted: '${word.inflection}'`)
+    actions.editSentence(editedSentence)
+  }
+
+  editRelations = (relations, newParent) => {
+    const { actions, sentence } = this.props
+    let editedSentence = new Sentence(sentence)
+    relations.forEach(childIndex => {
+      editedSentence.wordByIndex(childIndex).parent = newParent
+    })
     actions.editSentence(editedSentence)
   }
 
@@ -184,7 +194,7 @@ export default class Editor extends Component {
       if (sentence.words.length > 0) {
         if (this.state.treeView) {
           contents = <Tree sentence={sentence} treebank={treebank} relations={current.relations} currentWord={current.word}
-            actions={actions} editWord={this.editWord} deleteWord={this.deleteWord}
+            actions={actions} editWord={this.editWord} deleteWord={this.deleteWord} editRelations={this.editRelations}
             scaling={this.state.scaling} zoom={this.state.zoom}
           />
         } else {

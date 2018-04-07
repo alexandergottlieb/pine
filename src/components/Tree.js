@@ -127,7 +127,7 @@ class Tree extends Component {
     clickRoot() {
         const { relations, actions, editWord } = this.props
         try {
-            if (relations.length > 1) throw "Only one word descends from root."
+            if (relations.length > 1) throw "Only one word can descend from root."
             relations.forEach(childIndex => {
                 editWord(childIndex, {
                     parent: 0
@@ -139,7 +139,7 @@ class Tree extends Component {
     }
 
     render() {
-        const { actions, currentWord, relations, treebank, editWord, deleteWord, zoom, scaling } = this.props
+        const { actions, currentWord, relations, treebank, editWord, deleteWord, editRelations, zoom, scaling } = this.props
         const { nodes } = this.state
 
         //Generate words
@@ -151,6 +151,7 @@ class Tree extends Component {
                 scaling={scaling}
                 editWord={editWord}
                 deleteWord={deleteWord}
+                editRelations={editRelations}
                 actions={actions}
                 relations={relations}
                 editable={editable}
