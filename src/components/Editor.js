@@ -159,14 +159,14 @@ export default class Editor extends Component {
     if (event.ctrlKey || event.metaKey) {
       //Assume keyboard shortcut
       let keyboardShortcutFired = true
-      if (event.keyCode === 90) { //Z pressed
-        //Undo
-        actions.undo()
-      } else if (event.keyCode === 89 //Y pressed
+      if (event.keyCode === 89 //Y pressed
         || event.shiftKey && event.keyCode === 90 //Shift-command-z pressed
       ) {
         //Redo
         actions.redo()
+      } else if (event.keyCode === 90) { //Z pressed
+        //Undo
+        actions.undo()
       } else {
         //Was not a keyboard shortcut
         keyboardShortcutFired = false

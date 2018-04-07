@@ -163,16 +163,13 @@ export const setCurrent = (treebank, sentenceID = null, page = null) => {
     return (dispatch, getState) => {
         if (treebank) dispatch(syncTreebank(treebank))
         const { sentences } = getState()
-        //If sentence is loaded, dispatch with action
-        let sentence = sentences.find(sentence => sentence.id === sentenceID)
-        sentence = sentence ? new Sentence(sentence) : new Sentence({id: sentenceID})
         dispatch({
             type: "SET_CURRENT_TREEBANK",
             id: treebank
         })
         dispatch({
             type: "SET_CURRENT_SENTENCE",
-            sentence
+            id: sentenceID
         })
         dispatch({
             type: "SET_CURRENT_PAGE",
@@ -180,9 +177,23 @@ export const setCurrent = (treebank, sentenceID = null, page = null) => {
         })
         //Watch changes to sentences in treebank
         dispatch(syncSentences(treebank))
-        //Watch changes to words in sentence
-        if (sentenceID) dispatch(syncWords(treebank, sentenceID))
+        if (sentenceID) {
+            //Watch changes to words in sentence
+            dispatch(syncWords(treebank, sentenceID))
+            //If the sentence is already downloaded, set current to it
+            let currentSentence = sentences.find(sentence => sentence.id === sentenceID)
+            if (currentSentence !== undefined) {
+                dispatch({
+                    type: "CURRENT_SENTENCE_UPDATE",
+                    sentence: currentSentence
+                })
+            }
+        }
     }
+}
+
+export const changeCurrentSentence = sentence => {
+
 }
 
 export const setWord = (id = null) => {
@@ -208,7 +219,7 @@ export const clearRelations = () => {
 export const editSentence = (sentence) => {
     return (dispatch, getState) => {
         const oldSentence = getState().sentence.present
-        const newSentence = new Sentence({...oldSentence, sentence, lastEdited: + new Date()})
+        const newSentence = new Sentence({...oldSentence, ...sentence, lastEdited: + new Date()})
         //Validate and update
         try {
           newSentence.validate()

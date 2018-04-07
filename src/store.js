@@ -24,6 +24,7 @@ store.subscribe(() => {
   const treebank = state.current.treebank
   const sentence = state.sentence.present
 
+  if (!sentence) return
   if (id !== sentence.id) {
     id = sentence.id
     lastEdited = sentence.lastEdited
@@ -33,9 +34,7 @@ store.subscribe(() => {
     let updates = {}
     updates[`/words/${treebank}/${sentence.id}`] = sentence.words
     updates[`/sentences/${treebank}/${sentence.id}`] = {...sentence, words: null}
-    database.ref().update(updates).then(() => {
-      store.dispatch({type: "SENTENCE_SAVED"})
-    }).catch(e => firebaseError(e, store.dispatch))
+    database.ref().update(updates).catch(e => firebaseError(e, store.dispatch))
     lastEdited = sentence.lastEdited
   }
 })
