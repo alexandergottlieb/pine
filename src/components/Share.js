@@ -68,7 +68,7 @@ export default class Share extends Component {
                         <span className="share__user-email">{user.email}</span>
                     </td>
                     <td className="share__user-role">{user.role}</td>
-                    {currentUser.role === "owner" || currentUser.uid === user.uid ? <td className="share__user-remove">{remove}</td> : null}
+                    {currentUser.role === "owner" ? <td className="share__user-remove">{remove}</td> : null}
                 </tr>
             )
             //Show owners first
