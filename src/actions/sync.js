@@ -34,7 +34,7 @@ export const syncTreebank = (treebankID) => {
 }
 
 export const syncSentences = (treebank) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         const endpoint = `/sentences/${treebank}`
         if (watchers.sentences !== endpoint) {
             dispatch({type: "SENTENCES_CHANGED_TREEBANK"})
@@ -49,6 +49,13 @@ export const syncSentences = (treebank) => {
                 dispatch({
                     type: "SENTENCES_UPDATE",
                     treebank, sentences
+                })
+                //Update the current sentence
+                const currentSentenceID = getState().current.sentence
+                const updatedSentence = sentences.find(sentence => sentence.id === currentSentenceID)
+                dispatch({
+                    type: "CURRENT_SENTENCE_UPDATE",
+                    sentence: updatedSentence
                 })
             })
         }

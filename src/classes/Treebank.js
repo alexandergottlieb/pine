@@ -67,6 +67,7 @@ export default class Treebank {
             })
             //Sentence needs metadata
             sentence.stringSentenceTogether()
+            sentence.lastEdited = + new Date()
         })
     }
 
@@ -169,7 +170,6 @@ export default class Treebank {
             data[8] = word.dependencies || "_"
             data[9] = stringifyList(word.misc)
             let line = data.join("\t")
-            console.log('word', word)
             //Add an extra line for each following empty node
             word.emptyNodes.forEach( (emptyNode, index) => {
                 line = line + "\n" + wordToConll(new Word(emptyNode), `${word.index}.${index+1}`)

@@ -15,8 +15,15 @@
     padding:0.5em 0.75em;
     border:1px solid transparent;
 }
+.background-light .button--tertiary {
+    padding:0;
+    border:0;
+}
 .background-light .button:hover {
     box-shadow:0 2px 8px 0 rgba(0,0,0,0.32), inset 0 1rem 4rem 0 rgba(0,0,0,0.15);
+}
+.background-light .button--tertiary:hover {
+    box-shadow:none;
 }
 .background-dark .button {
     padding:0.5rem 0;

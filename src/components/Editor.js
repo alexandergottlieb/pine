@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import * as moment from 'moment'
 import debounce from 'debounce'
 import Sentence from '../classes/Sentence'
 import Word from '../classes/Word'
@@ -29,6 +30,16 @@ export default class Editor extends Component {
     }
   }
 
+  componentDidMount() {
+    //Listen globally for keyboard shortcuts
+    document.addEventListener('keydown', this.keyDown)
+  }
+
+  componentWillUnmount() {
+    //Stop listening for keyboard shortcuts
+    document.removeEventListener('keydown', this.keyDown)
+  }
+
   moveWord = (moved, oldIndex, newIndex) => {
     const { actions, current, sentence } = this.props
 
@@ -46,70 +57,30 @@ export default class Editor extends Component {
       return word
     })
     //Update words
-    actions.editWords(current.treebank, current.sentence, words)
-    //Update sentence.sentence
-    let editedSentence = new Sentence({words})
-    editedSentence.stringSentenceTogether()
-    actions.editSentence(current.treebank, current.sentence, {
-      sentence: editedSentence.sentence
-    })
+    actions.editSentence({words})
   }
 
   createWord = (data) => {
     const { actions, current, sentence } = this.props
 
-    let word = new Word()
     //Either parent is the root descendent or artificial root
     const rootDescendent = sentence.words.find(word => word.parent === 0)
     const parent = rootDescendent ? rootDescendent.index : 0
     let index = sentence.wordCount() + 1 //index starts at 1
-    const newWord = { ...word, ...data, index, parent }
-    actions.createWord(current.treebank, current.sentence, newWord)
-
-    //Update sentence.sentence
-    let newWords = sentence.words.map(word => word)
-    newWords.push(newWord)
-    let editedSentence = new Sentence({words: newWords})
-    editedSentence.stringSentenceTogether()
-    actions.editSentence(current.treebank, current.sentence, {
-      sentence: editedSentence.sentence
-    })
+    actions.createWord(new Word({...data, index, parent }))
   }
 
   editWord = (wordIndex, data) => {
     const { sentence, current, actions, treebank } = this.props
-
+    //New sentence
     const editedSentence = new Sentence(sentence)
-
+    //Update word data
+    Object.assign(editedSentence.wordByIndex(wordIndex), data)
     //If assigning new root, set current root to descend from the new
     const oldRoot = (data.hasOwnProperty("parent") && data.parent === 0) ? editedSentence.rootWord() : null
     if (oldRoot) oldRoot.parent = wordIndex
-
-    Object.assign(editedSentence.wordByIndex(wordIndex), data)
-
-    //Validate sentence & update
-    try {
-      editedSentence.validate()
-      const wordID = sentence.wordByIndex(wordIndex).id
-      if (oldRoot) {
-        //Edit old root & word
-        actions.editWords(current.treebank, current.sentence, editedSentence.words)
-      } else {
-        //Edit word
-        actions.editWord(current.treebank, current.sentence, wordID, data)
-      }
-      //Re-string sentence together
-      editedSentence.stringSentenceTogether()
-      actions.editSentence(current.treebank, current.sentence, {
-        sentence: editedSentence.sentence
-      })
-    } catch (errorMessage) {
-      if (typeof errorMessage === "string") {
-        actions.addError(errorMessage)
-      } else { //Unexpected error
-        throw errorMessage
-      }
-    }
+    //Edit sentence
+    actions.editSentence(editedSentence)
   }
 
   deleteWord = (word) => {
@@ -136,13 +107,7 @@ export default class Editor extends Component {
       }
       return aWord
     })
-    //Update words
-    actions.editWords(current.treebank, current.sentence, editedSentence.words)
-    //Update sentence text
-    editedSentence.stringSentenceTogether()
-    actions.editSentence(current.treebank, current.sentence, {
-      sentence: editedSentence.sentence
-    })
+    actions.editSentence(editedSentence)
   }
 
   //Deselect when user clicks outside subelements
@@ -188,6 +153,29 @@ export default class Editor extends Component {
     })
   }
 
+  //Listen for keyboard shortcuts
+  keyDown = event => {
+    const { actions } = this.props
+    //Control or command pressed
+    if (event.ctrlKey || event.metaKey) {
+      //Assume keyboard shortcut
+      let keyboardShortcutFired = true
+      if (event.keyCode === 89 //Y pressed
+        || event.shiftKey && event.keyCode === 90 //Shift-command-z pressed
+      ) {
+        //Redo
+        actions.redo()
+      } else if (event.keyCode === 90) { //Z pressed
+        //Undo
+        actions.undo()
+      } else {
+        //Was not a keyboard shortcut
+        keyboardShortcutFired = false
+      }
+      if (keyboardShortcutFired) event.preventDefault()
+    }
+  }
+
   render() {
     const { actions, current, sentence, treebank } = this.props
 
@@ -216,7 +204,9 @@ export default class Editor extends Component {
     return (
       <div className="editor" onClick={this.deselect}>
         <SentenceEditor sentence={sentence} currentWord={current.word} moveWord={this.moveWord.bind(this)} createWord={this.createWord.bind(this)} />
-        <small className="editor__feedback feedback">{current.feedback || "Changes saved"}</small>
+        <small className="editor__feedback feedback">
+          {current.feedback || "Edited "+moment(sentence.lastEdited).fromNow()}
+        </small>
         {contents}
         <div className="editor__toolbar">
           <div className="editor__toolbar-left">

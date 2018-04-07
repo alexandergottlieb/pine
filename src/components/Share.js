@@ -60,7 +60,7 @@ export default class Share extends Component {
             return nameA < nameB ? -1 : 1
         })
         permissions.forEach(user => {
-            const remove = user.role !== 'owner' ? <Button onClick={() => this.unshare(user)} icon="fa-times-circle"></Button> : null
+            const remove = user.role !== 'owner' ? <Button onClick={() => this.unshare(user)} icon="fa-times-circle" type="tertiary"></Button> : null
             const markup = (
                 <tr className={`share__user share__user--role-${user.role.toLowerCase()}`} key={user.uid}>
                     <td>
