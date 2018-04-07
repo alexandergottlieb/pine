@@ -24,7 +24,9 @@
 
 /* Feedback */
 .editor__feedback {
+  position:relative;
   float:right;
+  z-index:10;
   margin:0.75rem 1rem;
   pointer-events:none;
 }

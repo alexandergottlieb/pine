@@ -12,7 +12,8 @@ const initial = {
     },
     newSentence: null,
     feedback: '',
-    undoing: false
+    undoing: false,
+    editing: false
 }
 
 const current = (state = initial, action) => {
@@ -75,7 +76,7 @@ const current = (state = initial, action) => {
             return {...state, newSentence: action.id}
         }
         case "SENTENCE_EDIT": {
-            return {...state, feedback: "Saving..."}
+            return {...state, feedback: "Saving...", editing: true}
         }
         case "SENTENCES_UPDATE": {
             return {...state, feedback: ""}
@@ -90,11 +91,12 @@ const current = (state = initial, action) => {
         case "UPLOAD_TREEBANK_FAIL": {
             return {...state, feedback: ""}
         }
-        case UndoActionTypes.UNDO: {
-            return {...state, undoing: true}
+        case UndoActionTypes.UNDO:
+        case UndoActionTypes.REDO: {
+            return {...state, undoing: true, feedback: "Saving..."}
         }
-        case "SENTENCE_EDIT_UPDATED": {
-            return {...state, undoing: false}
+        case "SENTENCE_EDIT_PENDING": {
+            return {...state, undoing: false, editing: false}
         }
         case "USER_LOGOUT": {
             return initial

@@ -18,29 +18,22 @@ const middleware = process.env.NODE_ENV !== 'production'
 const store = createStore(reducer, middleware);
 
 //Sync sentence edits with firebase
-let lastEdited = null
-let id = null
 const syncSentence = debounce((treebank, sentence) => {
   let updates = {}
   updates[`/words/${treebank}/${sentence.id}`] = sentence.words
   updates[`/sentences/${treebank}/${sentence.id}`] = {...sentence, words: null}
   database.ref().update(updates).catch(e => firebaseError(e, store.dispatch))
-}, 500)
+}, 400)
 store.subscribe(() => {
   const state = store.getState()
-  const { treebank, undoing } = state.current
+  const { treebank, undoing, editing } = state.current
   const sentence = state.sentence.present
 
   if (!sentence) return
-  //If sentence changed, reset
-  if (id !== sentence.id) {
-    id = sentence.id
-    lastEdited = sentence.lastEdited
-  }
-  if (sentence.lastEdited > lastEdited || undoing) {
-    lastEdited = sentence.lastEdited
-    store.dispatch({type: "SENTENCE_EDIT_UPDATED"})
-    syncSentence(treebank+'', sentence)
+
+  if (editing || undoing) {
+    store.dispatch({type: "SENTENCE_EDIT_PENDING"})
+    syncSentence(treebank, sentence)
   }
 })
 

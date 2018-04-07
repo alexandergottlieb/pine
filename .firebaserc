@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "treebanker-staging"
+    "default": "treebanker-staging",
+    "live": "treebanker-live"
   }
 }
