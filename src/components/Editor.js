@@ -76,9 +76,6 @@ export default class Editor extends Component {
     const editedSentence = new Sentence(sentence)
     //Update word data
     Object.assign(editedSentence.wordByIndex(wordIndex), data)
-    //If assigning new root, set current root to descend from the new
-    const oldRoot = (data.hasOwnProperty("parent") && data.parent === 0) ? editedSentence.rootWord() : null
-    if (oldRoot) oldRoot.parent = wordIndex
     //Edit sentence
     actions.editSentence(editedSentence)
   }
@@ -90,7 +87,7 @@ export default class Editor extends Component {
 
     //Remove word
     editedSentence.words = editedSentence.words.filter(aWord => aWord.id !== word.id)
-    
+
     //Change order & relations
     let newParent = word.parent > word.index ? word.parent - 1 : word.parent
     editedSentence.words = editedSentence.words.map(aWord => {
@@ -115,8 +112,12 @@ export default class Editor extends Component {
   editRelations = (relations, newParent) => {
     const { actions, sentence } = this.props
     let editedSentence = new Sentence(sentence)
+    let oldRoot = newParent === 0 ? editedSentence.rootWord() : null
+    //Update all relations to point to new parent
     relations.forEach(childIndex => {
       editedSentence.wordByIndex(childIndex).parent = newParent
+      //If assigning new root, set old root to descend from the new
+      if (oldRoot) oldRoot.parent = childIndex
     })
     actions.editSentence(editedSentence)
   }

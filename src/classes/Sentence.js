@@ -61,13 +61,12 @@ export default class Sentence {
         let unvisited = [words.find(word => word && word.parent == 0)]
         let visited = []
         let current = null
-        console.log(unvisited)
         while (unvisited.length > 0) {
             current = unvisited.pop()
             visited.push(current)
             current.children.forEach(childIndex => unvisited.push(words[childIndex]))
         }
-        if (visited.length !== words.filter(word => word !== undefined).length) throw "A word cannot be related to one of its descendents"
+        if (visited.length !== words.filter(word => word !== undefined).length) throw new Error("A word cannot be related to one of its descendents")
     }
 
 }

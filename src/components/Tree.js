@@ -124,17 +124,13 @@ class Tree extends Component {
         this.children.lines[childIndex] = element
     }
 
-    clickRoot() {
-        const { relations, actions, editWord } = this.props
+    clickRoot = () => {
+        const { relations, actions, editRelations } = this.props
         try {
-            if (relations.length > 1) throw "Only one word can descend from root."
-            relations.forEach(childIndex => {
-                editWord(childIndex, {
-                    parent: 0
-                })
-            })
-        } catch (errorMessage) {
-            actions.addError(errorMessage)
+            if (relations.length > 1) throw new Error("Only one word can descend from root.")
+            editRelations(relations, 0)
+        } catch (e) {
+            actions.addError(e.message)
         }
     }
 
@@ -211,7 +207,7 @@ class Tree extends Component {
                     <svg className="lines">{lines}</svg>
                     <div className="relations">
                         {relationComponents}
-                        <div className="tree__root" onClick={this.clickRoot.bind(this)} style={rootStyle}>root</div>
+                        <div className="tree__root" onClick={this.clickRoot} style={rootStyle}>root</div>
                     </div>
                     {words}
                 </div>

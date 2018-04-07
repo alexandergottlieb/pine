@@ -109,7 +109,8 @@ a:hover,
 /* Dark */
 body,
 .sidebar,
-.sidebar__footer {
+.sidebar__footer,
+.sidebar__title:hover {
   background-color:#13161F;
 }
 .main,
@@ -190,7 +191,8 @@ a,
 .sentence-editor__word,
 .relation__grab,
 .arc__relation-label,
-.breadcrumbs__breadcrumb {
+.breadcrumbs__breadcrumb,
+.sidebar__title {
   transition: 0.15s ease-out;
 }
 .word__pos-tag {

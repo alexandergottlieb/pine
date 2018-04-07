@@ -135,6 +135,12 @@ export const queueExportTreebank = (treebankID) => {
     }
 }
 
+export const editTreebank = treebank => {
+    return dispatch => {
+        database.ref(`/treebanks/${treebank.id}`).update(treebank).catch(e => firebaseError(e, dispatch))
+    }
+}
+
 export const fetchTreebanks = (userID) => {
     return (dispatch) => {
         database.ref(`/permissions/user/${userID}/treebanks`).orderByKey().once('value', snapshot => {
@@ -190,10 +196,6 @@ export const setCurrent = (treebank, sentenceID = null, page = null) => {
             }
         }
     }
-}
-
-export const changeCurrentSentence = sentence => {
-
 }
 
 export const setWord = (id = null) => {
