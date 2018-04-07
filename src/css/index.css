@@ -62,7 +62,8 @@ a {
 .sentence-editor__word,
 .arc__relation-label,
 .upload-treebank,
-.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after {
+.view-mode__icon, .view-mode__icon:before, .view-mode__icon:after,
+.background-light .button--secondary {
   background-color:white;
 }
 body,
@@ -74,8 +75,7 @@ body,
 .sentences__sentence:hover,
 .breadcrumbs__breadcrumb,
 .messages .message,
-.messages .message,
-.background-light .button--circle.button--secondary {
+.messages .message {
   color:white;
 }
 /* Light */
@@ -85,7 +85,8 @@ body,
 .relation__label .Select-option.is-focused,
 .relation__label .Select-option.is-selected,
 .tree__root,
-.editor__zoom {
+.editor__zoom,
+.background-light .button--circle.button--secondary {
   background-color:#F2F6FF;
 }
 /* Accent - yellow */
@@ -158,7 +159,8 @@ body,
 .not-found__code,
 .share__user-email,
 .feedback,
-.background-light .button--tertiary {
+.background-light .button--tertiary,
+.background-light .button--circle.button--secondary {
   color:#758AA8;
 }
 /* Red */

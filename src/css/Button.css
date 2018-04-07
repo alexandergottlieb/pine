@@ -11,7 +11,7 @@
     cursor:pointer;
     outline:0 !important;
 }
-.background-light .button {
+.background-light .button:not(.button--circle) {
     padding:0.5em 0.75em;
     border:1px solid transparent;
 }

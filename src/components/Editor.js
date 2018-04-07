@@ -217,6 +217,8 @@ export default class Editor extends Component {
                 <div className="view-mode__icon"></div>
               </div>
             </Button>
+            <Button className="editor__toolbar-button" onClick={actions.undo} circle type="secondary" icon="fa-undo" title="Undo"></Button>
+            <Button className="editor__toolbar-button" onClick={actions.redo} circle type="secondary" icon="fa-redo" title="Redo"></Button>
           </div>
           <div className="editor__toolbar-right">
             <Button className="editor__toolbar-button" onClick={this.zoomOut} circle icon="fa-minus" type="secondary" title="Zoom out" />
