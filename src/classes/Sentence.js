@@ -42,6 +42,8 @@ export default class Sentence {
     }
 
     validate() {
+        //If no words, it's valid already!
+        if (this.words.length === 0) return
         //Validate word data
         this.words.forEach(word => word.validate())
 
@@ -52,13 +54,14 @@ export default class Sentence {
         words = words.map(word => { return {...word, children: []} })
         words.forEach(word => {
             const { parent, index } = word
-            if (parent != 0) words[parent].children.push(index) //Execpt artificial root
+            if (parent != 0) words[parent].children.push(index) //Except artificial root
         })
 
         //check every node is reachable from root => no cycles
         let unvisited = [words.find(word => word && word.parent == 0)]
         let visited = []
         let current = null
+        console.log(unvisited)
         while (unvisited.length > 0) {
             current = unvisited.pop()
             visited.push(current)

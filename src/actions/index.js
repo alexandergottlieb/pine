@@ -229,7 +229,7 @@ export const editSentence = (sentence) => {
               sentence: newSentence
           })
         } catch (e) {
-          dispatch(addError(e.message))
+            dispatch(addError(e.message))
         }
     }
 }

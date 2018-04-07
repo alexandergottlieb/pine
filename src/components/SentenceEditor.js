@@ -113,7 +113,7 @@ class CreateWord extends Component {
           onChange={this.inputChange.bind(this)}
           onKeyUp={this.keyUp.bind(this)}
         />
-        <Button className="create-word__button" icon="fa-plus-circle" onClick={this.buttonClick.bind(this)}></Button>
+        <Button className="create-word__button" icon="fa-plus-circle" type="tertiary" onClick={this.buttonClick.bind(this)}></Button>
       </div>
     )
   }

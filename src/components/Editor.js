@@ -90,6 +90,7 @@ export default class Editor extends Component {
 
     //Remove word
     editedSentence.words = editedSentence.words.filter(aWord => aWord.id !== word.id)
+    
     //Change order & relations
     let newParent = word.parent > word.index ? word.parent - 1 : word.parent
     editedSentence.words = editedSentence.words.map(aWord => {
