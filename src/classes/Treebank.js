@@ -67,6 +67,7 @@ export default class Treebank {
             })
             //Sentence needs metadata
             sentence.stringSentenceTogether()
+            sentence.lastEdited = + new Date()
         })
     }
 

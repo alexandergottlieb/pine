@@ -37,9 +37,8 @@ export default class Edit extends Component {
   }
 
   render() {
-    const { actions, current, sentences, treebanks, user, permissions } = this.props
+    const { actions, current, sentences, treebanks, user, permissions, sentence } = this.props
     const currentTreebank = treebanks[current.treebank]
-    const currentSentence = sentences.find(sentence => sentence.id === current.sentence)
 
     //If a new sentence has just been created, redirect there
     if (current.newSentence) return <Redirect to={`/edit/${current.treebank}/${current.newSentence}`} />
@@ -54,8 +53,8 @@ export default class Edit extends Component {
             <Route path="/edit/:treebank/help" exact component={Help} />
             <Route path="/edit/:treebank/settings" exact render={(props) => <Settings {...props} actions={actions} user={user} current={current} treebank={currentTreebank} permissions={permissions} />} />
             <Route path="/edit/:treebank/:sentence?" exact render={(props) => {
-              return currentSentence
-                ? <Editor {...props} actions={actions} current={current} sentence={currentSentence} treebank={currentTreebank} />
+              return sentence
+                ? <Editor {...props} actions={actions} current={current} sentence={sentence} treebank={currentTreebank} />
                 : null
             }} />
             <Route component={NotFound} />

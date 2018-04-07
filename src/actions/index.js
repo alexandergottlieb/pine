@@ -1,4 +1,5 @@
-import { database } from "../firebaseApp"
+import { ActionCreators as Undo } from "redux-undo"
+import { database, firebaseError } from "../firebaseApp"
 import FileSaver from "file-saver"
 import Treebank from "../classes/Treebank"
 import Sentence from "../classes/Sentence"
@@ -7,13 +8,6 @@ import { syncTreebank, syncSentences, syncWords } from "./sync"
 export * from "./sync"
 export * from "./user.js"
 export * from "./sharing.js"
-
-const firebaseError = (e, dispatch) => {
-    //Separate error ID from error message
-    const split = e.message.split(":")
-    const message = split[1] ? split[1] : e.message
-    dispatch(addError(`Error: ${message}`))
-}
 
 export const addError = (message, autoDismiss = true) => {
     return dispatch => {
@@ -165,16 +159,20 @@ export const fetchTreebanks = (userID) => {
     }
 }
 
-export const setCurrent = (treebank, sentence = null, page = null) => {
-    return dispatch => {
+export const setCurrent = (treebank, sentenceID = null, page = null) => {
+    return (dispatch, getState) => {
         if (treebank) dispatch(syncTreebank(treebank))
+        const { sentences } = getState()
+        //If sentence is loaded, dispatch with action
+        let sentence = sentences.find(sentence => sentence.id === sentenceID)
+        sentence = sentence ? new Sentence(sentence) : new Sentence({id: sentenceID})
         dispatch({
             type: "SET_CURRENT_TREEBANK",
             id: treebank
         })
         dispatch({
             type: "SET_CURRENT_SENTENCE",
-            id: sentence
+            sentence
         })
         dispatch({
             type: "SET_CURRENT_PAGE",
@@ -183,7 +181,7 @@ export const setCurrent = (treebank, sentence = null, page = null) => {
         //Watch changes to sentences in treebank
         dispatch(syncSentences(treebank))
         //Watch changes to words in sentence
-        if (sentence) dispatch(syncWords(treebank, sentence))
+        if (sentenceID) dispatch(syncWords(treebank, sentenceID))
     }
 }
 
@@ -207,59 +205,34 @@ export const clearRelations = () => {
     }
 }
 
-export const editSentence = (treebank, sentence, data) => {
-    return dispatch => {
-        dispatch({
-            type: "SENTENCE_EDIT_START",
-            treebank, sentence, data
-        })
-        database.ref(`/sentences/${treebank}/${sentence}`).update(data).then(() => {
-            dispatch({
-                type: "SENTENCE_EDIT_COMPLETE",
-                feedback: ""
-            })
-        }).catch(e => firebaseError(e, dispatch))
+export const editSentence = (sentence) => {
+    return (dispatch, getState) => {
+        const oldSentence = getState().sentence.present
+        const newSentence = new Sentence({...oldSentence, sentence, lastEdited: + new Date()})
+        //Validate and update
+        try {
+          newSentence.validate()
+          newSentence.stringSentenceTogether()
+          dispatch({
+              type: "SENTENCE_EDIT",
+              sentence: newSentence
+          })
+        } catch (e) {
+          dispatch(addError(e.message))
+        }
     }
 }
 
-export const editWord = (treebank, sentence, word, data) => {
-    return (dispatch) => {
-        dispatch({
-            type: "WORD_EDIT_START",
-            treebank, sentence, word, data
-        })
-        const ref = database.ref(`/words/${treebank}/${sentence}/${word}`)
-        ref.update(data).then(() => {
-            dispatch({type: "WORD_EDIT_COMPLETE"})
-        }).catch(e => firebaseError(e, dispatch))
-    }
-}
-
-export const editWords = (treebank, sentence, words) => {
-    return (dispatch) => {
-        let updates = {}
-        words.forEach(word => updates[word.id] = word)
-        dispatch({
-            type: "WORDS_EDIT_START",
-            treebank, sentence, words
-        })
-        const ref = database.ref(`/words/${treebank}/${sentence}`)
-        ref.set(updates).then(() => {
-            dispatch({type: "WORDS_EDIT_COMPLETE"})
-        }).catch(e => firebaseError(e, dispatch))
-    }
-}
-
-export const createWord = (treebank, sentence, data) => {
-    return (dispatch) => {
-        dispatch({type: "WORD_CREATE_START"})
-        const key = database.ref(`/words/${treebank}/${sentence}`).ref.push().key
-        database.ref(`/words/${treebank}/${sentence}/${key}`).set({
-            ...data,
-            id: key
-        }).then(() => {
-            dispatch({type: "WORD_CREATE_COMPLETE"})
-        }).catch(e => firebaseError(e, dispatch))
+export const createWord = (word) => {
+    return (dispatch, getState) => {
+        const state = getState()
+        const oldSentence = state.sentence.present
+        const { treebank } = state.current
+        word.id = database.ref(`/words/${treebank}/${oldSentence.id}`).ref.push().key
+        //Update sentence.sentence
+        let newWords = oldSentence.words.map(word => word)
+        newWords.push(word)
+        dispatch(editSentence({words: newWords}))
     }
 }
 
@@ -291,5 +264,17 @@ export const createSentence = sentence => {
                 id: sentenceID
             })
         }).catch(e => firebaseError(e, dispatch))
+    }
+}
+
+export const undo = () => {
+    return dispatch => {
+        dispatch(Undo.undo())
+    }
+}
+
+export const redo = () => {
+    return dispatch => {
+        dispatch(Undo.redo())
     }
 }

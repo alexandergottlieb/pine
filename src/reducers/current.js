@@ -18,8 +18,8 @@ const current = (state = initial, action) => {
             return {...state, treebank: action.id, messages: []}
         }
         case "SET_CURRENT_SENTENCE": {
-            let newSentence = action.id === state.newSentence ? null : state.newSentence //Clear new sentence redirect
-            return {...state, sentence: action.id, messages: [], newSentence}
+            let newSentence = action.sentence.id === state.newSentence ? null : state.newSentence //Clear new sentence redirect
+            return {...state, sentence: action.sentence.id, messages: [], newSentence}
         }
         case "SET_CURRENT_PAGE": {
             return {...state, page: action.page, messages: []}
@@ -71,14 +71,10 @@ const current = (state = initial, action) => {
         case "SENTENCE_CREATE_COMPLETE": {
             return {...state, newSentence: action.id}
         }
-        case "SENTENCE_EDIT_START":
-        case "WORD_EDIT_START":
-        case "WORDS_EDIT_START": {
+        case "SENTENCE_EDIT": {
             return {...state, feedback: "Saving..."}
         }
-        case "SENTENCE_EDIT_COMPLETE":
-        case "WORD_EDIT_COMPLETE":
-        case "WORDS_EDIT_COMPLETE": {
+        case "SENTENCE_SAVED": {
             return {...state, feedback: ""}
         }
         case "UPLOAD_TREEBANK_START": {

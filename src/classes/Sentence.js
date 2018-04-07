@@ -5,10 +5,13 @@ export default class Sentence {
     constructor(sentence = {sentence: ""}) {
         Object.assign(this, sentence)
         this.words = []
-        if (Array.isArray(sentence.words)) this.words = sentence.words.map( word => new Word(word))
+        if (Array.isArray(sentence.words)) this.words = sentence.words.map(word => new Word(word))
         this.comments = []
-        if (Array.isArray(sentence.comments)) sentence.comments.forEach( comment => this.comments.push(comment))
+        if (Array.isArray(sentence.comments)) this.comments = sentence.comments.map(comment => comment)
+        this.emptyNodes = []
+        if (Array.isArray(sentence.emptyNodes)) this.emptyNodes = sentence.emptyNodes.map(word => new Word(word))
         if (!this.sentence) this.stringSentenceTogether()
+        this.lastEdited = sentence.lastEdited || null
     }
 
     stringSentenceTogether() {

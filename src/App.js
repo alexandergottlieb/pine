@@ -17,14 +17,16 @@ class App extends Component {
 
   render() {
     const { user, actions, current, treebanks, sentences, permissions } = this.props
+    //Get present sentence without undo history
+    const sentence = this.props.sentence.present
 
     if (user.loggedIn) {
       return (
         <BrowserRouter>
           <div className="app">
             <Switch>
-                <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} sentences={sentences} current={current} user={user} />} />
-                <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} user={user} permissions={permissions} />} />
+                <Route path="/" exact render={(props) => <Home {...props} actions={actions} treebanks={treebanks} current={current} user={user} />} />
+                <Route path="/edit/:treebank/:sentence?/:page?" render={(props) => <Edit {...props} actions={actions} current={current} sentences={sentences} treebanks={treebanks} sentence={sentence} user={user} permissions={permissions} />} />
                 <Route component={NotFound} />
             </Switch>
           </div>

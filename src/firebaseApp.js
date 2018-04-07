@@ -1,4 +1,6 @@
 import firebase from 'firebase'
+import store from "./store"
+import { addError } from "./actions"
 
 let config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,3 +15,10 @@ firebase.initializeApp(config);
 export const database = firebase.database()
 
 export const auth = firebase.auth()
+
+export const firebaseError = (e, dispatch) => {
+    //Separate error ID from error message
+    const split = e.message.split(":")
+    const message = split[1] ? split[1] : e.message
+    dispatch(addError(`Error: ${message}`))
+}
