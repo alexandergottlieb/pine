@@ -65,6 +65,7 @@
       color:#758AA8;
     }
     .relation__label .Select-menu-outer {
+      margin-bottom:5rem;
       border:0;
       border-radius:4px;
       box-shadow:0 4px 20px 0 rgba(0,0,0,0.16);
