@@ -47,6 +47,9 @@ p {
 small {
   font-size:0.825rem;
 }
+li {
+  margin-bottom:0.25em;
+}
 /* Links */
 a {
     text-decoration:none;

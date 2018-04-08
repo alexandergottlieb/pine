@@ -9,9 +9,13 @@ const Help = props => {
             <h2>Help</h2>
             <h3>Interface</h3>
             <p>Select sentences using the list on the left.</p>
-            <p>Along the bottom of the editor are a number of buttons. The <span className="fas fa-plus"></span> and <span className="fas fa-minus"></span> zoom in and out.</p>
-            <p>Here, you can also choose how to display the current sentence; either as a tree or with dependency arrows drawn above the words. Relations can only be edited while viewing as a tree.</p>
-            <p>To go back and to select a different Treebank, click <em>Treebanks</em> in the top left.</p>
+            <p>Along the bottom of the editor are a number of buttons.</p>
+            <ul>
+                <li>The blue button switches between viewing the sentence as a tree or with dependency arrows drawn above the words. Relations can only be edited while viewing as a tree.</li>
+                <li><span className="fas fa-undo"></span> and <span className="fas fa-redo"></span> undo or redo your last edit, so don't worry if you make a mistake.</li>
+                <li><span className="fas fa-plus"></span> and <span className="fas fa-minus"></span> zoom in and out.</li>
+            </ul>
+            <p>When you're finished editing, click <em>Treebanks</em> in the top left to go home.</p>
             <h3>How to Edit...</h3>
             <h4>Words</h4>
             <p>Clicking a word in the tree reveals its grammatical information which can be edited in place.</p>
@@ -19,10 +23,10 @@ const Help = props => {
             <p>
                 Lines between words represent grammatical relations. Clicking <span className="far fa-circle"></span> along a line selects that relation. You can select many at a time. Clicking again on a word points the selected relations to that word. Subtrees (descendent words) are moved along with their parents.
             </p>
-            <p>The type of the relation is also labelled along the line, click it to edit. Relation labels are unique to each treebank. You can change these in <span className="fas fa-cog"></span> Settings.</p>
+            <p>The type of the relation is also labelled along the line, click it to edit. Relation labels are unique to each treebank. You can change these in the treebank settings.</p>
             <h4>A Sentence</h4>
-            <p>The order of words can be changed by dragging and dropping them into different positions in the sentence.</p>
-            <p>New words are added by clicking <span className="fas fa-plus-circle"></span> on the right of the sentence.</p>
+            <p>The order of words can be changed by dragging and dropping them into different positions.</p>
+            <p>New words are added by clicking the <span className="fas fa-plus-circle"></span> to the right of the sentence.</p>
             <h3>Saving Changes</h3>
             <p>All changes are saved online in real time. You can download the updated CoNLL-U file from your <Link to="/">treebanks</Link>.</p>
             <h3>More</h3>
