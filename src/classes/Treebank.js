@@ -8,8 +8,8 @@ export default class Treebank {
         this.name = treebank.name || ""
         this.sentences = treebank.sentences || null
         this.multitokens = treebank.multitokens || false
-        const { relations } = treebank.settings
-        this.settings = { relations } || { relations: {}}
+        const relations = treebank.settings ? treebank.settings.relations || {} : {}
+        this.settings = { relations }
         this.id = treebank.id || ""
     }
 
