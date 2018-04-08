@@ -17,10 +17,10 @@ export default class Word {
 
     validate() {
         const { index, parent } = this
-        if (!index) throw "Each word must have a position in the sentence."
-        if (parent !== 0 && !parent) throw "Each word must have a parent."
-        if (parent < 0) throw "Invalid word parent."
-        if (parent == index) throw "A word cannot be related to itself."
+        if (!index) throw new Error("Each word must have a position in the sentence.")
+        if (parent !== 0 && !parent) throw new Error("Each word must have a parent.")
+        if (parent < 0) throw new Error("Invalid word parent.")
+        if (parent == index) throw new Error("A word cannot be related to itself.")
     }
 
 }

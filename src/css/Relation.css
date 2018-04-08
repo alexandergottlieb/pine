@@ -19,7 +19,6 @@
       cursor:default !important;
     }
     .relation__label .Select {
-      outline:none !important;
       pointer-events:none;
     }
     .relation__label .Select-control {
@@ -32,7 +31,6 @@
     }
     .relation__label .Select-value {
       padding:0 !important;
-      outline:none !important;
       box-shadow:none !important;
       cursor:text;
     }
@@ -47,6 +45,7 @@
       display:none;
     }
     .relation__label .Select-input {
+      width:100%;
       border-radius:2px;
       text-align:center;
     }

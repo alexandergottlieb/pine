@@ -29,7 +29,7 @@ class Relation extends Component {
         }
 
         const edit = selected => {
-            if (selected.value !== word.relation) {
+            if (selected && selected.value !== word.relation) {
                 if (selected.new) createRelationLabel(selected.label, selected.value)
                 editWord(word.index, {relation: selected.value})
             }
