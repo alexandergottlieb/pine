@@ -21,12 +21,16 @@ export default class Input extends Component {
         if (value !== this.props.value) this.setState({ value })
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         const { onChange } = this.props
         this.setState({
             value: event.target.value
         })
         if (onChange) onChange(event.target.value)
+    }
+
+    keyUp = (event) => {
+        if (event.keyCode === 13) event.target.blur()
     }
 
     render() {
@@ -38,7 +42,8 @@ export default class Input extends Component {
                 <input {...this.props}
                     className="input__input"
                     value={this.state.value}
-                    onChange={this.handleChange.bind(this)}
+                    onChange={this.handleChange}
+                    onKeyUp={this.keyUp}
                 />
             </div>
         )

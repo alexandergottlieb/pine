@@ -72,7 +72,12 @@ class Sidebar extends Component {
             <span className="breadcrumbs__breadcrumb breadcrumbs__breadcrumb--current"> / Edit</span>
           </nav>
           <h1>
-              <input className="sidebar__title" value={this.state.treebankName} onChange={this.changeTreebankName} type="text" />
+              <input className="sidebar__title"
+                value={this.state.treebankName}
+                onChange={this.changeTreebankName}
+                onKeyUp={event => {if (event.keyCode === 13) event.target.blur()}}
+                type="text"
+              />
           </h1>
         </header>
         <nav className="sentences">
