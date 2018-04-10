@@ -9,9 +9,16 @@ class Sidebar extends Component {
 
   constructor(props) {
     super(props)
+    const { treebank } = props
+    const name = treebank.name || ""
     this.state = {
-      treebankName: ""
+      treebankName: name
     }
+  }
+
+  componentWillReceiveProps(props) {
+    const { treebank } = props
+    this.setState({treebankName: treebank.name})
   }
 
   changeTreebankName = (event) => {
@@ -19,20 +26,9 @@ class Sidebar extends Component {
     this.setState({treebankName: value})
   }
 
-
-
   updateTreebankName = event => {
-    if (event.keyCode === 13) {
-      const { actions, treebank } = this.props
-      const { value } = event.target
-      actions.editTreebank({...treebank, value})
-      event.target.blur()
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    const { treebank } = props
-    this.setState({treebankName: treebank.name})
+    const { actions, treebank } = this.props
+    actions.editTreebank({...treebank, name: event.target.value})
   }
 
   newSentenceClicked = () => {
@@ -79,7 +75,8 @@ class Sidebar extends Component {
               <input className="sidebar__title"
                 value={this.state.treebankName}
                 onChange={this.changeTreebankName}
-                onKeyUp={this.updateTreebankName}
+                onBlur={this.updateTreebankName}
+                onKeyUp={event => {if (event.keyCode === 13) event.target.blur()}}
                 type="text"
               />
           </h1>
