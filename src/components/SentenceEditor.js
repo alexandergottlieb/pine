@@ -21,6 +21,7 @@ export default class SentenceEditor extends Component {
   }
 
   onSortEnd = ({oldIndex, newIndex}) => {
+    if (oldIndex === newIndex) return
     let newWords = this.state.words.map(word => {
       return {...word}
     })
