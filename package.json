@@ -1,6 +1,6 @@
 {
   "name": "pine",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "private": true,
   "dependencies": {
     "debounce": "^1.1.0",
