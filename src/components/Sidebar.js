@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import debounce from "debounce"
 import Sentence from '../classes/Sentence'
 import Word from '../classes/Word'
 import Button from './Button'
@@ -20,10 +19,16 @@ class Sidebar extends Component {
     this.setState({treebankName: value})
   }
 
-  updateTreebankName = debounce(name => {
-    const { actions, treebank } = this.props
-    actions.editTreebank({...treebank, name})
-  }, 300)
+
+
+  updateTreebankName = event => {
+    if (event.keyCode === 13) {
+      const { actions, treebank } = this.props
+      const { value } = event.target
+      actions.editTreebank({...treebank, value})
+      event.target.blur()
+    }
+  }
 
   componentWillReceiveProps(props) {
     const { treebank } = props
@@ -74,7 +79,7 @@ class Sidebar extends Component {
               <input className="sidebar__title"
                 value={this.state.treebankName}
                 onChange={this.changeTreebankName}
-                onKeyUp={event => {if (event.keyCode === 13) this.updateTreebankName(event.target.value)}}
+                onKeyUp={this.updateTreebankName}
                 type="text"
               />
           </h1>
