@@ -68,8 +68,11 @@ class Home extends Component {
             </p>
             <p><small>Add a new treebank in .conllu format</small></p>
           </div>
-          <Version />
         </main>
+        <footer className="home__footer">
+          <p><a href="https://docs.pine.alexandergottlieb.com/" target="_blank"><small>Documentation</small></a></p>
+          <p><Version /></p>
+        </footer>
       </div>
     )
   }

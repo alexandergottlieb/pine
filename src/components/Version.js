@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { version } from "../../package.json"
+import { version, name as APP_NAME } from "../../package.json"
 
 const Version = (props) => {
-    return (
-        <div className="version">
-            <small>Treebanker v{version}</small>
-        </div>
-    )
+    return <small className="version">{APP_NAME} v{version}</small>
 }
 
 export default Version

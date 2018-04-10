@@ -35,13 +35,14 @@ export default class Treebank {
                 } else if (line.length === 0) { //New sentence
                     self.sentences.push(new Sentence())
                     current++
-                } else if (line.match(/^\d+[-]/)) { //Multitoken
+                } else if (line.match(/^\d+[-]\d+/)) { //Multitoken
                     self.multitokens = true
                     //Skip
                 } else if (line.match(/^\d+[.]/)) { //Empty node
                     let word = self.parseWord(line)
+                    //Add to previous word's empty nodes
                     const prevIndex = self.sentences[current].words.length-1
-                    self.sentences[current].words[self.sentences[current].words.length-1].emptyNodes.push(word)
+                    self.sentences[current].words[prevIndex].emptyNodes.push(word)
                 } else { //Word
                     let word = self.parseWord(line)
                     self.sentences[current].words.push(word)

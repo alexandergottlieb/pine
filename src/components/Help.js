@@ -30,9 +30,9 @@ const Help = props => {
             <h3>Saving Changes</h3>
             <p>All changes are saved online in real time. You can download the updated CoNLL-U file from your <Link to="/">treebanks</Link>.</p>
             <h3>More</h3>
-            <p>To learn more about Treebanker, read the docs:</p>
-            <a href="https://alexandergottlieb.gitbooks.io/treebanker/" target="_blank">
-                <Button type="secondary" icon="fa-book">Documentation</Button>
+            <p>To learn more, read the docs:</p>
+            <a href="https://docs.pine.alexandergottlieb.com/" target="_blank">
+                <Button type="primary" icon="fa-book">Documentation</Button>
             </a>
         </div>
     )

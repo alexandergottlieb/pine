@@ -18,10 +18,9 @@ class Sidebar extends Component {
   changeTreebankName = (event) => {
     const { value } = event.target
     this.setState({treebankName: value})
-    if (value) this.updateName(value)
   }
 
-  updateName = debounce(name => {
+  updateTreebankName = debounce(name => {
     const { actions, treebank } = this.props
     actions.editTreebank({...treebank, name})
   }, 300)
@@ -75,7 +74,7 @@ class Sidebar extends Component {
               <input className="sidebar__title"
                 value={this.state.treebankName}
                 onChange={this.changeTreebankName}
-                onKeyUp={event => {if (event.keyCode === 13) event.target.blur()}}
+                onKeyUp={event => {if (event.keyCode === 13) this.updateTreebankName(event.target.value)}}
                 type="text"
               />
           </h1>
