@@ -4,8 +4,6 @@ import FileSaver from "file-saver"
 import Treebank from "../classes/Treebank"
 import Sentence from "../classes/Sentence"
 
-import { syncTreebank, syncSentences, syncWords } from "./sync"
-export * from "./sync"
 export * from "./user.js"
 export * from "./sharing.js"
 
@@ -168,7 +166,6 @@ export const fetchTreebanks = (userID) => {
 
 export const setCurrent = (treebank, sentenceID = null, page = null) => {
     return (dispatch, getState) => {
-        if (treebank) dispatch(syncTreebank(treebank))
         const { sentences } = getState()
         dispatch({
             type: "SET_CURRENT_TREEBANK",
@@ -182,13 +179,9 @@ export const setCurrent = (treebank, sentenceID = null, page = null) => {
             type: "SET_CURRENT_PAGE",
             page
         })
-        //Watch changes to sentences in treebank
-        dispatch(syncSentences(treebank))
         if (sentenceID) {
-            //Watch changes to words in sentence
-            dispatch(syncWords(treebank, sentenceID))
             //If the sentence is already downloaded, set current to it
-            let currentSentence = sentences.find(sentence => sentence.id === sentenceID)
+            const currentSentence = sentences.find(sentence => sentence.id === sentenceID)
             if (currentSentence !== undefined) {
                 dispatch({
                     type: "CURRENT_SENTENCE_UPDATE",
