@@ -4,6 +4,7 @@ import reducer from "./reducers"
 import debounce from "debounce"
 import equal from "equals"
 import { database, firebaseError } from "./firebaseApp"
+import { sync } from "./liveSync"
 
 const logger = store => next => action => {
   console.log('dispatching', action)
@@ -18,7 +19,12 @@ const middleware = process.env.NODE_ENV !== 'production'
 
 const store = createStore(reducer, middleware);
 
-//Sync sentence edits with firebase
+//Live-syncing with firebase
+store.subscribe(() => {
+  sync(store.dispatch, store.getState())
+})
+
+//Send sentence edits to firebase
 const syncSentence = debounce((treebank, sentence) => {
   let updates = {}
   updates[`/words/${treebank}/${sentence.id}`] = sentence.words
