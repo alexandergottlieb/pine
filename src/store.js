@@ -21,7 +21,7 @@ const store = createStore(reducer, middleware);
 
 //Live-syncing with firebase
 store.subscribe(() => {
-  sync(store.dispatch, store.getState())
+  sync(store.dispatch, store.getState)
 })
 
 //Send sentence edits to firebase

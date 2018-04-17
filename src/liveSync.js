@@ -7,7 +7,9 @@ let watchers = {
     words: null
 }
 
-const syncTreebank = (dispatch, treebank) => {
+const syncTreebank = (dispatch, getState) => {
+    const { current } = getState()
+    const { treebank } = current
     //Stop syncing if deselected
     if (!treebank && watchers.treebank) {
         database.ref(watchers.treebank).off("value")
@@ -34,7 +36,9 @@ const syncTreebank = (dispatch, treebank) => {
     }
 }
 
-const syncSentences = (dispatch, treebank, currentSentence) => {
+const syncSentences = (dispatch, getState) => {
+    const { current } = getState()
+    const { treebank } = current
     //Stop syncing if deselected
     if (!treebank && watchers.sentences) {
         database.ref(watchers.sentences).off("value")
@@ -57,8 +61,10 @@ const syncSentences = (dispatch, treebank, currentSentence) => {
                 treebank, sentences
             })
             //Update the current sentence
-            if (currentSentence) {
-                const updatedSentence = sentences.find(sentence => sentence.id === currentSentence)
+            const { current } = getState()
+            const { sentence } = current
+            if (sentence) {
+                const updatedSentence = sentences.find(s => s.id === sentence)
                 dispatch({
                     type: "CURRENT_SENTENCE_UPDATE",
                     sentence: updatedSentence
@@ -68,7 +74,9 @@ const syncSentences = (dispatch, treebank, currentSentence) => {
     }
 }
 
-const syncWords = (dispatch, treebank, sentence) => {
+const syncWords = (dispatch, getState) => {
+    const { current } = getState()
+    const { treebank, sentence } = current
     //Stop syncing if deselected
     if (!sentence && watchers.words) {
         database.ref(watchers.words).off("value")
@@ -97,18 +105,18 @@ let previous = {
     treebank: null,
     sentence: null
 }
-export const sync = (dispatch, state) => {
-    const { current } = state
+export const sync = (dispatch, getState) => {
+    const { current } = getState()
     const { treebank, sentence } = current
     //If treebank has changed, sync treebank and sentences
     if (previous.treebank !== treebank) {
         previous.treebank = treebank
-        syncTreebank(dispatch, treebank)
-        syncSentences(dispatch, treebank, sentence)
+        syncTreebank(dispatch, getState)
+        syncSentences(dispatch, getState)
     }
     //If sentence has changed, sync words
     if (previous.sentence !== sentence) {
         previous.sentence = sentence
-        syncWords(dispatch, treebank, sentence)
+        syncWords(dispatch, getState)
     }
 }
