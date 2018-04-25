@@ -64,6 +64,7 @@ export default class Sentence {
             visited.push(current)
             current.children.forEach(childIndex => unvisited.push(words[childIndex]))
         }
+        let l = words.filter(word => word !== undefined).length
         if (visited.length !== words.filter(word => word !== undefined).length) throw new Error("A word cannot be related to one of its descendents")
     }
 

@@ -93,7 +93,7 @@ export default class Editor extends Component {
     editedSentence.words = editedSentence.words.map(aWord => {
       //Shift indices of all words after the deleted word down 1
       if (aWord.index > word.index) aWord.index--
-      if (aWord.parent > word.index) aWord.parent--
+      //Update parent relations
       if (aWord.parent === word.index) {
         //Only one word can descend from root, so attach to sibling if multiple words
         if (newParent === 0) {
@@ -102,10 +102,13 @@ export default class Editor extends Component {
         } else {
           aWord.parent = newParent
         }
+      } else if (aWord.parent > word.index) {
+        aWord.parent--
       }
       return aWord
     })
-    actions.addMessage(`Word deleted: '${word.inflection}'`)
+    console.log('edit', editedSentence)
+    actions.addMessage(`Deleted word: '${word.inflection}'`)
     actions.editSentence(editedSentence)
   }
 
