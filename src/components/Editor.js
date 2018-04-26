@@ -107,7 +107,6 @@ export default class Editor extends Component {
       }
       return aWord
     })
-    console.log('edit', editedSentence)
     actions.addMessage(`Deleted word: '${word.inflection}'`)
     actions.editSentence(editedSentence)
   }
