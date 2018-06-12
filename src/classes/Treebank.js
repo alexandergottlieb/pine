@@ -104,6 +104,7 @@ export default class Treebank {
             //Default to non-standard UPOS
             word.xposTag = xposTag
         }
+        //Features
         try {
             if (data[5] !== undefined && data[5] !== '_') word.features = this.parseList(String(data[5]))
         } catch (e) {
@@ -137,12 +138,12 @@ export default class Treebank {
     //Parse key=value|key=value... property from CoNLL-U into object
     parseList(list) {
         let object = {}
-        list = list.split("|")
+        list = list.replace(/^\|+|\|+$/, "").split("|")
         list.forEach(pair => {
             pair = pair.split("=")
             if (!0 in pair) throw new Error("invalid list format")
             const key = pair[0].trim()
-            const value = (1 in pair) ? pair[1].trim() : ''
+            const value = (1 in pair) ? pair[1].trim() : true
             object[key] = value
         })
         return object

@@ -2,11 +2,11 @@ FROM node:9.1.0
 
 WORKDIR /usr/app
 
-COPY package*.json .
+COPY package*.json ./
 
-RUN npm install
+RUN NODE_ENV=development npm install
 
-COPY . .
+COPY . ./
 
 EXPOSE 3000
 
