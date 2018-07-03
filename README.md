@@ -1,6 +1,6 @@
-#Pine
+# Pine
 An Intuitive Web Interface for Treebanking
 
 
-#Acknowledgements
+# Acknowledgements
 - [Fontawesome](https://fontawesome.com/license)
